@@ -1,0 +1,25 @@
+﻿C:\Users\HMTecInfo\gestor_de_mundos\pokemon_tactics.iml
+C:\Users\HMTecInfo\gestor_de_mundos\Pokémon Tactics - Manual Básico - Atalho.lnk
+C:\Users\HMTecInfo\gestor_de_mundos\Pokémon Tactics - Manual Básico.pdf
+C:\Users\HMTecInfo\gestor_de_mundos\android\pokemon_tactics_android.iml
+C:\Users\HMTecInfo\gestor_de_mundos\android\app\src\main\kotlin\com\example\pokemon_tactics
+C:\Users\HMTecInfo\gestor_de_mundos\android\app\src\main\kotlin\com\example\pokemon_tactics\MainActivity.kt
+C:\Users\HMTecInfo\gestor_de_mundos\assets\audio\pokemon_centro.mp3
+C:\Users\HMTecInfo\gestor_de_mundos\assets\audio\pokemon_selvagem.mp3
+C:\Users\HMTecInfo\gestor_de_mundos\build\app\intermediates\assets\release\mergeReleaseAssets\flutter_assets\assets\audio\pokemon_centro.mp3
+C:\Users\HMTecInfo\gestor_de_mundos\build\app\intermediates\assets\release\mergeReleaseAssets\flutter_assets\assets\audio\pokemon_selvagem.mp3
+C:\Users\HMTecInfo\gestor_de_mundos\build\app\intermediates\compressed_assets\release\compressReleaseAssets\out\assets\flutter_assets\assets\audio\pokemon_centro.mp3.jar
+C:\Users\HMTecInfo\gestor_de_mundos\build\app\intermediates\compressed_assets\release\compressReleaseAssets\out\assets\flutter_assets\assets\audio\pokemon_selvagem.mp3.jar
+C:\Users\HMTecInfo\gestor_de_mundos\build\app\intermediates\flutter\release\flutter_assets\assets\audio\pokemon_centro.mp3
+C:\Users\HMTecInfo\gestor_de_mundos\build\app\intermediates\flutter\release\flutter_assets\assets\audio\pokemon_selvagem.mp3
+C:\Users\HMTecInfo\gestor_de_mundos\build\app\intermediates\java_res\release\processReleaseJavaRes\out\com\example\pokemon_tactics
+C:\Users\HMTecInfo\gestor_de_mundos\build\app\tmp\kotlin-classes\release\com\example\pokemon_tactics
+C:\Users\HMTecInfo\gestor_de_mundos\build\app\tmp\kotlin-classes\release\com\example\pokemon_tactics\MainActivity.class
+C:\Users\HMTecInfo\gestor_de_mundos\build\flutter_assets\assets\audio\pokemon_centro.mp3
+C:\Users\HMTecInfo\gestor_de_mundos\build\flutter_assets\assets\audio\pokemon_selvagem.mp3
+C:\Users\HMTecInfo\gestor_de_mundos\lib\tipo_pokemon.dart
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\pokemon.dart
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_detalhe_screen.dart
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart

@@ -1,0 +1,464 @@
+﻿C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\gerador_encontros.dart:6: import '../models/pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\gerador_encontros.dart:13: Pokemon gerar(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\gerador_encontros.dart:99: encontro.pokemon.comNivel(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:3: import '../models/pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:30: static Pokemon aplicarProgressaoNivel(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:31: Pokemon pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:33: final quantidadeAjustes = pokemon.nivel ~/ 10;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:35: Pokemon resultado = pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:44: static Pokemon aplicarAjuste(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:45: Pokemon pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:53: return aumentarCaracteristica(pokemon);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:58: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:60: pokemon.pontosMoveProgressao + 1,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:64: return aumentarPoder(pokemon);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:67: return pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:71: static Pokemon aumentarCaracteristica(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:72: Pokemon pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:79: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:80: bonusForca: pokemon.bonusForca + 1,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:85: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:86: bonusHabilidade: pokemon.bonusHabilidade + 1,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:91: pokemon.bonusResistencia + 1;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:94: pokemon.resistencia + novaResistencia;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:97: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:104: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:105: bonusArmadura: pokemon.bonusArmadura + 1,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:110: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:112: pokemon.bonusDefesaEspecial + 1,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:117: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:119: pokemon.bonusPoderDeFogo + 1,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:123: return pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:127: static Pokemon aumentarPoder(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:128: Pokemon pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:134: pokemon.poderes,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:144: pokemon.tipos.length == 1;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:148: pokemon.tipos.first.trim().toLowerCase() ==
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:165: final valorBase = pokemon.lendario ? 3 : 1;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:181: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:183: pe: pokemon.pe + ganhoPe,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:187: static Pokemon copiarPokemon(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:188: Pokemon pokemon, {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:200: return Pokemon(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:201: id: pokemon.id,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:202: numero: pokemon.numero,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:203: nome: pokemon.nome,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:204: nivel: pokemon.nivel,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:205: lendario: pokemon.lendario,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:206: tipos: pokemon.tipos,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:207: superEfetivo: pokemon.superEfetivo,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:208: poucoEfetivo: pokemon.poucoEfetivo,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:209: imune: pokemon.imune,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:210: efetividadeTipo: pokemon.efetividadeTipo,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:211: forca: pokemon.forca,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:212: habilidade: pokemon.habilidade,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:213: resistencia: pokemon.resistencia,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:214: armadura: pokemon.armadura,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:215: defesaEspecial: pokemon.defesaEspecial,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:216: poderDeFogo: pokemon.poderDeFogo,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:218: bonusForca ?? pokemon.bonusForca,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:220: bonusHabilidade ?? pokemon.bonusHabilidade,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:222: bonusResistencia ?? pokemon.bonusResistencia,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:224: bonusArmadura ?? pokemon.bonusArmadura,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:227: pokemon.bonusDefesaEspecial,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:230: pokemon.bonusPoderDeFogo,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:231: moves: List<String>.from(pokemon.moves),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:234: pokemon.pontosMoveProgressao,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:236: poderes ?? pokemon.poderes,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:237: poderesExtras: pokemon.poderesExtras,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:238: pv: pv ?? pokemon.pv,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:239: pe: pe ?? pokemon.pe,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:240: localizacao: pokemon.localizacao,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\gerenciadores\batalhas.dart:3: import '../models/pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\gerenciadores\batalhas.dart:17: final Pokemon pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\gerenciadores\batalhas.dart:30: required this.pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\gerenciadores\batalhas.dart:41: return pokemon.pontosMoveIniciais +
+C:\Users\HMTecInfo\gestor_de_mundos\lib\gerenciadores\batalhas.dart:42: pokemon.pontosMoveProgressao;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\gerenciadores\batalhas.dart:56: pokemon.tipos.length == 1 &&
+C:\Users\HMTecInfo\gestor_de_mundos\lib\gerenciadores\batalhas.dart:57: pokemon.tipos.first.trim().toLowerCase() ==
+C:\Users\HMTecInfo\gestor_de_mundos\lib\gerenciadores\batalhas.dart:65: pokemon.tipos.length == 1 &&
+C:\Users\HMTecInfo\gestor_de_mundos\lib\gerenciadores\batalhas.dart:66: pokemon.tipos.first.trim().toLowerCase() ==
+C:\Users\HMTecInfo\gestor_de_mundos\lib\gerenciadores\batalhas.dart:94: Pokemon pokemon, {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\gerenciadores\batalhas.dart:99: pokemon: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\gerenciadores\batalhas.dart:101: pv: pokemon.pv,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\gerenciadores\batalhas.dart:102: pe: pokemon.poderes
+C:\Users\HMTecInfo\gestor_de_mundos\lib\gerenciadores\batalhas.dart:107: pokemon.tipos.length == 1 &&
+C:\Users\HMTecInfo\gestor_de_mundos\lib\gerenciadores\batalhas.dart:108: pokemon.tipos.first.trim().toLowerCase() ==
+C:\Users\HMTecInfo\gestor_de_mundos\lib\gerenciadores\batalhas.dart:117: if (indice < pokemon.moves.length) {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\gerenciadores\batalhas.dart:118: return pokemon.moves[indice];
+C:\Users\HMTecInfo\gestor_de_mundos\lib\gerenciadores\batalhas.dart:185: (batalha.pv + valor).clamp(0, batalha.pokemon.pv);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\gerenciadores\batalhas.dart:200: indice >= batalha.pokemon.poderes.length) {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\gerenciadores\batalhas.dart:205: batalha.peMaximo(batalha.pokemon.poderes[indice]);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\gerenciadores\batalhas.dart:298: i < batalha.pokemon.poderes.length &&
+C:\Users\HMTecInfo\gestor_de_mundos\lib\gerenciadores\batalhas.dart:301: final poder = batalha.pokemon.poderes[i];
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\encontro.dart:2: import 'pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\encontro.dart:5: final Pokemon pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\encontro.dart:19: required this.pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\evento.dart:2: import 'pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\evento.dart:25: final Pokemon? pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\evento.dart:42: this.pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\evento.dart:61: 'pokemon': pokemon?.toMap(),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\evento.dart:68: Pokemon? pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\evento.dart:70: final pokemonRaw = mapa['pokemon'];
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\evento.dart:73: pokemon = Pokemon.fromMap(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\evento.dart:100: pokemon: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\evento.dart:103: pokemon?.nivel.toString() ??
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\local.dart:9: import 'pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\local.dart:233: final pokemonMap = mapa['pokemon'];
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\local.dart:235: final pokemon = pokemonMap is Map
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\local.dart:236: ? Pokemon.fromMap(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\local.dart:241: : Pokemon(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\local.dart:256: pokemon: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\local.dart:391: .map((pokemon) => pokemon.toMap())
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\local.dart:454: (item) => Pokemon.fromMap(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\local.dart:461: : <Pokemon>[];
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\local.dart:526: 'pokemon':
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\local.dart:527: encontro.pokemon.toMap(),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\npc.dart:257: (pokemon) => pokemon.toMap(),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\npc.dart:274: (pokemon) => pokemon.toString(),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\npc.dart:277: (pokemon) =>
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\npc.dart:278: pokemon.trim().isNotEmpty,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\pokemon.dart:3: class Pokemon {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\pokemon.dart:59: Pokemon({
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\pokemon.dart:98: Pokemon comNivel(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\pokemon.dart:102: return Pokemon(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\pokemon.dart:259: factory Pokemon.fromMap(Map<String, dynamic> map) {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\pokemon.dart:302: return Pokemon(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\ponto_interesse.dart:5: import 'pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\ponto_interesse.dart:24: final List<Pokemon> pokemons;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\ponto_interesse.dart:63: .map((pokemon) => pokemon.toMap())
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\ponto_interesse.dart:161: static List<Pokemon> _pokemonsFromList(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\ponto_interesse.dart:171: (pokemon) => Pokemon.fromMap(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\models\ponto_interesse.dart:172: Map<String, dynamic>.from(pokemon),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\locais_repository.dart:343: .map((pokemon) => pokemon.toMap())
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:5: import '../models/pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:17: Future<List<Pokemon>> carregar() async {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:27: (pokemonJson) => Pokemon.fromMap(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:40: List<Pokemon> pokemons,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:44: (pokemon) => jsonEncode(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:45: pokemon.toMap(),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:61: Pokemon pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:69: existente.id == pokemon.id,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:73: pokemons.add(pokemon);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:75: pokemons[indice] = pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:92: Future<Pokemon?> buscarPorId(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:98: for (final pokemon in pokemons) {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:99: if (pokemon.id == id) {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:100: return pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:111: Future<Pokemon?> buscarPorNumero(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:117: for (final pokemon in pokemons) {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:118: if (pokemon.numero == numero) {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:119: return pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:140: Future<Pokemon?> buscarPorNome(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:149: for (final pokemon in pokemons) {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:150: if (_normalizar(pokemon.nome) ==
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:152: return pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:170: (pokemon) =>
+C:\Users\HMTecInfo\gestor_de_mundos\lib\repositories\pokemons_repository.dart:171: pokemon.id == id,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\administracao\administracao_screen.dart:16: import '../../models/pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\administracao\administracao_screen.dart:618: final pokemons = <String, Pokemon>{
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\administracao\administracao_screen.dart:619: for (final pokemon in await _pokemonsRepository.carregar())
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\administracao\administracao_screen.dart:620: pokemon.id: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\administracao\administracao_screen.dart:722: final pokemon = Pokemon(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\administracao\administracao_screen.dart:786: pokemons[pokemon.id] = pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\administracao\administracao_screen.dart:1054: pokemon: null,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\administracao\administracao_screen.dart:1153: final listaPokemon = <Pokemon>[];
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\administracao\administracao_screen.dart:1170: final pokemon = pokemons[id];
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\administracao\administracao_screen.dart:1172: if (pokemon != null) {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\administracao\administracao_screen.dart:1173: listaPokemon.add(pokemon);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\administracao\administracao_screen.dart:1546: pokemon: qtdPokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\administracao\administracao_screen.dart:1610: Map<String, Pokemon> pokemons,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\administracao\administracao_screen.dart:1623: Pokemon? pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\administracao\administracao_screen.dart:1630: pokemon = candidato;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\administracao\administracao_screen.dart:1635: if (pokemon == null) {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\administracao\administracao_screen.dart:1654: pokemon: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\administracao\administracao_screen.dart:1816: required int pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\administracao\administracao_screen.dart:1835: 'Pokémon importados: $pokemon\n'
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\encontros\encontros_screen.dart:6: import '../../models/pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\encontros\encontros_screen.dart:38: Pokemon? resultado;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\encontros\encontros_screen.dart:215: final pokemon = resultado;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\encontros\encontros_screen.dart:217: if (pokemon == null || !mounted) {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\encontros\encontros_screen.dart:225: pokemon: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\encontros\encontros_screen.dart:470: final pokemon =
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\encontros\encontros_screen.dart:478: resultado = pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_edit_screen.dart:6: import '../../models/pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_edit_screen.dart:34: List<Pokemon> _pokemons = [];
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_edit_screen.dart:35: Pokemon? _pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_edit_screen.dart:60: text: evento?.nivelPokemon ?? evento?.pokemon?.nivel.toString() ?? '',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_edit_screen.dart:67: _pokemon = evento?.pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_edit_screen.dart:111: final origem = _pokemons.cast<Pokemon?>().firstWhere(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_edit_screen.dart:112: (pokemon) => pokemon?.nome == nome,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_edit_screen.dart:155: (pokemon) => pokemon.nome == nome,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_edit_screen.dart:367: (pokemon) => DropdownMenuItem<String>(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_edit_screen.dart:368: value: pokemon.nome,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_edit_screen.dart:370: pokemon.numero == null
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_edit_screen.dart:371: ? pokemon.nome
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_edit_screen.dart:372: : '#${pokemon.numero} ${pokemon.nome}',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_edit_screen.dart:391: pokemon: _pokemon!,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_edit_screen.dart:428: pokemon: _pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_screen.dart:2: import '../../models/pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_screen.dart:143: final pokemon = evento.pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_screen.dart:145: if (pokemon == null) {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_screen.dart:179: pokemon.nome,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_screen.dart:188: 'Nível ${pokemon.nivel}',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_screen.dart:199: final alterado = await Navigator.push<Pokemon>(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_screen.dart:203: pokemon: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_screen.dart:226: pokemon: alterado,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_screen.dart:253: pokemon: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_screen.dart:258: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_screen.dart:272: evento.pokemon != null ||
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\evento_screen.dart:456: if (evento.pokemon != null)
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:11: import '../../models/pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:69: List<Pokemon> _pokemons = [];
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:317: 'pokemon': resultado.pokemon.toMap(),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:361: final pokemon = item['pokemon'];
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:363: return pokemon is Map &&
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:364: pokemon['id']?.toString() ==
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:365: encontro.pokemon.id &&
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:382: '${encontro.pokemon.nome} será removido desta tabela.',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:1328: encontro.pokemon.nome,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:2123: final List<Pokemon> pokemons;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:2138: late Pokemon _pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:2153: widget.encontro?.pokemon ??
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:2192: List<Pokemon> _pokemonsFiltrados() {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:2199: final resultados = widget.pokemons.where((pokemon) {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:2200: final nome = pokemon.nome.toLowerCase();
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:2201: final numero = pokemon.numero.toString();
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:2225: void _selecionarPokemon(Pokemon pokemon) {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:2227: _pokemon = pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:2286: final pokemon = resultados[index];
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:2291: '#${pokemon.numero}',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:2298: pokemon.nome,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:2304: _selecionarPokemon(pokemon);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_edit_screen.dart:2468: pokemon: _pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_screen.dart:10: import '../../models/pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_screen.dart:852: final Pokemon pokemonFinal;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_screen.dart:856: escolhido.pokemon.comNivel(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_screen.dart:870: escolhido.pokemon.comNivel(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_screen.dart:943: void _mostrarPokemon(Pokemon pokemon) {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_screen.dart:975: pokemon.nome,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_screen.dart:985: 'Nível ${pokemon.nivel}',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_screen.dart:1009: pokemon: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\local_screen.dart:1405: item.pokemon.nome,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\mapa_screen.dart:227: '${evento.pokemon ?? ''} '
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:8: import '../../models/pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:50: List<Pokemon> _pokemons = [];
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:51: List<Pokemon> _pokemonsDisponiveis = [];
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:84: _pokemons = List<Pokemon>.from(widget.ponto.pokemons);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:291: Pokemon? pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:293: final pokemons = List<Pokemon>.from(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:323: final resultado = await showDialog<Pokemon>(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:327: pokemon: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:338: if (pokemon == null) {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:342: (valor) => valor.id == pokemon.id,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:369: Future<void> _excluirPokemon(Pokemon pokemon) async {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:372: '${pokemon.nome} nível ${pokemon.nivel} será removido deste ponto.',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:377: _pokemons.remove(pokemon);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:441: pokemons: List<Pokemon>.from(_pokemons),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:709: (pokemon) => _linhaLista(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:710: titulo: '${pokemon.nome} – Nível ${pokemon.nivel}',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:711: subtitulo: pokemon.textoMoves,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:714: onTap: () => _editarPokemon(pokemon: pokemon),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:715: onDelete: () => _excluirPokemon(pokemon),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:823: final List<Pokemon> pokemons;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:824: final Pokemon? pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:829: this.pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:838: late Pokemon _pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:846: final ordenados = List<Pokemon>.from(widget.pokemons)
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:849: _pokemon = widget.pokemon != null
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:851: (item) => item.id == widget.pokemon!.id,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:857: text: widget.pokemon?.nivel.toString() ?? widget.nivelPadrao,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:871: Pokemon a,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:872: Pokemon b,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:888: List<Pokemon> _pokemonsFiltrados() {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:891: final lista = widget.pokemons.where((pokemon) {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:896: return pokemon.nome.toLowerCase().contains(busca);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:904: String _nomePokemon(Pokemon pokemon) {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:905: final numero = pokemon.numero;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:908: return pokemon.nome;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:911: return '#${numero.toString().padLeft(3, '0')} ${pokemon.nome}';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:920: widget.pokemon == null ? 'Adicionar Pokémon' : 'Editar Pokémon',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:951: final pokemon = filtrados[index];
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:953: final selecionado = pokemon.id == _pokemon.id;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:961: _nomePokemon(pokemon),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_edit_screen.dart:976: _pokemon = pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_screen.dart:322: (pokemon) => Card(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_screen.dart:331: pokemon.nome,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_screen.dart:337: 'Nível ${pokemon.nivel}',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_screen.dart:347: pokemon: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\mapa\ponto_interesse_screen.dart:550: encontro.pokemon.nome,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_edit_screen.dart:180: (pokemon) => pokemon.trim(),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_edit_screen.dart:183: (pokemon) => pokemon.isNotEmpty,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_edit_screen.dart:357: (pokemon) =>
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_edit_screen.dart:358: _normalizarNome(pokemon) ==
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_edit_screen.dart:395: (pokemon) =>
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_edit_screen.dart:396: _normalizarNome(pokemon) ==
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:6: import '../../models/pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:37: List<Pokemon> _pokemons = [];
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:107: <String, Pokemon>{};
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:109: for (final pokemon in pokemons) {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:110: porNome[_chaveNome(pokemon.nome)] =
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:111: pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:115: <Pokemon>[];
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:118: final pokemon =
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:121: if (pokemon != null) {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:122: encontrados.add(pokemon);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:296: Pokemon _pokemonComFicha(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:297: Pokemon pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:300: return Pokemon(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:301: id: pokemon.id,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:302: numero: pokemon.numero,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:303: nome: pokemon.nome,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:305: lendario: pokemon.lendario,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:306: tipos: pokemon.tipos,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:308: pokemon.superEfetivo,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:310: pokemon.poucoEfetivo,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:311: imune: pokemon.imune,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:313: pokemon.efetividadeTipo,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:314: forca: pokemon.forca,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:315: habilidade: pokemon.habilidade,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:317: pokemon.resistencia,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:318: armadura: pokemon.armadura,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:320: pokemon.defesaEspecial,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:322: pokemon.poderDeFogo,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:336: pokemon.forcaPlanilha,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:338: pokemon.habilidadePlanilha,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:340: pokemon.resistenciaPlanilha,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:342: pokemon.armaduraPlanilha,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:344: pokemon.defesaEspecialPlanilha,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:346: pokemon.poderDeFogoPlanilha,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:354: pokemon.pontosMoveProgressao,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:362: pokemon.localizacao,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:888: Pokemon pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:891: _fichaPokemon(pokemon.nome);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:893: late final Pokemon pokemonExibido;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:898: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:906: pokemon.comNivel(nivel);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:918: pokemon: pokemonExibido,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:927: Pokemon pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:930: _fichaPokemon(pokemon.nome);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:942: _abrirPokemon(pokemon),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:954: '#${pokemon.numero.toString().padLeft(3, '0')}',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:974: pokemon.nome,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:1022: if (pokemon.tipos.isNotEmpty)
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:1027: pokemon.tipos
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:1390: (pokemon) =>
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\npcs\npc_screen.dart:1392: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:4: import '../../models/pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:23: List<Pokemon> _pokemons = [];
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:87: void _ordenarPokemons(List<Pokemon> pokemons) {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:111: final novoPokemon = Pokemon(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:137: await Navigator.push<Pokemon>(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:141: pokemon: novoPokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:153: Pokemon pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:156: await Navigator.push<Pokemon>(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:160: pokemon: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:171: Pokemon pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:179: 'O Pokémon "${pokemon.nome}" será removido apenas do armazenamento local do aplicativo.\n\nA planilha não será alterada.',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:205: Pokemon pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:208: await _confirmarExclusao(pokemon);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:214: await _repository.remover(pokemon.id);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:222: (item) => item.id == pokemon.id,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:229: 'Pokémon ${pokemon.nome} excluído.',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:242: List<Pokemon> get _pokemonsFiltrados {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:244: ? List<Pokemon>.from(_pokemons)
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:245: : _pokemons.where((pokemon) {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:246: return pokemon.nome
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:257: Pokemon pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:264: pokemon: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:267: _excluirPokemon(pokemon),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:349: final pokemon =
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:358: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:509: Pokemon pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:513: final numeroTexto = pokemon.numero == null
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:515: : '#${pokemon.numero!.toString().padLeft(3, '0')}';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:522: onTap: () => _abrirPokemon(pokemon),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:547: pokemon.nome,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:556: if (pokemon.tipos.isNotEmpty) ...[
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:561: children: pokemon.tipos
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokedex_screen.dart:578: _editarPokemon(pokemon),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_detalhe_screen.dart:7: import '../../models/pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_detalhe_screen.dart:17: final Pokemon pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_detalhe_screen.dart:26: required this.pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_detalhe_screen.dart:41: late Pokemon _pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_detalhe_screen.dart:71: _pokemon = widget.pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_detalhe_screen.dart:276: final base = widget.pokemon.comNivel(1);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_detalhe_screen.dart:324: 'PV: ${batalha.pv}/${batalha.pokemon.pv}',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_detalhe_screen.dart:360: final poder = batalha.pokemon.poderes[indice];
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_detalhe_screen.dart:581: if (batalha.pokemon.poderes.isNotEmpty) ...[
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_detalhe_screen.dart:584: i < batalha.pokemon.poderes.length;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_detalhe_screen.dart:603: 'Base ${batalha.pokemon.pontosMoveIniciais} + '
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_detalhe_screen.dart:604: 'Bônus ${batalha.pokemon.pontosMoveProgressao}',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_detalhe_screen.dart:763: batalha?.pokemon ?? _pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_detalhe_screen.dart:790: pokemon: pokemonExibido,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:4: import '../../models/pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:9: final Pokemon pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:15: required this.pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:57: final pokemon = widget.pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:60: text: pokemon.numero?.toString() ?? '',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:64: text: pokemon.nome,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:68: text: pokemon.superEfetivo,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:72: text: pokemon.poucoEfetivo,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:76: text: pokemon.imune,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:80: text: pokemon.forca.toString(),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:84: text: pokemon.habilidade.toString(),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:88: text: pokemon.resistencia.toString(),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:92: text: pokemon.armadura.toString(),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:96: text: pokemon.defesaEspecial.toString(),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:100: text: pokemon.poderDeFogo.toString(),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:104: text: pokemon.pv.toString(),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:108: text: pokemon.pe.toString(),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:112: text: pokemon.moves.join('\n'),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:116: text: pokemon.localizacao,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:119: _tipos = List<String>.from(pokemon.tipos);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:120: _poderes = List<Poder>.from(pokemon.poderes);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:266: final pokemon = Pokemon(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:272: nivel: widget.pokemon.nivel,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:274: lendario: widget.pokemon.lendario,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:280: widget.pokemon.efetividadeTipo,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:291: bonusForca: widget.pokemon.bonusForca,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:293: widget.pokemon.bonusHabilidade,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:295: widget.pokemon.bonusResistencia,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:297: widget.pokemon.bonusArmadura,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:299: widget.pokemon.bonusDefesaEspecial,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:301: widget.pokemon.bonusPoderDeFogo,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:304: widget.pokemon.forcaPlanilha,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:306: widget.pokemon.habilidadePlanilha,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:308: widget.pokemon.resistenciaPlanilha,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:310: widget.pokemon.armaduraPlanilha,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:312: widget.pokemon.defesaEspecialPlanilha,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:314: widget.pokemon.poderDeFogoPlanilha,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:316: widget.pokemon.valoresPlanilhaFixos,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:321: pontosMoveProgressao: widget.pokemon.pontosMoveProgressao,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:326: widget.pokemon.poderesExtras,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:334: await _repository.salvar(pokemon);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:341: Navigator.pop(context, pokemon);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:444: '${widget.pokemon.nivel}',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\batalhas_minimizadas.dart:54: pokemon: batalha.pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\batalhas_minimizadas.dart:277: batalha.pokemon.nome,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\batalhas_minimizadas.dart:288: 'Nível ${batalha.pokemon.nivel}',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\batalhas_minimizadas.dart:299: 'PV: ${batalha.pv}/${batalha.pokemon.pv}',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:3: import '../models/pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:7: final Pokemon pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:17: required this.pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:187: 'Nível ${pokemon.nivel}',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:207: value: pokemon.nivel,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:251: child: pokemon.poderes.isEmpty
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:261: pokemon.poderes
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:306: final moves = pokemon.moves
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:315: 'Pontos para Moves: ${pokemon.pontosMoveIniciais}',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:333: if (pokemon.pontosMoveProgressao > 0) ...[
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:344: '+${pokemon.pontosMoveProgressao} por Progressão',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:360: final tipos = pokemon.tipos
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:403: '#${pokemon.numero.toString().padLeft(3, '0')} ${pokemon.nome}',
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:472: pokemon.superEfetivo,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:477: pokemon.poucoEfetivo,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:482: pokemon.imune,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:490: pokemon.forcaTexto,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:496: pokemon.armaduraTexto,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:506: pokemon.habilidadeTexto,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:512: pokemon.defesaEspecialTexto,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:522: pokemon.resistenciaTexto,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:528: pokemon.poderDeFogoTexto,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:538: pokemon.pv.toString(),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\widgets\pokemon_card.dart:545: pokemon.pe.toString(),

@@ -1,0 +1,86 @@
+﻿C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\gerador_encontros.dart:6: import '../models/pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\gerador_encontros.dart:13: Pokemon gerar(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\gerador_encontros.dart:94: local.nivelMinPokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\gerador_encontros.dart:95: local.nivelMaxPokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\gerador_encontros.dart:98: final pokemonNivelado =
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\gerador_encontros.dart:99: encontro.pokemon.comNivel(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\gerador_encontros.dart:105: pokemonNivelado,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:3: import '../models/pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:30: static Pokemon aplicarProgressaoNivel(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:31: Pokemon pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:33: final quantidadeAjustes = pokemon.nivel ~/ 10;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:35: Pokemon resultado = pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:44: static Pokemon aplicarAjuste(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:45: Pokemon pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:53: return aumentarCaracteristica(pokemon);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:57: return copiarPokemon(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:58: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:60: pokemon.pontosMoveProgressao + 1,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:64: return aumentarPoder(pokemon);
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:67: return pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:71: static Pokemon aumentarCaracteristica(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:72: Pokemon pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:78: return copiarPokemon(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:79: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:80: bonusForca: pokemon.bonusForca + 1,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:84: return copiarPokemon(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:85: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:86: bonusHabilidade: pokemon.bonusHabilidade + 1,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:91: pokemon.bonusResistencia + 1;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:94: pokemon.resistencia + novaResistencia;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:96: return copiarPokemon(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:97: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:103: return copiarPokemon(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:104: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:105: bonusArmadura: pokemon.bonusArmadura + 1,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:109: return copiarPokemon(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:110: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:112: pokemon.bonusDefesaEspecial + 1,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:116: return copiarPokemon(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:117: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:119: pokemon.bonusPoderDeFogo + 1,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:123: return pokemon;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:127: static Pokemon aumentarPoder(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:128: Pokemon pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:134: pokemon.poderes,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:144: pokemon.tipos.length == 1;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:146: final mesmoTipoDoPokemon =
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:148: pokemon.tipos.first.trim().toLowerCase() ==
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:163: ganhoPe = mesmoTipoDoPokemon ? 2 : 1;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:165: final valorBase = pokemon.lendario ? 3 : 1;
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:175: ganhoPe = mesmoTipoDoPokemon
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:180: return copiarPokemon(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:181: pokemon,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:183: pe: pokemon.pe + ganhoPe,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:187: static Pokemon copiarPokemon(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:188: Pokemon pokemon, {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:200: return Pokemon(
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:201: id: pokemon.id,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:202: numero: pokemon.numero,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:203: nome: pokemon.nome,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:204: nivel: pokemon.nivel,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:205: lendario: pokemon.lendario,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:206: tipos: pokemon.tipos,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:207: superEfetivo: pokemon.superEfetivo,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:208: poucoEfetivo: pokemon.poucoEfetivo,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:209: imune: pokemon.imune,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:210: efetividadeTipo: pokemon.efetividadeTipo,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:211: forca: pokemon.forca,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:212: habilidade: pokemon.habilidade,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:213: resistencia: pokemon.resistencia,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:214: armadura: pokemon.armadura,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:215: defesaEspecial: pokemon.defesaEspecial,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:216: poderDeFogo: pokemon.poderDeFogo,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:218: bonusForca ?? pokemon.bonusForca,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:220: bonusHabilidade ?? pokemon.bonusHabilidade,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:222: bonusResistencia ?? pokemon.bonusResistencia,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:224: bonusArmadura ?? pokemon.bonusArmadura,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:227: pokemon.bonusDefesaEspecial,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:230: pokemon.bonusPoderDeFogo,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:231: moves: List<String>.from(pokemon.moves),
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:234: pokemon.pontosMoveProgressao,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:236: poderes ?? pokemon.poderes,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:237: poderesExtras: pokemon.poderesExtras,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:238: pv: pv ?? pokemon.pv,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:239: pe: pe ?? pokemon.pe,
+C:\Users\HMTecInfo\gestor_de_mundos\lib\geradores\progressao.dart:240: localizacao: pokemon.localizacao,

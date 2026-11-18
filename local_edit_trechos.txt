@@ -1,0 +1,1586 @@
+﻿
+  lib\screens\mapa\local_edit_screen.dart:2:
+  lib\screens\mapa\local_edit_screen.dart:3:import 
+'../../models/encontro.dart';
+> lib\screens\mapa\local_edit_screen.dart:4:import 
+'../../models/encontro_npc.dart';
+> lib\screens\mapa\local_edit_screen.dart:5:import 
+'../../models/evento.dart';
+  lib\screens\mapa\local_edit_screen.dart:6:import 
+'../../models/grupo.dart';
+> lib\screens\mapa\local_edit_screen.dart:7:import 
+'../../models/grupo_npc.dart';
+  lib\screens\mapa\local_edit_screen.dart:8:import 
+'../../models/local.dart';
+> lib\screens\mapa\local_edit_screen.dart:9:import 
+'../../models/npc.dart';
+  lib\screens\mapa\local_edit_screen.dart:10:import 
+'../../models/periodo_dia.dart';
+> lib\screens\mapa\local_edit_screen.dart:11:import 
+'../../models/pokemon.dart';
+  lib\screens\mapa\local_edit_screen.dart:12:import 
+'../../models/ponto_interesse.dart';
+  lib\screens\mapa\local_edit_screen.dart:13:import 
+'ponto_interesse_edit_screen.dart';
+  lib\screens\mapa\local_edit_screen.dart:14:import 
+'../../repositories/locais_repository.dart';
+> lib\screens\mapa\local_edit_screen.dart:15:import 
+'../../repositories/pokemons_repository.dart';
+  lib\screens\mapa\local_edit_screen.dart:16:
+  lib\screens\mapa\local_edit_screen.dart:17:class 
+LocalEditScreen extends StatefulWidget {
+  lib\screens\mapa\local_edit_screen.dart:18:  final Local 
+local;
+  lib\screens\mapa\local_edit_screen.dart:19:
+  lib\screens\mapa\local_edit_screen.dart:41:
+  lib\screens\mapa\local_edit_screen.dart:42:  final 
+LocaisRepository _repository = LocaisRepository();
+> lib\screens\mapa\local_edit_screen.dart:43:  final 
+PokemonsRepository _pokemonsRepository =
+> lib\screens\mapa\local_edit_screen.dart:44:      
+PokemonsRepository();
+  lib\screens\mapa\local_edit_screen.dart:45:
+  lib\screens\mapa\local_edit_screen.dart:46:  late Local 
+_localAtual;
+  lib\screens\mapa\local_edit_screen.dart:47:
+  lib\screens\mapa\local_edit_screen.dart:48:  late final 
+TextEditingController _leguasController;
+  lib\screens\mapa\local_edit_screen.dart:56:  late final 
+TextEditingController _dadoSurfeController;
+  lib\screens\mapa\local_edit_screen.dart:57:
+> lib\screens\mapa\local_edit_screen.dart:58:  List<Pokemon> 
+_pokemons = [];
+  lib\screens\mapa\local_edit_screen.dart:59:
+  lib\screens\mapa\local_edit_screen.dart:60:  int _abaEncontro 
+= 0;
+  lib\screens\mapa\local_edit_screen.dart:61:  int 
+_abaTreinador = 0;
+  lib\screens\mapa\local_edit_screen.dart:62:  int _abaRocket = 
+0;
+  lib\screens\mapa\local_edit_screen.dart:84:
+  lib\screens\mapa\local_edit_screen.dart:85:    
+_nivelMinController = TextEditingController(
+> lib\screens\mapa\local_edit_screen.dart:86:      text: 
+widget.local.nivelMinPokemon.toString(),
+  lib\screens\mapa\local_edit_screen.dart:87:    );
+  lib\screens\mapa\local_edit_screen.dart:88:
+  lib\screens\mapa\local_edit_screen.dart:89:    
+_nivelMaxController = TextEditingController(
+> lib\screens\mapa\local_edit_screen.dart:90:      text: 
+widget.local.nivelMaxPokemon.toString(),
+  lib\screens\mapa\local_edit_screen.dart:91:    );
+  lib\screens\mapa\local_edit_screen.dart:92:
+  lib\screens\mapa\local_edit_screen.dart:93:    
+_dadoDiurnoController = TextEditingController(
+  lib\screens\mapa\local_edit_screen.dart:94:      text: 
+widget.local.dadoEncontroDiurno,
+  lib\screens\mapa\local_edit_screen.dart:107:    );
+  lib\screens\mapa\local_edit_screen.dart:108:
+> lib\screens\mapa\local_edit_screen.dart:109:    
+_carregarPokemons();
+  lib\screens\mapa\local_edit_screen.dart:110:  }
+  lib\screens\mapa\local_edit_screen.dart:111:
+  lib\screens\mapa\local_edit_screen.dart:112:  @override
+  lib\screens\mapa\local_edit_screen.dart:113:  void dispose() {
+  lib\screens\mapa\local_edit_screen.dart:123:  }
+  lib\screens\mapa\local_edit_screen.dart:124:
+> lib\screens\mapa\local_edit_screen.dart:125:  Future<void> 
+_carregarPokemons() async {
+> lib\screens\mapa\local_edit_screen.dart:126:    final 
+pokemons = await _pokemonsRepository.carregar();
+  lib\screens\mapa\local_edit_screen.dart:127:
+  lib\screens\mapa\local_edit_screen.dart:128:    if (!mounted) 
+{
+  lib\screens\mapa\local_edit_screen.dart:129:      return;
+  lib\screens\mapa\local_edit_screen.dart:130:    }
+  lib\screens\mapa\local_edit_screen.dart:131:
+  lib\screens\mapa\local_edit_screen.dart:132:    setState(() {
+> lib\screens\mapa\local_edit_screen.dart:133:      _pokemons = 
+pokemons
+  lib\screens\mapa\local_edit_screen.dart:134:        ..sort(
+  lib\screens\mapa\local_edit_screen.dart:135:          (a, b) 
+=> a.nome.compareTo(b.nome),
+  lib\screens\mapa\local_edit_screen.dart:136:        );
+  lib\screens\mapa\local_edit_screen.dart:137:    });
+  lib\screens\mapa\local_edit_screen.dart:191:        
+_terrenoController.text.trim();
+  lib\screens\mapa\local_edit_screen.dart:192:
+> lib\screens\mapa\local_edit_screen.dart:193:    
+mapa['nivelMinPokemon'] =
+  lib\screens\mapa\local_edit_screen.dart:194:        
+int.tryParse(_nivelMinController.text.trim()) ?? 0;
+  lib\screens\mapa\local_edit_screen.dart:195:
+> lib\screens\mapa\local_edit_screen.dart:196:    
+mapa['nivelMaxPokemon'] =
+  lib\screens\mapa\local_edit_screen.dart:197:        
+int.tryParse(_nivelMaxController.text.trim()) ?? 0;
+  lib\screens\mapa\local_edit_screen.dart:198:
+  lib\screens\mapa\local_edit_screen.dart:199:    
+mapa['dadoEncontroDiurno'] =
+  lib\screens\mapa\local_edit_screen.dart:200:        
+_dadoDiurnoController.text.trim();
+  lib\screens\mapa\local_edit_screen.dart:223:  }
+  lib\screens\mapa\local_edit_screen.dart:224:
+> lib\screens\mapa\local_edit_screen.dart:225:  Future<void> 
+_editarEncontro({
+  lib\screens\mapa\local_edit_screen.dart:226:    Encontro? 
+encontro,
+  lib\screens\mapa\local_edit_screen.dart:227:    required int 
+modalidade,
+  lib\screens\mapa\local_edit_screen.dart:228:  }) async {
+> lib\screens\mapa\local_edit_screen.dart:229:    if 
+(_pokemons.isEmpty) {
+  lib\screens\mapa\local_edit_screen.dart:230:      
+ScaffoldMessenger.of(context).showSnackBar(
+  lib\screens\mapa\local_edit_screen.dart:231:        const 
+SnackBar(
+  lib\screens\mapa\local_edit_screen.dart:232:          
+content: Text(
+  lib\screens\mapa\local_edit_screen.dart:233:            
+'Nenhum Pokémon cadastrado para selecionar.',
+  lib\screens\mapa\local_edit_screen.dart:238:    }
+  lib\screens\mapa\local_edit_screen.dart:239:
+> lib\screens\mapa\local_edit_screen.dart:240:    final 
+resultado = await showDialog<Encontro>(
+  lib\screens\mapa\local_edit_screen.dart:241:      context: 
+context,
+  lib\screens\mapa\local_edit_screen.dart:242:      builder: 
+(_) => _EncontroDialog(
+> lib\screens\mapa\local_edit_screen.dart:243:        pokemons: 
+_pokemons,
+  lib\screens\mapa\local_edit_screen.dart:244:        encontro: 
+encontro,
+  lib\screens\mapa\local_edit_screen.dart:245:      ),
+  lib\screens\mapa\local_edit_screen.dart:246:    );
+  lib\screens\mapa\local_edit_screen.dart:247:
+  lib\screens\mapa\local_edit_screen.dart:270:
+  lib\screens\mapa\local_edit_screen.dart:271:    final 
+encontroMap = {
+> lib\screens\mapa\local_edit_screen.dart:272:      'pokemon': 
+resultado.pokemon.toMap(),
+  lib\screens\mapa\local_edit_screen.dart:273:      'condicao': 
+resultado.condicao,
+  lib\screens\mapa\local_edit_screen.dart:274:      'raro': 
+resultado.raro,
+  lib\screens\mapa\local_edit_screen.dart:275:      'periodo': 
+resultado.periodo?.name,
+  lib\screens\mapa\local_edit_screen.dart:276:      'leguaMin': 
+resultado.leguaMin,
+  lib\screens\mapa\local_edit_screen.dart:283:    } else {
+  lib\screens\mapa\local_edit_screen.dart:284:      final 
+indice = lista.indexWhere(
+> lib\screens\mapa\local_edit_screen.dart:285:        (item) =>
+> lib\screens\mapa\local_edit_screen.dart:286:            item 
+is Map &&
+  lib\screens\mapa\local_edit_screen.dart:287:            
+_mesmoEncontro(
+> lib\screens\mapa\local_edit_screen.dart:288:              
+item,
+  lib\screens\mapa\local_edit_screen.dart:289:              
+encontro,
+  lib\screens\mapa\local_edit_screen.dart:290:            ),
+  lib\screens\mapa\local_edit_screen.dart:291:      );
+  lib\screens\mapa\local_edit_screen.dart:292:
+  lib\screens\mapa\local_edit_screen.dart:307:
+  lib\screens\mapa\local_edit_screen.dart:308:  bool 
+_mesmoEncontro(
+> lib\screens\mapa\local_edit_screen.dart:309:    dynamic item,
+  lib\screens\mapa\local_edit_screen.dart:310:    Encontro 
+encontro,
+  lib\screens\mapa\local_edit_screen.dart:311:  ) {
+> lib\screens\mapa\local_edit_screen.dart:312:    if (item is! 
+Map) {
+  lib\screens\mapa\local_edit_screen.dart:313:      return 
+false;
+  lib\screens\mapa\local_edit_screen.dart:314:    }
+  lib\screens\mapa\local_edit_screen.dart:315:
+> lib\screens\mapa\local_edit_screen.dart:316:    final pokemon 
+= item['pokemon'];
+  lib\screens\mapa\local_edit_screen.dart:317:
+> lib\screens\mapa\local_edit_screen.dart:318:    return 
+pokemon is Map &&
+> lib\screens\mapa\local_edit_screen.dart:319:        
+pokemon['id']?.toString() ==
+> lib\screens\mapa\local_edit_screen.dart:320:            
+encontro.pokemon.id &&
+> lib\screens\mapa\local_edit_screen.dart:321:        
+item['condicao']?.toString() ==
+  lib\screens\mapa\local_edit_screen.dart:322:            
+encontro.condicao &&
+> lib\screens\mapa\local_edit_screen.dart:323:        
+item['leguaMin']?.toString() ==
+  lib\screens\mapa\local_edit_screen.dart:324:            
+encontro.leguaMin?.toString() &&
+> lib\screens\mapa\local_edit_screen.dart:325:        
+item['leguaMax']?.toString() ==
+  lib\screens\mapa\local_edit_screen.dart:326:            
+encontro.leguaMax?.toString() &&
+> lib\screens\mapa\local_edit_screen.dart:327:        
+item['nivelFixo']?.toString() ==
+  lib\screens\mapa\local_edit_screen.dart:328:            
+encontro.nivelFixo?.toString();
+  lib\screens\mapa\local_edit_screen.dart:329:  }
+  lib\screens\mapa\local_edit_screen.dart:330:
+> lib\screens\mapa\local_edit_screen.dart:331:  Future<void> 
+_excluirEncontro(
+  lib\screens\mapa\local_edit_screen.dart:332:    Encontro 
+encontro,
+  lib\screens\mapa\local_edit_screen.dart:333:    int 
+modalidade,
+  lib\screens\mapa\local_edit_screen.dart:334:  ) async {
+  lib\screens\mapa\local_edit_screen.dart:335:    final 
+confirmar = await _confirmar(
+  lib\screens\mapa\local_edit_screen.dart:336:      'Excluir 
+encontro?',
+> lib\screens\mapa\local_edit_screen.dart:337:      
+'${encontro.pokemon.nome} será removido desta tabela.',
+  lib\screens\mapa\local_edit_screen.dart:338:    );
+  lib\screens\mapa\local_edit_screen.dart:339:
+  lib\screens\mapa\local_edit_screen.dart:340:    if 
+(!confirmar || !mounted) {
+  lib\screens\mapa\local_edit_screen.dart:341:      return;
+  lib\screens\mapa\local_edit_screen.dart:360:
+  lib\screens\mapa\local_edit_screen.dart:361:    
+lista.removeWhere(
+> lib\screens\mapa\local_edit_screen.dart:362:      (item) =>
+> lib\screens\mapa\local_edit_screen.dart:363:          item is 
+Map &&
+> lib\screens\mapa\local_edit_screen.dart:364:          
+_mesmoEncontro(item, encontro),
+  lib\screens\mapa\local_edit_screen.dart:365:    );
+  lib\screens\mapa\local_edit_screen.dart:366:
+  lib\screens\mapa\local_edit_screen.dart:367:    
+encontrosMap[chave] = lista;
+  lib\screens\mapa\local_edit_screen.dart:368:    
+mapa['encontros'] = encontrosMap;
+  lib\screens\mapa\local_edit_screen.dart:373:  }
+  lib\screens\mapa\local_edit_screen.dart:374:
+> lib\screens\mapa\local_edit_screen.dart:375:  GrupoNPC 
+_grupoNPC(bool rocket) {
+  lib\screens\mapa\local_edit_screen.dart:376:    return rocket
+  lib\screens\mapa\local_edit_screen.dart:377:        ? 
+_localAtual.rockets
+  lib\screens\mapa\local_edit_screen.dart:378:        : 
+_localAtual.treinadores;
+  lib\screens\mapa\local_edit_screen.dart:379:  }
+  lib\screens\mapa\local_edit_screen.dart:380:
+> lib\screens\mapa\local_edit_screen.dart:381:  
+List<EncontroNPC> _listaNPC(
+  lib\screens\mapa\local_edit_screen.dart:382:    bool rocket,
+  lib\screens\mapa\local_edit_screen.dart:383:    int 
+modalidade,
+  lib\screens\mapa\local_edit_screen.dart:384:  ) {
+> lib\screens\mapa\local_edit_screen.dart:385:    final grupo = 
+_grupoNPC(rocket);
+  lib\screens\mapa\local_edit_screen.dart:386:
+  lib\screens\mapa\local_edit_screen.dart:387:    switch 
+(modalidade) {
+  lib\screens\mapa\local_edit_screen.dart:388:      case 0:
+  lib\screens\mapa\local_edit_screen.dart:389:        return 
+grupo.diurno;
+  lib\screens\mapa\local_edit_screen.dart:399:  }
+  lib\screens\mapa\local_edit_screen.dart:400:
+> lib\screens\mapa\local_edit_screen.dart:401:  Future<void> 
+_editarNPC({
+  lib\screens\mapa\local_edit_screen.dart:402:    required bool 
+rocket,
+  lib\screens\mapa\local_edit_screen.dart:403:    required int 
+modalidade,
+> lib\screens\mapa\local_edit_screen.dart:404:    EncontroNPC? 
+encontro,
+  lib\screens\mapa\local_edit_screen.dart:405:  }) async {
+> lib\screens\mapa\local_edit_screen.dart:406:    final 
+resultado = await showDialog<EncontroNPC>(
+  lib\screens\mapa\local_edit_screen.dart:407:      context: 
+context,
+> lib\screens\mapa\local_edit_screen.dart:408:      builder: 
+(_) => _NPCDialog(
+  lib\screens\mapa\local_edit_screen.dart:409:        encontro: 
+encontro,
+  lib\screens\mapa\local_edit_screen.dart:410:        tipo: 
+rocket ? 'Rocket' : 'Treinador',
+  lib\screens\mapa\local_edit_screen.dart:411:      ),
+  lib\screens\mapa\local_edit_screen.dart:412:    );
+  lib\screens\mapa\local_edit_screen.dart:440:
+  lib\screens\mapa\local_edit_screen.dart:441:    final 
+encontroMap = {
+> lib\screens\mapa\local_edit_screen.dart:442:      'npc': 
+resultado.npc.toMap(),
+  lib\screens\mapa\local_edit_screen.dart:443:      'raro': 
+resultado.raro,
+  lib\screens\mapa\local_edit_screen.dart:444:      'periodo': 
+resultado.periodo?.name,
+  lib\screens\mapa\local_edit_screen.dart:445:      'leguaMin': 
+resultado.leguaMin,
+  lib\screens\mapa\local_edit_screen.dart:446:      'leguaMax': 
+resultado.leguaMax,
+  lib\screens\mapa\local_edit_screen.dart:451:    } else {
+  lib\screens\mapa\local_edit_screen.dart:452:      final 
+indice = lista.indexWhere(
+> lib\screens\mapa\local_edit_screen.dart:453:        (item) =>
+> lib\screens\mapa\local_edit_screen.dart:454:            item 
+is Map &&
+> lib\screens\mapa\local_edit_screen.dart:455:            
+_mesmoEncontroNPC(
+> lib\screens\mapa\local_edit_screen.dart:456:              
+item,
+  lib\screens\mapa\local_edit_screen.dart:457:              
+encontro,
+  lib\screens\mapa\local_edit_screen.dart:458:            ),
+  lib\screens\mapa\local_edit_screen.dart:459:      );
+  lib\screens\mapa\local_edit_screen.dart:460:
+  lib\screens\mapa\local_edit_screen.dart:474:  }
+  lib\screens\mapa\local_edit_screen.dart:475:
+> lib\screens\mapa\local_edit_screen.dart:476:  bool 
+_mesmoEncontroNPC(
+> lib\screens\mapa\local_edit_screen.dart:477:    dynamic item,
+> lib\screens\mapa\local_edit_screen.dart:478:    EncontroNPC 
+encontro,
+  lib\screens\mapa\local_edit_screen.dart:479:  ) {
+> lib\screens\mapa\local_edit_screen.dart:480:    if (item is! 
+Map) {
+  lib\screens\mapa\local_edit_screen.dart:481:      return 
+false;
+  lib\screens\mapa\local_edit_screen.dart:482:    }
+  lib\screens\mapa\local_edit_screen.dart:483:
+> lib\screens\mapa\local_edit_screen.dart:484:    final npc = 
+item['npc'];
+  lib\screens\mapa\local_edit_screen.dart:485:
+> lib\screens\mapa\local_edit_screen.dart:486:    return npc is 
+Map &&
+> lib\screens\mapa\local_edit_screen.dart:487:        
+npc['id']?.toString() ==
+> lib\screens\mapa\local_edit_screen.dart:488:            
+encontro.npc.id &&
+> lib\screens\mapa\local_edit_screen.dart:489:        
+item['leguaMin']?.toString() ==
+  lib\screens\mapa\local_edit_screen.dart:490:            
+encontro.leguaMin?.toString() &&
+> lib\screens\mapa\local_edit_screen.dart:491:        
+item['leguaMax']?.toString() ==
+  lib\screens\mapa\local_edit_screen.dart:492:            
+encontro.leguaMax?.toString();
+  lib\screens\mapa\local_edit_screen.dart:493:  }
+  lib\screens\mapa\local_edit_screen.dart:494:
+> lib\screens\mapa\local_edit_screen.dart:495:  Future<void> 
+_excluirNPC(
+  lib\screens\mapa\local_edit_screen.dart:496:    bool rocket,
+> lib\screens\mapa\local_edit_screen.dart:497:    EncontroNPC 
+encontro,
+  lib\screens\mapa\local_edit_screen.dart:498:    int 
+modalidade,
+  lib\screens\mapa\local_edit_screen.dart:499:  ) async {
+  lib\screens\mapa\local_edit_screen.dart:500:    final tipo = 
+rocket ? 'Rocket' : 'Treinador';
+  lib\screens\mapa\local_edit_screen.dart:501:
+  lib\screens\mapa\local_edit_screen.dart:502:    final 
+confirmar = await _confirmar(
+  lib\screens\mapa\local_edit_screen.dart:503:      'Excluir 
+$tipo?',
+> lib\screens\mapa\local_edit_screen.dart:504:      
+'${encontro.npc.nome} será removido desta modalidade.',
+  lib\screens\mapa\local_edit_screen.dart:505:    );
+  lib\screens\mapa\local_edit_screen.dart:506:
+  lib\screens\mapa\local_edit_screen.dart:507:    if 
+(!confirmar || !mounted) {
+  lib\screens\mapa\local_edit_screen.dart:508:      return;
+  lib\screens\mapa\local_edit_screen.dart:531:
+  lib\screens\mapa\local_edit_screen.dart:532:    
+lista.removeWhere(
+> lib\screens\mapa\local_edit_screen.dart:533:      (item) =>
+> lib\screens\mapa\local_edit_screen.dart:534:          item is 
+Map &&
+> lib\screens\mapa\local_edit_screen.dart:535:          
+_mesmoEncontroNPC(
+> lib\screens\mapa\local_edit_screen.dart:536:            item,
+  lib\screens\mapa\local_edit_screen.dart:537:            
+encontro,
+  lib\screens\mapa\local_edit_screen.dart:538:          ),
+  lib\screens\mapa\local_edit_screen.dart:539:    );
+  lib\screens\mapa\local_edit_screen.dart:540:
+  lib\screens\mapa\local_edit_screen.dart:547:  }
+  lib\screens\mapa\local_edit_screen.dart:548:
+> lib\screens\mapa\local_edit_screen.dart:549:  Future<void> 
+_editarEvento({
+> lib\screens\mapa\local_edit_screen.dart:550:    Evento? 
+evento,
+  lib\screens\mapa\local_edit_screen.dart:551:  }) async {
+> lib\screens\mapa\local_edit_screen.dart:552:    final 
+resultado = await showDialog<Evento>(
+  lib\screens\mapa\local_edit_screen.dart:553:      context: 
+context,
+> lib\screens\mapa\local_edit_screen.dart:554:      builder: 
+(_) => _EventoDialog(
+> lib\screens\mapa\local_edit_screen.dart:555:        evento: 
+evento,
+  lib\screens\mapa\local_edit_screen.dart:556:      ),
+  lib\screens\mapa\local_edit_screen.dart:557:    );
+  lib\screens\mapa\local_edit_screen.dart:558:
+  lib\screens\mapa\local_edit_screen.dart:559:    if (resultado 
+== null || !mounted) {
+  lib\screens\mapa\local_edit_screen.dart:563:    final mapa = 
+_localAtual.toMap();
+  lib\screens\mapa\local_edit_screen.dart:564:    final lista = 
+List<dynamic>.from(
+> lib\screens\mapa\local_edit_screen.dart:565:      
+mapa['eventos'] as List? ?? [],
+  lib\screens\mapa\local_edit_screen.dart:566:    );
+  lib\screens\mapa\local_edit_screen.dart:567:
+> lib\screens\mapa\local_edit_screen.dart:568:    final 
+eventoMap = resultado.toMap();
+  lib\screens\mapa\local_edit_screen.dart:569:
+> lib\screens\mapa\local_edit_screen.dart:570:    if (evento == 
+null) {
+> lib\screens\mapa\local_edit_screen.dart:571:      
+lista.add(eventoMap);
+  lib\screens\mapa\local_edit_screen.dart:572:    } else {
+  lib\screens\mapa\local_edit_screen.dart:573:      final 
+indice = lista.indexWhere(
+> lib\screens\mapa\local_edit_screen.dart:574:        (item) =>
+> lib\screens\mapa\local_edit_screen.dart:575:            item 
+is Map &&
+> lib\screens\mapa\local_edit_screen.dart:576:            
+item['id']?.toString() == evento.id,
+  lib\screens\mapa\local_edit_screen.dart:577:      );
+  lib\screens\mapa\local_edit_screen.dart:578:
+  lib\screens\mapa\local_edit_screen.dart:579:      if (indice 
+>= 0) {
+> lib\screens\mapa\local_edit_screen.dart:580:        
+lista[indice] = eventoMap;
+  lib\screens\mapa\local_edit_screen.dart:581:      } else {
+> lib\screens\mapa\local_edit_screen.dart:582:        
+lista.add(eventoMap);
+  lib\screens\mapa\local_edit_screen.dart:583:      }
+  lib\screens\mapa\local_edit_screen.dart:584:    }
+  lib\screens\mapa\local_edit_screen.dart:585:
+> lib\screens\mapa\local_edit_screen.dart:586:    
+mapa['eventos'] = lista;
+  lib\screens\mapa\local_edit_screen.dart:587:
+  lib\screens\mapa\local_edit_screen.dart:588:    setState(() {
+  lib\screens\mapa\local_edit_screen.dart:589:      _localAtual 
+= Local.fromMap(mapa);
+  lib\screens\mapa\local_edit_screen.dart:590:    });
+  lib\screens\mapa\local_edit_screen.dart:591:  }
+  lib\screens\mapa\local_edit_screen.dart:592:
+> lib\screens\mapa\local_edit_screen.dart:593:  Future<void> 
+_excluirEvento(Evento evento) async {
+  lib\screens\mapa\local_edit_screen.dart:594:    final 
+confirmar = await _confirmar(
+> lib\screens\mapa\local_edit_screen.dart:595:      'Excluir 
+evento?',
+> lib\screens\mapa\local_edit_screen.dart:596:      'O evento 
+"${evento.nome}" será removido deste Local.',
+  lib\screens\mapa\local_edit_screen.dart:597:    );
+  lib\screens\mapa\local_edit_screen.dart:598:
+  lib\screens\mapa\local_edit_screen.dart:599:    if 
+(!confirmar || !mounted) {
+  lib\screens\mapa\local_edit_screen.dart:600:      return;
+  lib\screens\mapa\local_edit_screen.dart:604:
+  lib\screens\mapa\local_edit_screen.dart:605:    final lista = 
+List<dynamic>.from(
+> lib\screens\mapa\local_edit_screen.dart:606:      
+mapa['eventos'] as List? ?? [],
+  lib\screens\mapa\local_edit_screen.dart:607:    );
+  lib\screens\mapa\local_edit_screen.dart:608:
+  lib\screens\mapa\local_edit_screen.dart:609:    
+lista.removeWhere(
+> lib\screens\mapa\local_edit_screen.dart:610:      (item) =>
+> lib\screens\mapa\local_edit_screen.dart:611:          item is 
+Map &&
+> lib\screens\mapa\local_edit_screen.dart:612:          
+item['id']?.toString() == evento.id,
+  lib\screens\mapa\local_edit_screen.dart:613:    );
+  lib\screens\mapa\local_edit_screen.dart:614:
+> lib\screens\mapa\local_edit_screen.dart:615:    
+mapa['eventos'] = lista;
+  lib\screens\mapa\local_edit_screen.dart:616:
+  lib\screens\mapa\local_edit_screen.dart:617:    setState(() {
+  lib\screens\mapa\local_edit_screen.dart:618:      _localAtual 
+= Local.fromMap(mapa);
+  lib\screens\mapa\local_edit_screen.dart:619:    });
+  lib\screens\mapa\local_edit_screen.dart:620:  }
+  lib\screens\mapa\local_edit_screen.dart:621:
+> lib\screens\mapa\local_edit_screen.dart:622:  Future<void> 
+_editarPonto({
+> lib\screens\mapa\local_edit_screen.dart:623:    
+PontoInteresse? ponto,
+  lib\screens\mapa\local_edit_screen.dart:624:  }) async {
+  lib\screens\mapa\local_edit_screen.dart:625:    final 
+pontoInicial = ponto ??
+> lib\screens\mapa\local_edit_screen.dart:626:        const 
+PontoInteresse(
+  lib\screens\mapa\local_edit_screen.dart:627:          id: '',
+  lib\screens\mapa\local_edit_screen.dart:628:          nome: 
+'',
+  lib\screens\mapa\local_edit_screen.dart:629:          
+descricao: '',
+  lib\screens\mapa\local_edit_screen.dart:630:          
+localizacao: '',
+  lib\screens\mapa\local_edit_screen.dart:632:
+  lib\screens\mapa\local_edit_screen.dart:633:    final 
+resultado =
+> lib\screens\mapa\local_edit_screen.dart:634:        await 
+Navigator.push<PontoInteresse>(
+  lib\screens\mapa\local_edit_screen.dart:635:      context,
+  lib\screens\mapa\local_edit_screen.dart:636:      
+MaterialPageRoute(
+> lib\screens\mapa\local_edit_screen.dart:637:        builder: 
+(_) => PontoInteresseEditScreen(
+  lib\screens\mapa\local_edit_screen.dart:638:          ponto: 
+pontoInicial,
+  lib\screens\mapa\local_edit_screen.dart:639:        ),
+  lib\screens\mapa\local_edit_screen.dart:640:      ),
+  lib\screens\mapa\local_edit_screen.dart:641:    );
+  lib\screens\mapa\local_edit_screen.dart:657:    } else {
+  lib\screens\mapa\local_edit_screen.dart:658:      final 
+indice = lista.indexWhere(
+> lib\screens\mapa\local_edit_screen.dart:659:        (item) =>
+> lib\screens\mapa\local_edit_screen.dart:660:            item 
+is Map &&
+> lib\screens\mapa\local_edit_screen.dart:661:            
+item['id']?.toString() == ponto.id,
+  lib\screens\mapa\local_edit_screen.dart:662:      );
+  lib\screens\mapa\local_edit_screen.dart:663:
+  lib\screens\mapa\local_edit_screen.dart:664:      if (indice 
+>= 0) {
+  lib\screens\mapa\local_edit_screen.dart:665:        
+lista[indice] = pontoMap;
+  lib\screens\mapa\local_edit_screen.dart:675:    });
+  lib\screens\mapa\local_edit_screen.dart:676:  }
+> lib\screens\mapa\local_edit_screen.dart:677:  Future<void> 
+_excluirPonto(
+> lib\screens\mapa\local_edit_screen.dart:678:    
+PontoInteresse ponto,
+  lib\screens\mapa\local_edit_screen.dart:679:  ) async {
+  lib\screens\mapa\local_edit_screen.dart:680:    final 
+confirmar = await _confirmar(
+  lib\screens\mapa\local_edit_screen.dart:681:      'Excluir 
+ponto de interesse?',
+  lib\screens\mapa\local_edit_screen.dart:682:      'O ponto 
+"${ponto.nome}" será removido deste Local.',
+  lib\screens\mapa\local_edit_screen.dart:694:
+  lib\screens\mapa\local_edit_screen.dart:695:    
+lista.removeWhere(
+> lib\screens\mapa\local_edit_screen.dart:696:      (item) =>
+> lib\screens\mapa\local_edit_screen.dart:697:          item is 
+Map &&
+> lib\screens\mapa\local_edit_screen.dart:698:          
+item['id']?.toString() == ponto.id,
+  lib\screens\mapa\local_edit_screen.dart:699:    );
+  lib\screens\mapa\local_edit_screen.dart:700:
+  lib\screens\mapa\local_edit_screen.dart:701:    
+mapa['pontosInteresse'] = lista;
+  lib\screens\mapa\local_edit_screen.dart:702:
+  lib\screens\mapa\local_edit_screen.dart:710:    String 
+mensagem,
+  lib\screens\mapa\local_edit_screen.dart:711:  ) async {
+> lib\screens\mapa\local_edit_screen.dart:712:    final 
+resultado = await showDialog<bool>(
+  lib\screens\mapa\local_edit_screen.dart:713:      context: 
+context,
+  lib\screens\mapa\local_edit_screen.dart:714:      builder: 
+(context) => AlertDialog(
+  lib\screens\mapa\local_edit_screen.dart:715:        title: 
+Text(titulo),
+  lib\screens\mapa\local_edit_screen.dart:716:        content: 
+Text(mensagem),
+  lib\screens\mapa\local_edit_screen.dart:847:    return _secao(
+  lib\screens\mapa\local_edit_screen.dart:848:      'Encontros',
+> lib\screens\mapa\local_edit_screen.dart:849:      
+Icons.catching_pokemon,
+  lib\screens\mapa\local_edit_screen.dart:850:      _vermelho,
+  lib\screens\mapa\local_edit_screen.dart:851:      [
+  lib\screens\mapa\local_edit_screen.dart:852:        
+_abasModalidade(
+  lib\screens\mapa\local_edit_screen.dart:853:          
+selecionada: _abaEncontro,
+  lib\screens\mapa\local_edit_screen.dart:908:              ),
+  lib\screens\mapa\local_edit_screen.dart:909:              
+leading: const Icon(
+> lib\screens\mapa\local_edit_screen.dart:910:                
+Icons.catching_pokemon,
+  lib\screens\mapa\local_edit_screen.dart:911:                
+color: _vermelho,
+  lib\screens\mapa\local_edit_screen.dart:912:              ),
+  lib\screens\mapa\local_edit_screen.dart:913:              
+title: Text(
+> lib\screens\mapa\local_edit_screen.dart:914:                
+encontro.pokemon.nome,
+  lib\screens\mapa\local_edit_screen.dart:915:                
+style: const TextStyle(
+  lib\screens\mapa\local_edit_screen.dart:916:                  
+fontWeight: FontWeight.w800,
+  lib\screens\mapa\local_edit_screen.dart:917:                ),
+  lib\screens\mapa\local_edit_screen.dart:918:              ),
+  lib\screens\mapa\local_edit_screen.dart:920:                
+_resumoEncontro(encontro),
+  lib\screens\mapa\local_edit_screen.dart:921:              ),
+> lib\screens\mapa\local_edit_screen.dart:922:              
+onTap: () => _editarEncontro(
+  lib\screens\mapa\local_edit_screen.dart:923:                
+encontro: encontro,
+  lib\screens\mapa\local_edit_screen.dart:924:                
+modalidade: _abaEncontro,
+  lib\screens\mapa\local_edit_screen.dart:925:              ),
+  lib\screens\mapa\local_edit_screen.dart:926:              
+trailing: IconButton(
+  lib\screens\mapa\local_edit_screen.dart:930:                  
+color: _vermelho,
+  lib\screens\mapa\local_edit_screen.dart:931:                ),
+> lib\screens\mapa\local_edit_screen.dart:932:                
+onPressed: () => _excluirEncontro(
+  lib\screens\mapa\local_edit_screen.dart:933:                  
+encontro,
+  lib\screens\mapa\local_edit_screen.dart:934:                  
+_abaEncontro,
+  lib\screens\mapa\local_edit_screen.dart:935:                ),
+  lib\screens\mapa\local_edit_screen.dart:936:              ),
+  lib\screens\mapa\local_edit_screen.dart:942:          width: 
+double.infinity,
+  lib\screens\mapa\local_edit_screen.dart:943:          child: 
+OutlinedButton.icon(
+> lib\screens\mapa\local_edit_screen.dart:944:            
+onPressed: () => _editarEncontro(
+  lib\screens\mapa\local_edit_screen.dart:945:              
+modalidade: _abaEncontro,
+  lib\screens\mapa\local_edit_screen.dart:946:            ),
+  lib\screens\mapa\local_edit_screen.dart:947:            icon: 
+const Icon(Icons.add),
+  lib\screens\mapa\local_edit_screen.dart:948:            
+label: Text(
+  lib\screens\mapa\local_edit_screen.dart:986:  }
+  lib\screens\mapa\local_edit_screen.dart:987:
+> lib\screens\mapa\local_edit_screen.dart:988:  Widget 
+_buildNPCs({
+  lib\screens\mapa\local_edit_screen.dart:989:    required bool 
+rocket,
+  lib\screens\mapa\local_edit_screen.dart:990:  }) {
+  lib\screens\mapa\local_edit_screen.dart:991:    final 
+modalidade =
+  lib\screens\mapa\local_edit_screen.dart:992:        rocket ? 
+_abaRocket : _abaTreinador;
+  lib\screens\mapa\local_edit_screen.dart:993:
+> lib\screens\mapa\local_edit_screen.dart:994:    final 
+encontros = _listaNPC(
+  lib\screens\mapa\local_edit_screen.dart:995:      rocket,
+  lib\screens\mapa\local_edit_screen.dart:996:      modalidade,
+  lib\screens\mapa\local_edit_screen.dart:997:    );
+  lib\screens\mapa\local_edit_screen.dart:998:
+  lib\screens\mapa\local_edit_screen.dart:1054:              ),
+  lib\screens\mapa\local_edit_screen.dart:1055:              
+title: Text(
+> lib\screens\mapa\local_edit_screen.dart:1056:                
+encontro.npc.nome,
+  lib\screens\mapa\local_edit_screen.dart:1057:                
+style: const TextStyle(
+  lib\screens\mapa\local_edit_screen.dart:1058:                 
+ fontWeight: FontWeight.w800,
+  lib\screens\mapa\local_edit_screen.dart:1059:                
+),
+  lib\screens\mapa\local_edit_screen.dart:1060:              ),
+  lib\screens\mapa\local_edit_screen.dart:1061:              
+subtitle: Text(
+> lib\screens\mapa\local_edit_screen.dart:1062:                
+_resumoNPC(encontro),
+  lib\screens\mapa\local_edit_screen.dart:1063:              ),
+> lib\screens\mapa\local_edit_screen.dart:1064:              
+onTap: () => _editarNPC(
+  lib\screens\mapa\local_edit_screen.dart:1065:                
+rocket: rocket,
+  lib\screens\mapa\local_edit_screen.dart:1066:                
+modalidade: modalidade,
+  lib\screens\mapa\local_edit_screen.dart:1067:                
+encontro: encontro,
+  lib\screens\mapa\local_edit_screen.dart:1068:              ),
+  lib\screens\mapa\local_edit_screen.dart:1073:                 
+ color: _vermelho,
+  lib\screens\mapa\local_edit_screen.dart:1074:                
+),
+> lib\screens\mapa\local_edit_screen.dart:1075:                
+onPressed: () => _excluirNPC(
+  lib\screens\mapa\local_edit_screen.dart:1076:                 
+ rocket,
+  lib\screens\mapa\local_edit_screen.dart:1077:                 
+ encontro,
+  lib\screens\mapa\local_edit_screen.dart:1078:                 
+ modalidade,
+  lib\screens\mapa\local_edit_screen.dart:1079:                
+),
+  lib\screens\mapa\local_edit_screen.dart:1086:          width: 
+double.infinity,
+  lib\screens\mapa\local_edit_screen.dart:1087:          child: 
+OutlinedButton.icon(
+> lib\screens\mapa\local_edit_screen.dart:1088:            
+onPressed: () => _editarNPC(
+  lib\screens\mapa\local_edit_screen.dart:1089:              
+rocket: rocket,
+  lib\screens\mapa\local_edit_screen.dart:1090:              
+modalidade: modalidade,
+  lib\screens\mapa\local_edit_screen.dart:1091:            ),
+  lib\screens\mapa\local_edit_screen.dart:1092:            
+icon: const Icon(Icons.add),
+  lib\screens\mapa\local_edit_screen.dart:1102:  }
+  lib\screens\mapa\local_edit_screen.dart:1103:
+> lib\screens\mapa\local_edit_screen.dart:1104:  String 
+_resumoNPC(EncontroNPC encontro) {
+  lib\screens\mapa\local_edit_screen.dart:1105:    final partes 
+= <String>[];
+  lib\screens\mapa\local_edit_screen.dart:1106:
+  lib\screens\mapa\local_edit_screen.dart:1107:    if 
+(encontro.raro) {
+  lib\screens\mapa\local_edit_screen.dart:1108:      
+partes.add('Raro');
+  lib\screens\mapa\local_edit_screen.dart:1120:    }
+  lib\screens\mapa\local_edit_screen.dart:1121:
+> lib\screens\mapa\local_edit_screen.dart:1122:    if 
+(encontro.npc.localizacao.trim().isNotEmpty) {
+> lib\screens\mapa\local_edit_screen.dart:1123:      
+partes.add(encontro.npc.localizacao.trim());
+  lib\screens\mapa\local_edit_screen.dart:1124:    }
+  lib\screens\mapa\local_edit_screen.dart:1125:
+  lib\screens\mapa\local_edit_screen.dart:1126:    return 
+partes.isEmpty
+  lib\screens\mapa\local_edit_screen.dart:1127:        ? 'Sem 
+restrições'
+  lib\screens\mapa\local_edit_screen.dart:1129:  }
+  lib\screens\mapa\local_edit_screen.dart:1130:
+> lib\screens\mapa\local_edit_screen.dart:1131:  Widget 
+_buildEventos() {
+  lib\screens\mapa\local_edit_screen.dart:1132:    return 
+_secao(
+> lib\screens\mapa\local_edit_screen.dart:1133:      'Eventos',
+  lib\screens\mapa\local_edit_screen.dart:1134:      
+Icons.warning_amber_rounded,
+  lib\screens\mapa\local_edit_screen.dart:1135:      _laranja,
+  lib\screens\mapa\local_edit_screen.dart:1136:      [
+> lib\screens\mapa\local_edit_screen.dart:1137:        if 
+(_localAtual.eventos.isEmpty)
+  lib\screens\mapa\local_edit_screen.dart:1138:          const 
+Text(
+> lib\screens\mapa\local_edit_screen.dart:1139:            
+'Nenhum evento cadastrado neste Local.',
+  lib\screens\mapa\local_edit_screen.dart:1140:            
+style: TextStyle(
+  lib\screens\mapa\local_edit_screen.dart:1141:              
+color: _textoSecundario,
+  lib\screens\mapa\local_edit_screen.dart:1142:            ),
+  lib\screens\mapa\local_edit_screen.dart:1143:          ),
+> lib\screens\mapa\local_edit_screen.dart:1144:        
+..._localAtual.eventos.map(
+> lib\screens\mapa\local_edit_screen.dart:1145:          
+(evento) => Card(
+  lib\screens\mapa\local_edit_screen.dart:1146:            
+elevation: 0,
+  lib\screens\mapa\local_edit_screen.dart:1147:            
+color: const Color(0xFFF8F7F3),
+  lib\screens\mapa\local_edit_screen.dart:1148:            
+child: ListTile(
+  lib\screens\mapa\local_edit_screen.dart:1149:              
+leading: const Icon(
+  lib\screens\mapa\local_edit_screen.dart:1152:              ),
+  lib\screens\mapa\local_edit_screen.dart:1153:              
+title: Text(
+> lib\screens\mapa\local_edit_screen.dart:1154:                
+evento.nome,
+  lib\screens\mapa\local_edit_screen.dart:1155:                
+style: const TextStyle(
+  lib\screens\mapa\local_edit_screen.dart:1156:                 
+ fontWeight: FontWeight.w800,
+  lib\screens\mapa\local_edit_screen.dart:1157:                
+),
+  lib\screens\mapa\local_edit_screen.dart:1158:              ),
+  lib\screens\mapa\local_edit_screen.dart:1159:              
+subtitle: Text(
+> lib\screens\mapa\local_edit_screen.dart:1160:                
+evento.descricao.isEmpty
+  lib\screens\mapa\local_edit_screen.dart:1161:                 
+   ? 'Sem descrição'
+> lib\screens\mapa\local_edit_screen.dart:1162:                 
+   : evento.descricao,
+  lib\screens\mapa\local_edit_screen.dart:1163:                
+maxLines: 2,
+  lib\screens\mapa\local_edit_screen.dart:1164:                
+overflow: TextOverflow.ellipsis,
+  lib\screens\mapa\local_edit_screen.dart:1165:              ),
+> lib\screens\mapa\local_edit_screen.dart:1166:              
+onTap: () => _editarEvento(
+> lib\screens\mapa\local_edit_screen.dart:1167:                
+evento: evento,
+  lib\screens\mapa\local_edit_screen.dart:1168:              ),
+  lib\screens\mapa\local_edit_screen.dart:1169:              
+trailing: IconButton(
+> lib\screens\mapa\local_edit_screen.dart:1170:                
+tooltip: 'Excluir evento',
+  lib\screens\mapa\local_edit_screen.dart:1171:                
+icon: const Icon(
+  lib\screens\mapa\local_edit_screen.dart:1172:                 
+ Icons.delete_outline,
+  lib\screens\mapa\local_edit_screen.dart:1173:                 
+ color: _vermelho,
+  lib\screens\mapa\local_edit_screen.dart:1174:                
+),
+  lib\screens\mapa\local_edit_screen.dart:1175:                
+onPressed: () =>
+> lib\screens\mapa\local_edit_screen.dart:1176:                 
+   _excluirEvento(evento),
+  lib\screens\mapa\local_edit_screen.dart:1177:              ),
+  lib\screens\mapa\local_edit_screen.dart:1178:            ),
+  lib\screens\mapa\local_edit_screen.dart:1179:          ),
+  lib\screens\mapa\local_edit_screen.dart:1180:        ),
+  lib\screens\mapa\local_edit_screen.dart:1183:          width: 
+double.infinity,
+  lib\screens\mapa\local_edit_screen.dart:1184:          child: 
+OutlinedButton.icon(
+> lib\screens\mapa\local_edit_screen.dart:1185:            
+onPressed: () => _editarEvento(),
+  lib\screens\mapa\local_edit_screen.dart:1186:            
+icon: const Icon(Icons.add),
+> lib\screens\mapa\local_edit_screen.dart:1187:            
+label: const Text('Adicionar evento'),
+  lib\screens\mapa\local_edit_screen.dart:1188:          ),
+  lib\screens\mapa\local_edit_screen.dart:1189:        ),
+  lib\screens\mapa\local_edit_screen.dart:1190:      ],
+  lib\screens\mapa\local_edit_screen.dart:1191:    );
+  lib\screens\mapa\local_edit_screen.dart:1227:                
+overflow: TextOverflow.ellipsis,
+  lib\screens\mapa\local_edit_screen.dart:1228:              ),
+> lib\screens\mapa\local_edit_screen.dart:1229:              
+onTap: () => _editarPonto(
+  lib\screens\mapa\local_edit_screen.dart:1230:                
+ponto: ponto,
+  lib\screens\mapa\local_edit_screen.dart:1231:              ),
+  lib\screens\mapa\local_edit_screen.dart:1232:              
+trailing: IconButton(
+  lib\screens\mapa\local_edit_screen.dart:1233:                
+tooltip: 'Excluir ponto',
+  lib\screens\mapa\local_edit_screen.dart:1237:                
+),
+  lib\screens\mapa\local_edit_screen.dart:1238:                
+onPressed: () =>
+> lib\screens\mapa\local_edit_screen.dart:1239:                 
+   _excluirPonto(ponto),
+  lib\screens\mapa\local_edit_screen.dart:1240:              ),
+  lib\screens\mapa\local_edit_screen.dart:1241:            ),
+  lib\screens\mapa\local_edit_screen.dart:1242:          ),
+  lib\screens\mapa\local_edit_screen.dart:1243:        ),
+  lib\screens\mapa\local_edit_screen.dart:1246:          width: 
+double.infinity,
+  lib\screens\mapa\local_edit_screen.dart:1247:          child: 
+OutlinedButton.icon(
+> lib\screens\mapa\local_edit_screen.dart:1248:            
+onPressed: () => _editarPonto(),
+  lib\screens\mapa\local_edit_screen.dart:1249:            
+icon: const Icon(Icons.add),
+  lib\screens\mapa\local_edit_screen.dart:1250:            
+label: const Text(
+  lib\screens\mapa\local_edit_screen.dart:1251:              
+'Adicionar ponto de interesse',
+  lib\screens\mapa\local_edit_screen.dart:1252:            ),
+  lib\screens\mapa\local_edit_screen.dart:1378:            ),
+  lib\screens\mapa\local_edit_screen.dart:1379:            
+_buildEncontros(),
+> lib\screens\mapa\local_edit_screen.dart:1380:            
+_buildNPCs(rocket: false),
+> lib\screens\mapa\local_edit_screen.dart:1381:            
+_buildNPCs(rocket: true),
+> lib\screens\mapa\local_edit_screen.dart:1382:            
+_buildEventos(),
+  lib\screens\mapa\local_edit_screen.dart:1383:            
+_buildPontos(),
+  lib\screens\mapa\local_edit_screen.dart:1384:            
+const SizedBox(height: 8),
+  lib\screens\mapa\local_edit_screen.dart:1385:            
+SizedBox(
+  lib\screens\mapa\local_edit_screen.dart:1386:              
+height: 54,
+  lib\screens\mapa\local_edit_screen.dart:1409:
+  lib\screens\mapa\local_edit_screen.dart:1410:class 
+_EncontroDialog extends StatefulWidget {
+> lib\screens\mapa\local_edit_screen.dart:1411:  final 
+List<Pokemon> pokemons;
+  lib\screens\mapa\local_edit_screen.dart:1412:  final 
+Encontro? encontro;
+  lib\screens\mapa\local_edit_screen.dart:1413:
+  lib\screens\mapa\local_edit_screen.dart:1414:  const 
+_EncontroDialog({
+> lib\screens\mapa\local_edit_screen.dart:1415:    required 
+this.pokemons,
+  lib\screens\mapa\local_edit_screen.dart:1416:    
+this.encontro,
+  lib\screens\mapa\local_edit_screen.dart:1417:  });
+  lib\screens\mapa\local_edit_screen.dart:1418:
+  lib\screens\mapa\local_edit_screen.dart:1419:  @override
+  lib\screens\mapa\local_edit_screen.dart:1424:class 
+_EncontroDialogState
+  lib\screens\mapa\local_edit_screen.dart:1425:    extends 
+State<_EncontroDialog> {
+> lib\screens\mapa\local_edit_screen.dart:1426:  late Pokemon 
+_pokemon;
+  lib\screens\mapa\local_edit_screen.dart:1427:  late final 
+TextEditingController _condicao;
+  lib\screens\mapa\local_edit_screen.dart:1428:  late final 
+TextEditingController _leguaMin;
+  lib\screens\mapa\local_edit_screen.dart:1429:  late final 
+TextEditingController _leguaMax;
+  lib\screens\mapa\local_edit_screen.dart:1430:  late final 
+TextEditingController _nivelFixo;
+  lib\screens\mapa\local_edit_screen.dart:1437:    
+super.initState();
+  lib\screens\mapa\local_edit_screen.dart:1438:
+> lib\screens\mapa\local_edit_screen.dart:1439:    _pokemon =
+> lib\screens\mapa\local_edit_screen.dart:1440:        
+widget.encontro?.pokemon ??
+> lib\screens\mapa\local_edit_screen.dart:1441:        
+widget.pokemons.first;
+  lib\screens\mapa\local_edit_screen.dart:1442:
+  lib\screens\mapa\local_edit_screen.dart:1443:    _condicao = 
+TextEditingController(
+  lib\screens\mapa\local_edit_screen.dart:1444:      text: 
+widget.encontro?.condicao ?? '',
+  lib\screens\mapa\local_edit_screen.dart:1445:    );
+  lib\screens\mapa\local_edit_screen.dart:1490:            
+mainAxisSize: MainAxisSize.min,
+  lib\screens\mapa\local_edit_screen.dart:1491:            
+children: [
+> lib\screens\mapa\local_edit_screen.dart:1492:              
+DropdownButtonFormField<Pokemon>(
+> lib\screens\mapa\local_edit_screen.dart:1493:                
+initialValue: _pokemon,
+  lib\screens\mapa\local_edit_screen.dart:1494:                
+isExpanded: true,
+  lib\screens\mapa\local_edit_screen.dart:1495:                
+decoration: const InputDecoration(
+  lib\screens\mapa\local_edit_screen.dart:1496:                 
+ labelText: 'Pokémon',
+  lib\screens\mapa\local_edit_screen.dart:1497:                 
+ prefixIcon:
+> lib\screens\mapa\local_edit_screen.dart:1498:                 
+     Icon(Icons.catching_pokemon),
+  lib\screens\mapa\local_edit_screen.dart:1499:                
+),
+> lib\screens\mapa\local_edit_screen.dart:1500:                
+items: widget.pokemons
+  lib\screens\mapa\local_edit_screen.dart:1501:                 
+   .map(
+> lib\screens\mapa\local_edit_screen.dart:1502:                 
+     (pokemon) =>
+> lib\screens\mapa\local_edit_screen.dart:1503:                 
+         DropdownMenuItem<Pokemon>(
+> lib\screens\mapa\local_edit_screen.dart:1504:                 
+       value: pokemon,
+  lib\screens\mapa\local_edit_screen.dart:1505:                 
+       child: Text(
+> lib\screens\mapa\local_edit_screen.dart:1506:                 
+         '#${pokemon.numero} ${pokemon.nome}',
+  lib\screens\mapa\local_edit_screen.dart:1507:                 
+       ),
+  lib\screens\mapa\local_edit_screen.dart:1508:                 
+     ),
+  lib\screens\mapa\local_edit_screen.dart:1509:                 
+   )
+  lib\screens\mapa\local_edit_screen.dart:1510:                 
+   .toList(),
+> lib\screens\mapa\local_edit_screen.dart:1511:                
+onChanged: (pokemon) {
+> lib\screens\mapa\local_edit_screen.dart:1512:                 
+ if (pokemon != null) {
+  lib\screens\mapa\local_edit_screen.dart:1513:                 
+   setState(() {
+> lib\screens\mapa\local_edit_screen.dart:1514:                 
+     _pokemon = pokemon;
+  lib\screens\mapa\local_edit_screen.dart:1515:                 
+   });
+  lib\screens\mapa\local_edit_screen.dart:1516:                 
+ }
+  lib\screens\mapa\local_edit_screen.dart:1517:                
+},
+  lib\screens\mapa\local_edit_screen.dart:1518:              ),
+  lib\screens\mapa\local_edit_screen.dart:1533:                 
+ prefixIcon: Icon(Icons.schedule),
+  lib\screens\mapa\local_edit_screen.dart:1534:                
+),
+> lib\screens\mapa\local_edit_screen.dart:1535:                
+items: [
+> lib\screens\mapa\local_edit_screen.dart:1536:                 
+ const DropdownMenuItem<PeriodoDia?>(
+  lib\screens\mapa\local_edit_screen.dart:1537:                 
+   value: null,
+  lib\screens\mapa\local_edit_screen.dart:1538:                 
+   child: Text('Qualquer'),
+  lib\screens\mapa\local_edit_screen.dart:1539:                 
+ ),
+  lib\screens\mapa\local_edit_screen.dart:1540:                 
+ ...PeriodoDia.values
+  lib\screens\mapa\local_edit_screen.dart:1546:                 
+     .map(
+  lib\screens\mapa\local_edit_screen.dart:1547:                 
+       (periodo) =>
+> lib\screens\mapa\local_edit_screen.dart:1548:                 
+           DropdownMenuItem<PeriodoDia?>(
+  lib\screens\mapa\local_edit_screen.dart:1549:                 
+         value: periodo,
+  lib\screens\mapa\local_edit_screen.dart:1550:                 
+         child: Text(
+  lib\screens\mapa\local_edit_screen.dart:1551:                 
+           _periodoTexto(periodo),
+  lib\screens\mapa\local_edit_screen.dart:1552:                 
+         ),
+  lib\screens\mapa\local_edit_screen.dart:1623:              
+context,
+  lib\screens\mapa\local_edit_screen.dart:1624:              
+Encontro(
+> lib\screens\mapa\local_edit_screen.dart:1625:                
+pokemon: _pokemon,
+  lib\screens\mapa\local_edit_screen.dart:1626:                
+condicao: _condicao.text.trim(),
+  lib\screens\mapa\local_edit_screen.dart:1627:                
+raro: _raro,
+  lib\screens\mapa\local_edit_screen.dart:1628:                
+periodo: _periodo,
+  lib\screens\mapa\local_edit_screen.dart:1629:                
+leguaMin:
+  lib\screens\mapa\local_edit_screen.dart:1649:}
+  lib\screens\mapa\local_edit_screen.dart:1650:
+> lib\screens\mapa\local_edit_screen.dart:1651:class _NPCDialog 
+extends StatefulWidget {
+> lib\screens\mapa\local_edit_screen.dart:1652:  final 
+EncontroNPC? encontro;
+  lib\screens\mapa\local_edit_screen.dart:1653:  final String 
+tipo;
+  lib\screens\mapa\local_edit_screen.dart:1654:
+> lib\screens\mapa\local_edit_screen.dart:1655:  const 
+_NPCDialog({
+  lib\screens\mapa\local_edit_screen.dart:1656:    required 
+this.encontro,
+  lib\screens\mapa\local_edit_screen.dart:1657:    required 
+this.tipo,
+  lib\screens\mapa\local_edit_screen.dart:1658:  });
+  lib\screens\mapa\local_edit_screen.dart:1659:
+  lib\screens\mapa\local_edit_screen.dart:1660:  @override
+> lib\screens\mapa\local_edit_screen.dart:1661:  
+State<_NPCDialog> createState() =>
+> lib\screens\mapa\local_edit_screen.dart:1662:      
+_NPCDialogState();
+  lib\screens\mapa\local_edit_screen.dart:1663:}
+  lib\screens\mapa\local_edit_screen.dart:1664:
+> lib\screens\mapa\local_edit_screen.dart:1665:class 
+_NPCDialogState extends State<_NPCDialog> {
+  lib\screens\mapa\local_edit_screen.dart:1666:  late final 
+TextEditingController _nome;
+  lib\screens\mapa\local_edit_screen.dart:1667:  late final 
+TextEditingController _descricao;
+  lib\screens\mapa\local_edit_screen.dart:1668:  late final 
+TextEditingController _localizacao;
+  lib\screens\mapa\local_edit_screen.dart:1669:  late final 
+TextEditingController _pv;
+> lib\screens\mapa\local_edit_screen.dart:1670:  late final 
+TextEditingController _nivelPokemon;
+  lib\screens\mapa\local_edit_screen.dart:1671:  late final 
+TextEditingController _leguaMin;
+  lib\screens\mapa\local_edit_screen.dart:1672:  late final 
+TextEditingController _leguaMax;
+  lib\screens\mapa\local_edit_screen.dart:1673:
+  lib\screens\mapa\local_edit_screen.dart:1674:  bool _raro = 
+false;
+  lib\screens\mapa\local_edit_screen.dart:1679:    
+super.initState();
+  lib\screens\mapa\local_edit_screen.dart:1680:
+> lib\screens\mapa\local_edit_screen.dart:1681:    final npc = 
+widget.encontro?.npc;
+  lib\screens\mapa\local_edit_screen.dart:1682:
+  lib\screens\mapa\local_edit_screen.dart:1683:    _nome = 
+TextEditingController(
+> lib\screens\mapa\local_edit_screen.dart:1684:      text: 
+npc?.nome ?? '',
+  lib\screens\mapa\local_edit_screen.dart:1685:    );
+  lib\screens\mapa\local_edit_screen.dart:1686:
+  lib\screens\mapa\local_edit_screen.dart:1687:    _descricao = 
+TextEditingController(
+> lib\screens\mapa\local_edit_screen.dart:1688:      text: 
+npc?.descricao ?? '',
+  lib\screens\mapa\local_edit_screen.dart:1689:    );
+  lib\screens\mapa\local_edit_screen.dart:1690:
+  lib\screens\mapa\local_edit_screen.dart:1691:    _localizacao 
+= TextEditingController(
+> lib\screens\mapa\local_edit_screen.dart:1692:      text: 
+npc?.localizacao ?? '',
+  lib\screens\mapa\local_edit_screen.dart:1693:    );
+  lib\screens\mapa\local_edit_screen.dart:1694:
+  lib\screens\mapa\local_edit_screen.dart:1695:    _pv = 
+TextEditingController(
+> lib\screens\mapa\local_edit_screen.dart:1696:      text: 
+npc?.pv.toString() ?? '0',
+  lib\screens\mapa\local_edit_screen.dart:1697:    );
+  lib\screens\mapa\local_edit_screen.dart:1698:
+> lib\screens\mapa\local_edit_screen.dart:1699:    
+_nivelPokemon = TextEditingController(
+> lib\screens\mapa\local_edit_screen.dart:1700:      text: 
+npc?.nivelPokemon ?? '',
+  lib\screens\mapa\local_edit_screen.dart:1701:    );
+  lib\screens\mapa\local_edit_screen.dart:1702:
+  lib\screens\mapa\local_edit_screen.dart:1703:    _leguaMin = 
+TextEditingController(
+  lib\screens\mapa\local_edit_screen.dart:1704:      text: 
+widget.encontro?.leguaMin?.toString() ?? '',
+  lib\screens\mapa\local_edit_screen.dart:1719:    
+_localizacao.dispose();
+  lib\screens\mapa\local_edit_screen.dart:1720:    
+_pv.dispose();
+> lib\screens\mapa\local_edit_screen.dart:1721:    
+_nivelPokemon.dispose();
+  lib\screens\mapa\local_edit_screen.dart:1722:    
+_leguaMin.dispose();
+  lib\screens\mapa\local_edit_screen.dart:1723:    
+_leguaMax.dispose();
+  lib\screens\mapa\local_edit_screen.dart:1724:    
+super.dispose();
+  lib\screens\mapa\local_edit_screen.dart:1725:  }
+  lib\screens\mapa\local_edit_screen.dart:1786:                 
+ Expanded(
+  lib\screens\mapa\local_edit_screen.dart:1787:                 
+   child: TextField(
+> lib\screens\mapa\local_edit_screen.dart:1788:                 
+     controller: _nivelPokemon,
+  lib\screens\mapa\local_edit_screen.dart:1789:                 
+     decoration: const InputDecoration(
+  lib\screens\mapa\local_edit_screen.dart:1790:                 
+       labelText: 'Nível dos Pokémon',
+  lib\screens\mapa\local_edit_screen.dart:1791:                 
+     ),
+  lib\screens\mapa\local_edit_screen.dart:1792:                 
+   ),
+  lib\screens\mapa\local_edit_screen.dart:1802:                 
+     Icon(Icons.schedule),
+  lib\screens\mapa\local_edit_screen.dart:1803:                
+),
+> lib\screens\mapa\local_edit_screen.dart:1804:                
+items: [
+> lib\screens\mapa\local_edit_screen.dart:1805:                 
+ const DropdownMenuItem<PeriodoDia?>(
+  lib\screens\mapa\local_edit_screen.dart:1806:                 
+   value: null,
+  lib\screens\mapa\local_edit_screen.dart:1807:                 
+   child: Text('Qualquer'),
+  lib\screens\mapa\local_edit_screen.dart:1808:                 
+ ),
+  lib\screens\mapa\local_edit_screen.dart:1809:                 
+ ...PeriodoDia.values
+  lib\screens\mapa\local_edit_screen.dart:1815:                 
+     .map(
+  lib\screens\mapa\local_edit_screen.dart:1816:                 
+       (periodo) =>
+> lib\screens\mapa\local_edit_screen.dart:1817:                 
+           DropdownMenuItem<PeriodoDia?>(
+  lib\screens\mapa\local_edit_screen.dart:1818:                 
+         value: periodo,
+  lib\screens\mapa\local_edit_screen.dart:1819:                 
+         child: Text(
+  lib\screens\mapa\local_edit_screen.dart:1820:                 
+           _periodoTexto(periodo),
+  lib\screens\mapa\local_edit_screen.dart:1821:                 
+         ),
+  lib\screens\mapa\local_edit_screen.dart:1877:        
+FilledButton(
+  lib\screens\mapa\local_edit_screen.dart:1878:          
+onPressed: () {
+> lib\screens\mapa\local_edit_screen.dart:1879:            
+final antigo = widget.encontro?.npc;
+  lib\screens\mapa\local_edit_screen.dart:1880:
+> lib\screens\mapa\local_edit_screen.dart:1881:            
+final npc = NPC(
+  lib\screens\mapa\local_edit_screen.dart:1882:              
+id: antigo?.id ??
+  lib\screens\mapa\local_edit_screen.dart:1883:                 
+ DateTime.now()
+  lib\screens\mapa\local_edit_screen.dart:1884:                 
+     .microsecondsSinceEpoch
+  lib\screens\mapa\local_edit_screen.dart:1885:                 
+     .toString(),
+  lib\screens\mapa\local_edit_screen.dart:1917:              
+desvantagens:
+  lib\screens\mapa\local_edit_screen.dart:1918:                 
+ antigo?.desvantagens ?? '',
+> lib\screens\mapa\local_edit_screen.dart:1919:              
+pokemons:
+> lib\screens\mapa\local_edit_screen.dart:1920:                 
+ antigo?.pokemons ?? const [],
+> lib\screens\mapa\local_edit_screen.dart:1921:              
+fichasPokemon:
+> lib\screens\mapa\local_edit_screen.dart:1922:                 
+ antigo?.fichasPokemon ??
+  lib\screens\mapa\local_edit_screen.dart:1923:                 
+     const [],
+> lib\screens\mapa\local_edit_screen.dart:1924:              
+nivelPokemon:
+> lib\screens\mapa\local_edit_screen.dart:1925:                 
+ _nivelPokemon.text.trim(),
+  lib\screens\mapa\local_edit_screen.dart:1926:              
+inventario:
+  lib\screens\mapa\local_edit_screen.dart:1927:                 
+ antigo?.inventario ?? '',
+  lib\screens\mapa\local_edit_screen.dart:1928:              pv:
+  lib\screens\mapa\local_edit_screen.dart:1929:                 
+ int.tryParse(
+  lib\screens\mapa\local_edit_screen.dart:1936:            
+Navigator.pop(
+  lib\screens\mapa\local_edit_screen.dart:1937:              
+context,
+> lib\screens\mapa\local_edit_screen.dart:1938:              
+EncontroNPC(
+> lib\screens\mapa\local_edit_screen.dart:1939:                
+npc: npc,
+  lib\screens\mapa\local_edit_screen.dart:1940:                
+raro: _raro,
+  lib\screens\mapa\local_edit_screen.dart:1941:                
+periodo: _periodo,
+  lib\screens\mapa\local_edit_screen.dart:1942:                
+leguaMin:
+  lib\screens\mapa\local_edit_screen.dart:1943:                 
+   int.tryParse(
+  lib\screens\mapa\local_edit_screen.dart:1958:}
+  lib\screens\mapa\local_edit_screen.dart:1959:
+> lib\screens\mapa\local_edit_screen.dart:1960:class 
+_EventoDialog extends StatefulWidget {
+> lib\screens\mapa\local_edit_screen.dart:1961:  final Evento? 
+evento;
+  lib\screens\mapa\local_edit_screen.dart:1962:
+> lib\screens\mapa\local_edit_screen.dart:1963:  const 
+_EventoDialog({
+> lib\screens\mapa\local_edit_screen.dart:1964:    this.evento,
+  lib\screens\mapa\local_edit_screen.dart:1965:  });
+  lib\screens\mapa\local_edit_screen.dart:1966:
+  lib\screens\mapa\local_edit_screen.dart:1967:  @override
+> lib\screens\mapa\local_edit_screen.dart:1968:  
+State<_EventoDialog> createState() =>
+> lib\screens\mapa\local_edit_screen.dart:1969:      
+_EventoDialogState();
+  lib\screens\mapa\local_edit_screen.dart:1970:}
+  lib\screens\mapa\local_edit_screen.dart:1971:
+> lib\screens\mapa\local_edit_screen.dart:1972:class 
+_EventoDialogState
+> lib\screens\mapa\local_edit_screen.dart:1973:    extends 
+State<_EventoDialog> {
+  lib\screens\mapa\local_edit_screen.dart:1974:  late final 
+TextEditingController _nome;
+  lib\screens\mapa\local_edit_screen.dart:1975:  late final 
+TextEditingController _descricao;
+  lib\screens\mapa\local_edit_screen.dart:1976:  late final 
+TextEditingController _localizacao;
+  lib\screens\mapa\local_edit_screen.dart:1977:  late final 
+TextEditingController _efeito;
+  lib\screens\mapa\local_edit_screen.dart:1980:  late final 
+TextEditingController _dadosDuracao;
+  lib\screens\mapa\local_edit_screen.dart:1981:  late final 
+TextEditingController _facesDuracao;
+> lib\screens\mapa\local_edit_screen.dart:1982:  late final 
+TextEditingController _npc;
+> lib\screens\mapa\local_edit_screen.dart:1983:  late final 
+TextEditingController _pokemon;
+> lib\screens\mapa\local_edit_screen.dart:1984:  late final 
+TextEditingController _nivelPokemon;
+> lib\screens\mapa\local_edit_screen.dart:1985:  late final 
+TextEditingController _item;
+  lib\screens\mapa\local_edit_screen.dart:1986:
+  lib\screens\mapa\local_edit_screen.dart:1987:  PeriodoDia? 
+_periodoInicioFixo;
+  lib\screens\mapa\local_edit_screen.dart:1988:
+  lib\screens\mapa\local_edit_screen.dart:1989:  @override
+  lib\screens\mapa\local_edit_screen.dart:1991:    
+super.initState();
+  lib\screens\mapa\local_edit_screen.dart:1992:
+> lib\screens\mapa\local_edit_screen.dart:1993:    final evento 
+= widget.evento;
+  lib\screens\mapa\local_edit_screen.dart:1994:
+  lib\screens\mapa\local_edit_screen.dart:1995:    _nome = 
+TextEditingController(
+> lib\screens\mapa\local_edit_screen.dart:1996:      text: 
+evento?.nome ?? '',
+  lib\screens\mapa\local_edit_screen.dart:1997:    );
+  lib\screens\mapa\local_edit_screen.dart:1998:    _descricao = 
+TextEditingController(
+> lib\screens\mapa\local_edit_screen.dart:1999:      text: 
+evento?.descricao ?? '',
+  lib\screens\mapa\local_edit_screen.dart:2000:    );
+  lib\screens\mapa\local_edit_screen.dart:2001:    _localizacao 
+= TextEditingController(
+> lib\screens\mapa\local_edit_screen.dart:2002:      text: 
+evento?.localizacao ?? '',
+  lib\screens\mapa\local_edit_screen.dart:2003:    );
+  lib\screens\mapa\local_edit_screen.dart:2004:    _efeito = 
+TextEditingController(
+> lib\screens\mapa\local_edit_screen.dart:2005:      text: 
+evento?.efeito ?? '',
+  lib\screens\mapa\local_edit_screen.dart:2006:    );
+  lib\screens\mapa\local_edit_screen.dart:2007:    _dadosInicio 
+= TextEditingController(
+> lib\screens\mapa\local_edit_screen.dart:2008:      text: 
+(evento?.dadosInicio ?? 1).toString(),
+  lib\screens\mapa\local_edit_screen.dart:2009:    );
+  lib\screens\mapa\local_edit_screen.dart:2010:    _facesInicio 
+= TextEditingController(
+> lib\screens\mapa\local_edit_screen.dart:2011:      text: 
+(evento?.facesInicio ?? 6).toString(),
+  lib\screens\mapa\local_edit_screen.dart:2012:    );
+  lib\screens\mapa\local_edit_screen.dart:2013:    
+_dadosDuracao = TextEditingController(
+> lib\screens\mapa\local_edit_screen.dart:2014:      text: 
+(evento?.dadosDuracao ?? 1).toString(),
+  lib\screens\mapa\local_edit_screen.dart:2015:    );
+  lib\screens\mapa\local_edit_screen.dart:2016:    
+_facesDuracao = TextEditingController(
+> lib\screens\mapa\local_edit_screen.dart:2017:      text: 
+(evento?.facesDuracao ?? 6).toString(),
+  lib\screens\mapa\local_edit_screen.dart:2018:    );
+> lib\screens\mapa\local_edit_screen.dart:2019:    _npc = 
+TextEditingController(
+> lib\screens\mapa\local_edit_screen.dart:2020:      text: 
+evento?.npc ?? '',
+  lib\screens\mapa\local_edit_screen.dart:2021:    );
+> lib\screens\mapa\local_edit_screen.dart:2022:    _pokemon = 
+TextEditingController(
+> lib\screens\mapa\local_edit_screen.dart:2023:      text: 
+evento?.pokemon ?? '',
+  lib\screens\mapa\local_edit_screen.dart:2024:    );
+> lib\screens\mapa\local_edit_screen.dart:2025:    
+_nivelPokemon = TextEditingController(
+> lib\screens\mapa\local_edit_screen.dart:2026:      text: 
+evento?.nivelPokemon ?? '',
+  lib\screens\mapa\local_edit_screen.dart:2027:    );
+> lib\screens\mapa\local_edit_screen.dart:2028:    _item = 
+TextEditingController(
+> lib\screens\mapa\local_edit_screen.dart:2029:      text: 
+evento?.item ?? '',
+  lib\screens\mapa\local_edit_screen.dart:2030:    );
+  lib\screens\mapa\local_edit_screen.dart:2031:
+  lib\screens\mapa\local_edit_screen.dart:2032:    
+_periodoInicioFixo =
+> lib\screens\mapa\local_edit_screen.dart:2033:        
+evento?.periodoInicioFixo;
+  lib\screens\mapa\local_edit_screen.dart:2034:  }
+  lib\screens\mapa\local_edit_screen.dart:2035:
+  lib\screens\mapa\local_edit_screen.dart:2036:  @override
+  lib\screens\mapa\local_edit_screen.dart:2037:  void dispose() 
+{
+  lib\screens\mapa\local_edit_screen.dart:2044:    
+_dadosDuracao.dispose();
+  lib\screens\mapa\local_edit_screen.dart:2045:    
+_facesDuracao.dispose();
+> lib\screens\mapa\local_edit_screen.dart:2046:    
+_npc.dispose();
+> lib\screens\mapa\local_edit_screen.dart:2047:    
+_pokemon.dispose();
+> lib\screens\mapa\local_edit_screen.dart:2048:    
+_nivelPokemon.dispose();
+> lib\screens\mapa\local_edit_screen.dart:2049:    
+_item.dispose();
+  lib\screens\mapa\local_edit_screen.dart:2050:    
+super.dispose();
+  lib\screens\mapa\local_edit_screen.dart:2051:  }
+  lib\screens\mapa\local_edit_screen.dart:2052:
+  lib\screens\mapa\local_edit_screen.dart:2053:  String 
+_periodoTexto(PeriodoDia periodo) {
+  lib\screens\mapa\local_edit_screen.dart:2061:    return 
+AlertDialog(
+  lib\screens\mapa\local_edit_screen.dart:2062:      title: 
+Text(
+> lib\screens\mapa\local_edit_screen.dart:2063:        
+widget.evento == null
+> lib\screens\mapa\local_edit_screen.dart:2064:            ? 
+'Adicionar evento'
+> lib\screens\mapa\local_edit_screen.dart:2065:            : 
+'Editar evento',
+  lib\screens\mapa\local_edit_screen.dart:2066:      ),
+  lib\screens\mapa\local_edit_screen.dart:2067:      content: 
+SizedBox(
+  lib\screens\mapa\local_edit_screen.dart:2068:        width: 
+560,
+  lib\screens\mapa\local_edit_screen.dart:2069:        child: 
+SingleChildScrollView(
+  lib\screens\mapa\local_edit_screen.dart:2116:                 
+ labelText: 'Período fixo',
+  lib\screens\mapa\local_edit_screen.dart:2117:                
+),
+> lib\screens\mapa\local_edit_screen.dart:2118:                
+items: [
+> lib\screens\mapa\local_edit_screen.dart:2119:                 
+ const DropdownMenuItem<PeriodoDia?>(
+  lib\screens\mapa\local_edit_screen.dart:2120:                 
+   value: null,
+  lib\screens\mapa\local_edit_screen.dart:2121:                 
+   child: Text(
+  lib\screens\mapa\local_edit_screen.dart:2122:                 
+     'Rolado pelos dados',
+  lib\screens\mapa\local_edit_screen.dart:2123:                 
+   ),
+  lib\screens\mapa\local_edit_screen.dart:2131:                 
+     .map(
+  lib\screens\mapa\local_edit_screen.dart:2132:                 
+       (periodo) =>
+> lib\screens\mapa\local_edit_screen.dart:2133:                 
+           DropdownMenuItem<PeriodoDia?>(
+  lib\screens\mapa\local_edit_screen.dart:2134:                 
+         value: periodo,
+  lib\screens\mapa\local_edit_screen.dart:2135:                 
+         child: Text(
+  lib\screens\mapa\local_edit_screen.dart:2136:                 
+           _periodoTexto(periodo),
+  lib\screens\mapa\local_edit_screen.dart:2137:                 
+         ),
+  lib\screens\mapa\local_edit_screen.dart:2225:              
+const SizedBox(height: 8),
+  lib\screens\mapa\local_edit_screen.dart:2226:              
+TextField(
+> lib\screens\mapa\local_edit_screen.dart:2227:                
+controller: _npc,
+  lib\screens\mapa\local_edit_screen.dart:2228:                
+decoration: const InputDecoration(
+> lib\screens\mapa\local_edit_screen.dart:2229:                 
+ labelText: 'NPC',
+  lib\screens\mapa\local_edit_screen.dart:2230:                
+),
+  lib\screens\mapa\local_edit_screen.dart:2231:              ),
+  lib\screens\mapa\local_edit_screen.dart:2232:              
+const SizedBox(height: 10),
+  lib\screens\mapa\local_edit_screen.dart:2233:              
+TextField(
+> lib\screens\mapa\local_edit_screen.dart:2234:                
+controller: _pokemon,
+  lib\screens\mapa\local_edit_screen.dart:2235:                
+decoration: const InputDecoration(
+  lib\screens\mapa\local_edit_screen.dart:2236:                 
+ labelText: 'Pokémon',
+  lib\screens\mapa\local_edit_screen.dart:2237:                
+),
+  lib\screens\mapa\local_edit_screen.dart:2238:              ),
+  lib\screens\mapa\local_edit_screen.dart:2239:              
+const SizedBox(height: 10),
+  lib\screens\mapa\local_edit_screen.dart:2240:              
+TextField(
+> lib\screens\mapa\local_edit_screen.dart:2241:                
+controller: _nivelPokemon,
+  lib\screens\mapa\local_edit_screen.dart:2242:                
+decoration: const InputDecoration(
+  lib\screens\mapa\local_edit_screen.dart:2243:                 
+ labelText: 'Nível dos Pokémon',
+  lib\screens\mapa\local_edit_screen.dart:2244:                
+),
+  lib\screens\mapa\local_edit_screen.dart:2245:              ),
+  lib\screens\mapa\local_edit_screen.dart:2246:              
+const SizedBox(height: 10),
+  lib\screens\mapa\local_edit_screen.dart:2247:              
+TextField(
+> lib\screens\mapa\local_edit_screen.dart:2248:                
+controller: _item,
+  lib\screens\mapa\local_edit_screen.dart:2249:                
+decoration: const InputDecoration(
+> lib\screens\mapa\local_edit_screen.dart:2250:                 
+ labelText: 'Item',
+  lib\screens\mapa\local_edit_screen.dart:2251:                
+),
+  lib\screens\mapa\local_edit_screen.dart:2252:              ),
+  lib\screens\mapa\local_edit_screen.dart:2253:            ],
+  lib\screens\mapa\local_edit_screen.dart:2254:          ),
+  lib\screens\mapa\local_edit_screen.dart:2262:        
+FilledButton(
+  lib\screens\mapa\local_edit_screen.dart:2263:          
+onPressed: () {
+> lib\screens\mapa\local_edit_screen.dart:2264:            
+final antigo = widget.evento;
+  lib\screens\mapa\local_edit_screen.dart:2265:
+  lib\screens\mapa\local_edit_screen.dart:2266:            
+Navigator.pop(
+  lib\screens\mapa\local_edit_screen.dart:2267:              
+context,
+> lib\screens\mapa\local_edit_screen.dart:2268:              
+Evento(
+  lib\screens\mapa\local_edit_screen.dart:2269:                
+id: antigo?.id ??
+  lib\screens\mapa\local_edit_screen.dart:2270:                 
+   DateTime.now()
+  lib\screens\mapa\local_edit_screen.dart:2271:                 
+       .microsecondsSinceEpoch
+  lib\screens\mapa\local_edit_screen.dart:2272:                 
+       .toString(),
+  lib\screens\mapa\local_edit_screen.dart:2298:                 
+       ) ??
+  lib\screens\mapa\local_edit_screen.dart:2299:                 
+       6,
+> lib\screens\mapa\local_edit_screen.dart:2300:                
+npc: _nulo(
+> lib\screens\mapa\local_edit_screen.dart:2301:                 
+ _npc.text,
+  lib\screens\mapa\local_edit_screen.dart:2302:                
+),
+> lib\screens\mapa\local_edit_screen.dart:2303:                
+pokemon: _nulo(
+> lib\screens\mapa\local_edit_screen.dart:2304:                 
+ _pokemon.text,
+  lib\screens\mapa\local_edit_screen.dart:2305:                
+),
+> lib\screens\mapa\local_edit_screen.dart:2306:                
+nivelPokemon:
+> lib\screens\mapa\local_edit_screen.dart:2307:                 
+   _nivelPokemon.text.trim(),
+> lib\screens\mapa\local_edit_screen.dart:2308:                
+item: _nulo(
+> lib\screens\mapa\local_edit_screen.dart:2309:                 
+ _item.text,
+  lib\screens\mapa\local_edit_screen.dart:2310:                
+),
+  lib\screens\mapa\local_edit_screen.dart:2311:              ),
+  lib\screens\mapa\local_edit_screen.dart:2312:            );
+  lib\screens\mapa\local_edit_screen.dart:2313:          },
+  lib\screens\mapa\local_edit_screen.dart:2330:
+  lib\screens\mapa\local_edit_screen.dart:2331:class 
+_PontoDialog extends StatefulWidget {
+> lib\screens\mapa\local_edit_screen.dart:2332:  final 
+PontoInteresse? ponto;
+  lib\screens\mapa\local_edit_screen.dart:2333:
+  lib\screens\mapa\local_edit_screen.dart:2334:  const 
+_PontoDialog({
+  lib\screens\mapa\local_edit_screen.dart:2335:    this.ponto,
+  lib\screens\mapa\local_edit_screen.dart:2336:  });
+  lib\screens\mapa\local_edit_screen.dart:2420:            
+Navigator.pop(
+  lib\screens\mapa\local_edit_screen.dart:2421:              
+context,
+> lib\screens\mapa\local_edit_screen.dart:2422:              
+PontoInteresse(
+  lib\screens\mapa\local_edit_screen.dart:2423:                
+id: antigo?.id ??
+  lib\screens\mapa\local_edit_screen.dart:2424:                 
+   DateTime.now()
+  lib\screens\mapa\local_edit_screen.dart:2425:                 
+       .microsecondsSinceEpoch
+  lib\screens\mapa\local_edit_screen.dart:2426:                 
+       .toString(),
+  lib\screens\mapa\local_edit_screen.dart:2429:                
+localizacao:
+  lib\screens\mapa\local_edit_screen.dart:2430:                 
+   _localizacao.text.trim(),
+> lib\screens\mapa\local_edit_screen.dart:2431:                
+eventos:
+> lib\screens\mapa\local_edit_screen.dart:2432:                 
+   antigo?.eventos ?? const [],
+> lib\screens\mapa\local_edit_screen.dart:2433:                
+npcs:
+> lib\screens\mapa\local_edit_screen.dart:2434:                 
+   antigo?.npcs ?? const [],
+> lib\screens\mapa\local_edit_screen.dart:2435:                
+pokemons:
+> lib\screens\mapa\local_edit_screen.dart:2436:                 
+   antigo?.pokemons ?? const [],
+> lib\screens\mapa\local_edit_screen.dart:2437:                
+nivelPokemon:
+> lib\screens\mapa\local_edit_screen.dart:2438:                 
+   antigo?.nivelPokemon ?? '',
+  lib\screens\mapa\local_edit_screen.dart:2439:                
+itens:
+  lib\screens\mapa\local_edit_screen.dart:2440:                 
+   antigo?.itens ?? const [],
+  lib\screens\mapa\local_edit_screen.dart:2441:                
+encontros:
+  lib\screens\mapa\local_edit_screen.dart:2442:                 
+   antigo?.encontros ?? const [],
+
+

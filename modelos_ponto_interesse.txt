@@ -1,0 +1,743 @@
+﻿
+==================================================
+ARQUIVO: lib\models\ponto_interesse.dart
+==================================================
+
+import 'evento.dart';
+import 'encontro.dart';
+import 'periodo_dia.dart';
+import 'grupo.dart';
+import 'item.dart';
+import 'npc.dart';
+import 'criatura.dart';
+
+class PontoInteresse {
+  final String id;
+  final String nome;
+  final String descricao;
+
+  final String efeitos;
+  // Identifica o cadastro-base do Mapa do qual esta cópia se originou.
+  // Cadastro-base possui null.
+  final String? cadastroBaseId;
+
+  // Mantidos para compatibilidade com dados antigos.
+  final String localizacao;
+  final String localizacaoTipo;
+  final String localizacaoId;
+  final int leguas;
+
+  final List<Evento> eventos;
+  final List<NPC> npcs;
+  final List<Criatura> criaturas;
+  final String nivelCriatura;
+  final List<Item> itens;
+  final List<Grupo> encontros;
+
+  const PontoInteresse({
+    required this.id,
+    required this.nome,
+    required this.descricao,
+    this.efeitos = '',
+    this.cadastroBaseId,
+    this.localizacao = '',
+    this.localizacaoTipo = 'nenhuma',
+    this.localizacaoId = '',
+    this.leguas = 0,
+    this.eventos = const [],
+    this.npcs = const [],
+    this.criaturas = const [],
+    this.nivelCriatura = '',
+    this.itens = const [],
+    this.encontros = const [],
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'nome': nome,
+      'descricao': descricao,
+      'efeitos': efeitos,
+      'cadastroBaseId': cadastroBaseId,
+      'localizacao': localizacao,
+      'localizacaoTipo': localizacaoTipo,
+      'localizacaoId': localizacaoId,
+      'leguas': leguas,
+      'eventos': eventos.map((evento) => evento.toMap()).toList(),
+      'npcs': npcs.map((npc) => npc.toMap()).toList(),
+      'criaturas': criaturas.map((criatura) => criatura.toMap()).toList(),
+      'nivelCriatura': nivelCriatura,
+      'itens': itens.map((item) => item.toMap()).toList(),
+      'encontros': encontros
+          .map((grupo) => {
+                'id': grupo.id,
+                'nome': grupo.nome,
+                'diurno': grupo.diurno
+                    .map((e) => {
+                          'criatura': e.criatura.toMap(),
+                          'condicao': e.condicao,
+                          'raro': e.raro,
+                          'periodo': e.periodo?.name,
+                          'leguaMin': e.leguaMin,
+                          'leguaMax': e.leguaMax,
+                          'nivelFixo': e.nivelFixo,
+                          'fichaFixada': e.fichaFixada
+                        })
+                    .toList(),
+                'noturno': grupo.noturno
+                    .map((e) => {
+                          'criatura': e.criatura.toMap(),
+                          'condicao': e.condicao,
+                          'raro': e.raro,
+                          'periodo': e.periodo?.name,
+                          'leguaMin': e.leguaMin,
+                          'leguaMax': e.leguaMax,
+                          'nivelFixo': e.nivelFixo,
+                          'fichaFixada': e.fichaFixada
+                        })
+                    .toList(),
+                'pesca': grupo.pesca
+                    .map((e) => {
+                          'criatura': e.criatura.toMap(),
+                          'condicao': e.condicao,
+                          'raro': e.raro,
+                          'periodo': e.periodo?.name,
+                          'leguaMin': e.leguaMin,
+                          'leguaMax': e.leguaMax,
+                          'nivelFixo': e.nivelFixo,
+                          'fichaFixada': e.fichaFixada
+                        })
+                    .toList(),
+                'surfe': grupo.surfe
+                    .map((e) => {
+                          'criatura': e.criatura.toMap(),
+                          'condicao': e.condicao,
+                          'raro': e.raro,
+                          'periodo': e.periodo?.name,
+                          'leguaMin': e.leguaMin,
+                          'leguaMax': e.leguaMax,
+                          'nivelFixo': e.nivelFixo,
+                          'fichaFixada': e.fichaFixada
+                        })
+                    .toList(),
+              })
+          .toList(),
+    };
+  }
+
+  factory PontoInteresse.fromMap(
+    Map<String, dynamic> mapa,
+  ) {
+    return PontoInteresse(
+      id: mapa['id']?.toString() ?? '',
+      nome: mapa['nome']?.toString() ?? '',
+      descricao: mapa['descricao']?.toString() ?? '',
+      efeitos: mapa['efeitos']?.toString() ?? '',
+      cadastroBaseId: _textoNulo(mapa['cadastroBaseId']),
+      localizacao: mapa['localizacao']?.toString() ?? '',
+      localizacaoTipo: mapa['localizacaoTipo']?.toString().isNotEmpty == true
+          ? mapa['localizacaoTipo'].toString()
+          : 'nenhuma',
+      localizacaoId: mapa['localizacaoId']?.toString() ?? '',
+      leguas: _int(mapa['leguas']),
+      eventos: _eventosFromList(mapa['eventos']),
+      npcs: _npcsFromList(mapa['npcs']),
+      criaturas: _criaturasFromList(mapa['criaturas']),
+      nivelCriatura: mapa['nivelCriatura']?.toString() ?? '',
+      itens: _itensFromList(mapa['itens']),
+      encontros: _gruposFromList(mapa['encontros']),
+    );
+  }
+
+  static List<Grupo> _gruposFromList(dynamic valor) {
+    if (valor is! List) return [];
+    return valor.whereType<Map>().map((item) {
+      final mapa = Map<String, dynamic>.from(item);
+      return Grupo(
+        id: mapa['id']?.toString() ?? '',
+        nome: mapa['nome']?.toString() ?? '',
+        diurno: _encontrosFromList(mapa['diurno']),
+        noturno: _encontrosFromList(mapa['noturno']),
+        pesca: _encontrosFromList(mapa['pesca']),
+        surfe: _encontrosFromList(mapa['surfe']),
+      );
+    }).toList();
+  }
+
+  static List<Encontro> _encontrosFromList(dynamic valor) {
+    if (valor is! List) return [];
+    return valor
+        .whereType<Map>()
+        .map((item) {
+          final mapa = Map<String, dynamic>.from(item);
+          final criaturaRaw = mapa['criatura'];
+          if (criaturaRaw is! Map) return null;
+          PeriodoDia? periodo;
+          final textoPeriodo = mapa['periodo']?.toString();
+          for (final p in PeriodoDia.values) {
+            if (p.name == textoPeriodo || p.texto == textoPeriodo) {
+              periodo = p;
+              break;
+            }
+          }
+          return Encontro(
+            criatura: Criatura.fromMap(Map<String, dynamic>.from(criaturaRaw)),
+            condicao: mapa['condicao']?.toString() ?? '',
+            raro: mapa['raro'] == true || mapa['raro']?.toString() == 'true',
+            periodo: periodo,
+            leguaMin: _intNulo(mapa['leguaMin']),
+            leguaMax: _intNulo(mapa['leguaMax']),
+            nivelFixo: _intNulo(mapa['nivelFixo']),
+            fichaFixada: mapa['fichaFixada'] == true,
+          );
+        })
+        .whereType<Encontro>()
+        .toList();
+  }
+
+  static int? _intNulo(dynamic valor) {
+    if (valor == null) return null;
+    if (valor is int) return valor;
+    if (valor is num) return valor.round();
+    return int.tryParse(valor.toString());
+  }
+
+  static String? _textoNulo(dynamic valor) {
+    if (valor == null) {
+      return null;
+    }
+
+    final texto = valor.toString().trim();
+
+    if (texto.isEmpty || texto == '-') {
+      return null;
+    }
+
+    return texto;
+  }
+
+  static int _int(dynamic valor) {
+    if (valor is int) {
+      return valor;
+    }
+
+    if (valor is num) {
+      return valor.round();
+    }
+
+    return int.tryParse(
+          valor?.toString().trim() ?? '',
+        ) ??
+        0;
+  }
+
+  static List<Evento> _eventosFromList(
+    dynamic valor,
+  ) {
+    if (valor is! List) {
+      return const [];
+    }
+
+    return valor
+        .whereType<Map>()
+        .map(
+          (evento) => Evento.fromMap(
+            Map<String, dynamic>.from(evento),
+          ),
+        )
+        .toList();
+  }
+
+  static List<NPC> _npcsFromList(
+    dynamic valor,
+  ) {
+    if (valor is! List) {
+      return const [];
+    }
+
+    return valor
+        .whereType<Map>()
+        .map(
+          (npc) => NPC.fromMap(
+            Map<String, dynamic>.from(npc),
+          ),
+        )
+        .toList();
+  }
+
+  static List<Criatura> _criaturasFromList(
+    dynamic valor,
+  ) {
+    if (valor is! List) {
+      return const [];
+    }
+
+    return valor
+        .whereType<Map>()
+        .map(
+          (criatura) => Criatura.fromMap(
+            Map<String, dynamic>.from(criatura),
+          ),
+        )
+        .toList();
+  }
+
+  static List<Item> _itensFromList(
+    dynamic valor,
+  ) {
+    if (valor is! List) {
+      return const [];
+    }
+
+    return valor
+        .whereType<Map>()
+        .map(
+          (item) => Item.fromMap(
+            Map<String, dynamic>.from(item),
+          ),
+        )
+        .toList();
+  }
+}
+
+==================================================
+ARQUIVO: lib\models\grupo.dart
+==================================================
+
+import 'encontro.dart';
+
+
+class Grupo {
+
+  final String id;
+
+  final String nome;
+
+
+  final List<Encontro> diurno;
+
+  final List<Encontro> noturno;
+
+
+  final List<Encontro> pesca;
+
+  final List<Encontro> surfe;
+
+
+
+  const Grupo({
+
+    required this.id,
+
+    required this.nome,
+
+    required this.diurno,
+
+    required this.noturno,
+
+    required this.pesca,
+
+    required this.surfe,
+
+  });
+
+}
+
+==================================================
+ARQUIVO: lib\models\npc.dart
+==================================================
+
+import 'poder.dart';
+import 'item.dart';
+
+class CriaturaTreinador {
+  final String nome;
+
+  final int nivel;
+
+  final int bonusForca;
+  final int bonusHabilidade;
+  final int bonusResistencia;
+  final int bonusArmadura;
+  final int bonusDefesaEspecial;
+  final int bonusPoderDeFogo;
+
+  final List<Poder> poderes;
+  final int poderesExtras;
+
+  final int pv;
+  final int pe;
+
+  final List<String> moves;
+
+  const CriaturaTreinador({
+    required this.nome,
+    this.nivel = 1,
+    this.bonusForca = 0,
+    this.bonusHabilidade = 0,
+    this.bonusResistencia = 0,
+    this.bonusArmadura = 0,
+    this.bonusDefesaEspecial = 0,
+    this.bonusPoderDeFogo = 0,
+    this.poderes = const [],
+    this.poderesExtras = 0,
+    this.pv = 0,
+    this.pe = 0,
+    this.moves = const [],
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'nome': nome,
+      'nivel': nivel,
+      'bonusForca': bonusForca,
+      'bonusHabilidade': bonusHabilidade,
+      'bonusResistencia': bonusResistencia,
+      'bonusArmadura': bonusArmadura,
+      'bonusDefesaEspecial': bonusDefesaEspecial,
+      'bonusPoderDeFogo': bonusPoderDeFogo,
+      'poderes': poderes.map((poder) {
+        return {
+          'tipo': poder.tipo,
+          'valorBase': poder.valorBase,
+          'bonus': poder.bonus,
+          'original': poder.original,
+        };
+      }).toList(),
+      'poderesExtras': poderesExtras,
+      'pv': pv,
+      'pe': pe,
+      'moves': moves,
+    };
+  }
+
+  factory CriaturaTreinador.fromMap(
+    Map<String, dynamic> map,
+  ) {
+    final poderesRaw = map['poderes'];
+
+    final poderes = poderesRaw is List
+        ? poderesRaw.whereType<Map>().map((poderMap) {
+            final dados =
+                Map<String, dynamic>.from(poderMap);
+
+            return Poder(
+              tipo: dados['tipo']?.toString() ?? '',
+              valorBase: _int(dados['valorBase']),
+              bonus: _int(dados['bonus']),
+              original: _bool(dados['original']),
+            );
+          }).toList()
+        : <Poder>[];
+
+    final movesRaw = map['moves'];
+
+    final moves = movesRaw is List
+        ? movesRaw
+            .map(
+              (move) => move.toString().trim(),
+            )
+            .where(
+              (move) => move.isNotEmpty,
+            )
+            .toList()
+        : <String>[];
+
+    return CriaturaTreinador(
+      nome: map['nome']?.toString() ?? '',
+      nivel: _int(
+        map['nivel'],
+        padrao: 1,
+      ),
+      bonusForca:
+          _int(map['bonusForca']),
+      bonusHabilidade:
+          _int(map['bonusHabilidade']),
+      bonusResistencia:
+          _int(map['bonusResistencia']),
+      bonusArmadura:
+          _int(map['bonusArmadura']),
+      bonusDefesaEspecial:
+          _int(map['bonusDefesaEspecial']),
+      bonusPoderDeFogo:
+          _int(map['bonusPoderDeFogo']),
+      poderes: poderes,
+      poderesExtras:
+          _int(map['poderesExtras']),
+      pv: _int(map['pv']),
+      pe: _int(map['pe']),
+      moves: moves,
+    );
+  }
+
+  static int _int(
+    dynamic valor, {
+    int padrao = 0,
+  }) {
+    if (valor == null) {
+      return padrao;
+    }
+
+    if (valor is int) {
+      return valor;
+    }
+
+    if (valor is num) {
+      return valor.round();
+    }
+
+    return double.tryParse(
+          valor
+              .toString()
+              .trim()
+              .replaceAll(',', '.'),
+        )?.round() ??
+        padrao;
+  }
+
+  static bool _bool(dynamic valor) {
+    final texto =
+        valor?.toString().trim().toLowerCase() ?? '';
+
+    return valor == true ||
+        texto == 'true' ||
+        texto == 'sim' ||
+        texto == 's' ||
+        texto == '1';
+  }
+}
+
+class NPC {
+  final String id;
+  final String nome;
+  final String tipo;
+  final String descricao;
+
+  // Cadastro-base possui null.
+  // Cópia incluída em Local possui o id do cadastro-base.
+  final String? cadastroBaseId;
+
+  final String localizacao;
+
+  final int forca;
+  final int habilidade;
+  final int inteligencia;
+  final int resistencia;
+  final int armadura;
+  final int poderDeFogo;
+
+  final int captura;
+  final int controle;
+  final int compreensao;
+  final int tratamento;
+  final int ecologia;
+
+  final String kit;
+  final String manobras;
+  final String vantagens;
+  final String desvantagens;
+
+  final List<String> criaturas;
+  final List<CriaturaTreinador> fichasCriatura;
+
+  final String nivelCriatura;
+  final String inventario;
+
+  final int pv;
+
+  final List<Item> itens;
+
+  const NPC({
+    required this.id,
+    required this.nome,
+    this.tipo = '',
+    required this.descricao,
+    this.cadastroBaseId,
+    this.localizacao = '',
+    this.forca = 0,
+    this.habilidade = 0,
+    this.inteligencia = 0,
+    this.resistencia = 0,
+    this.armadura = 0,
+    this.poderDeFogo = 0,
+    this.captura = 0,
+    this.controle = 0,
+    this.compreensao = 0,
+    this.tratamento = 0,
+    this.ecologia = 0,
+    this.kit = '',
+    this.manobras = '',
+    this.vantagens = '',
+    this.desvantagens = '',
+    this.criaturas = const [],
+    this.fichasCriatura = const [],
+    this.nivelCriatura = '',
+    this.inventario = '',
+    this.pv = 0,
+    this.itens = const [],
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'nome': nome,
+      'tipo': tipo,
+      'descricao': descricao,
+      'cadastroBaseId': cadastroBaseId,
+      'localizacao': localizacao,
+      'forca': forca,
+      'habilidade': habilidade,
+      'inteligencia': inteligencia,
+      'resistencia': resistencia,
+      'armadura': armadura,
+      'poderDeFogo': poderDeFogo,
+      'captura': captura,
+      'controle': controle,
+      'compreensao': compreensao,
+      'tratamento': tratamento,
+      'ecologia': ecologia,
+      'kit': kit,
+      'manobras': manobras,
+      'vantagens': vantagens,
+      'desvantagens': desvantagens,
+      'criaturas': criaturas,
+      'fichasCriatura':
+          fichasCriatura.map(
+        (criatura) => criatura.toMap(),
+      ).toList(),
+      'nivelCriatura': nivelCriatura,
+      'inventario': inventario,
+      'pv': pv,
+      'itens': itens.map((item) => item.toMap()).toList(),
+    };
+  }
+
+  factory NPC.fromMap(
+    Map<String, dynamic> map,
+  ) {
+    final raw = map['criaturas'];
+
+    final criaturas = raw is List
+        ? raw
+            .map(
+              (criatura) => criatura.toString(),
+            )
+            .where(
+              (criatura) =>
+                  criatura.trim().isNotEmpty,
+            )
+            .toList()
+        : <String>[];
+
+    final itensRaw = map['itens'];
+
+    final itens = itensRaw is List
+        ? itensRaw
+            .whereType<Map>()
+            .map(
+              (itemMap) => Item.fromMap(
+                Map<String, dynamic>.from(itemMap),
+              ),
+            )
+            .toList()
+        : <Item>[];
+
+    final fichasRaw =
+        map['fichasCriatura'];
+
+    final fichasCriatura =
+        fichasRaw is List
+            ? fichasRaw
+                .whereType<Map>()
+                .map(
+                  (criaturaMap) =>
+                      CriaturaTreinador.fromMap(
+                    Map<String, dynamic>.from(
+                      criaturaMap,
+                    ),
+                  ),
+                )
+                .toList()
+            : <CriaturaTreinador>[];
+
+    return NPC(
+      id: map['id']?.toString() ?? '',
+      nome: map['nome']?.toString() ?? '',
+      tipo: map['tipo']?.toString() ?? '',
+      descricao:
+          map['descricao']?.toString() ?? '',
+      cadastroBaseId:
+          _textoNulo(map['cadastroBaseId']),
+      localizacao:
+          map['localizacao']?.toString() ?? '',
+      forca: _int(map['forca']),
+      habilidade: _int(map['habilidade']),
+      inteligencia:
+          _int(map['inteligencia']),
+      resistencia:
+          _int(map['resistencia']),
+      armadura: _int(map['armadura']),
+      poderDeFogo:
+          _int(map['poderDeFogo']),
+      captura: _int(map['captura']),
+      controle: _int(map['controle']),
+      compreensao:
+          _int(map['compreensao']),
+      tratamento:
+          _int(map['tratamento']),
+      ecologia: _int(map['ecologia']),
+      kit: map['kit']?.toString() ?? '',
+      manobras:
+          map['manobras']?.toString() ?? '',
+      vantagens:
+          map['vantagens']?.toString() ?? '',
+      desvantagens:
+          map['desvantagens']?.toString() ?? '',
+      criaturas: criaturas,
+      fichasCriatura: fichasCriatura,
+      itens: itens,
+      nivelCriatura:
+          map['nivelCriatura']?.toString() ?? '',
+      inventario:
+          map['inventario']?.toString() ?? '',
+      pv: _int(map['pv']),
+    );
+  }
+
+  static String? _textoNulo(dynamic valor) {
+    if (valor == null) {
+      return null;
+    }
+
+    final texto = valor.toString().trim();
+
+    if (texto.isEmpty || texto == '-') {
+      return null;
+    }
+
+    return texto;
+  }
+
+  static int _int(dynamic valor) {
+    if (valor == null) {
+      return 0;
+    }
+
+    if (valor is int) {
+      return valor;
+    }
+
+    if (valor is num) {
+      return valor.round();
+    }
+
+    return double.tryParse(
+          valor
+              .toString()
+              .trim()
+              .replaceAll(',', '.'),
+        )?.round() ??
+        0;
+  }
+}
+

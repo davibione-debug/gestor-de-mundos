@@ -1,0 +1,3 @@
+﻿C:\Users\HMTecInfo\gestor_de_mundos\lib\tipo_pokemon.dart:1: class TipoPokemon {
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:6: import '../../tipo_pokemon.dart';
+C:\Users\HMTecInfo\gestor_de_mundos\lib\screens\pokedex\pokemon_editar_screen.dart:463: children: TipoPokemon.todos

@@ -1,0 +1,22 @@
+﻿===== lib\screens\mapa\local_edit_screen.dart =====
+1563: Widget _buildEncontros() {
+2226: _buildEncontros(),
+===== lib\screens\mapa\local_screen.dart =====
+668: _gerarCriatura();
+699: void _gerarCriatura() {
+===== lib\screens\mapa\ponto_interesse_edit_screen.dart =====
+691: Widget _buildEncontrosPdi() {
+805: _buildEncontrosPdi(),
+===== lib\screens\mapa\ponto_interesse_screen.dart =====
+529: List<Encontro> _todosEncontros() {
+542: Widget _buildEncontrosPdi() {
+543: final encontros = _todosEncontros();
+643: onPressed: _abrirGeradorEncontro,
+796: Future<void> _abrirGeradorEncontro() async {
+910: _gerarCriatura();
+928: List<Encontro> _encontrosDisponiveis() {
+929: return _todosEncontros()
+934: void _gerarCriatura() {
+935: final disponiveis = _encontrosDisponiveis();
+1108: _todosEncontros().isNotEmpty;
+1189: _buildEncontrosPdi(),

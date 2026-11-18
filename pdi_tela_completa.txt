@@ -1,0 +1,386 @@
+﻿
+========== LINHAS 820-1120 ==========
+820:     return Card(
+821:       elevation: 0,
+822:       color: const Color(0xFFF8F7F3),
+823:       child: ListTile(
+824:         leading: Icon(
+825:           icone,
+826:           color: cor,
+827:         ),
+828:         title: Text(
+829:           titulo,
+830:           style: const TextStyle(
+831:             fontWeight: FontWeight.w800,
+832:           ),
+833:         ),
+834:         subtitle: subtitulo.isEmpty
+835:             ? null
+836:             : Text(
+837:                 subtitulo,
+838:                 maxLines: 2,
+839:                 overflow: TextOverflow.ellipsis,
+840:               ),
+841:         onTap: onTap,
+842:         trailing: IconButton(
+843:           tooltip: 'Excluir',
+844:           icon: const Icon(
+845:             Icons.delete_outline,
+846:             color: _vermelho,
+847:           ),
+848:           onPressed: onDelete,
+849:         ),
+850:       ),
+851:     );
+852:   }
+853: 
+854:   Widget _buildEventos() {
+855:     return _secao(
+856:       'Eventos',
+857:       Icons.warning_amber_rounded,
+858:       _laranja,
+859:       [
+860:         if (_eventos.isEmpty)
+861:           const Text('Nenhum Cadastro',
+862:               style: TextStyle(color: _textoSecundario)),
+863:         ..._eventos.map(
+864:           (evento) => _linhaLista(
+865:             titulo: evento.nome,
+866:             subtitulo: evento.descricao,
+867:             icone: Icons.warning_amber_rounded,
+868:             cor: _laranja,
+869:             onTap: () => _editarEvento(evento: evento),
+870:             onDelete: () => _excluirEvento(evento),
+871:           ),
+872:         ),
+873:         const SizedBox(height: 8),
+874:         Row(
+875:           children: [
+876:             Expanded(
+877:               child: OutlinedButton.icon(
+878:                 onPressed: _adicionarEventoExistente,
+879:                 icon: const Icon(Icons.add),
+880:                 label: const Text('Adicionar'),
+881:               ),
+882:             ),
+883:             const SizedBox(width: 8),
+884:             Expanded(
+885:               child: FilledButton.tonalIcon(
+886:                 onPressed: _criarEventoBase,
+887:                 icon: const Icon(Icons.create_outlined),
+888:                 label: const Text('Criar'),
+889:               ),
+890:             ),
+891:           ],
+892:         ),
+893:       ],
+894:     );
+895:   }
+896: 
+897:   Widget _buildPersonagens() {
+898:     return _secao(
+899:       'Personagens',
+900:       Icons.people_outline,
+901:       _verde,
+902:       [
+903:         if (_personagens.isEmpty)
+904:           const Text('Nenhum cadastro.',
+905:               style: TextStyle(color: _textoSecundario)),
+906:         ..._personagens.map(
+907:           (npc) => _linhaLista(
+908:             titulo: npc.nome,
+909:             subtitulo: npc.descricao,
+910:             icone: Icons.person_outline,
+911:             cor: _verde,
+912:             onTap: () => _editarNPC(npc: npc),
+913:             onDelete: () => _excluirNPC(npc),
+914:           ),
+915:         ),
+916:         const SizedBox(height: 8),
+917:         Row(
+918:           children: [
+919:             Expanded(
+920:               child: OutlinedButton.icon(
+921:                 onPressed: _adicionarPersonagemExistente,
+922:                 icon: const Icon(Icons.add),
+923:                 label: const Text('Adicionar'),
+924:               ),
+925:             ),
+926:             const SizedBox(width: 8),
+927:             Expanded(
+928:               child: FilledButton.tonalIcon(
+929:                 onPressed: _criarPersonagemBase,
+930:                 icon: const Icon(Icons.create_outlined),
+931:                 label: const Text('Criar'),
+932:               ),
+933:             ),
+934:           ],
+935:         ),
+936:       ],
+937:     );
+938:   }
+939: 
+940:   Widget _buildItens() {
+941:     return _secao(
+942:       'Itens',
+943:       Icons.inventory_2_outlined,
+944:       _amarelo,
+945:       [
+946:         if (_itens.isEmpty)
+947:           const Text('Nenhum Cadastro',
+948:               style: TextStyle(color: _textoSecundario)),
+949:         ..._itens.map(
+950:           (item) => _linhaLista(
+951:             titulo: '${item.nome} (Qtd: ${item.quantidade})',
+952:             subtitulo: [
+953:               if (item.tipo.isNotEmpty) item.tipo,
+954:               if (item.efeito.isNotEmpty) item.efeito,
+955:               if (item.localizacao.trim().isNotEmpty)
+956:                 'Localização: ${item.localizacao.trim()}',
+957:             ].join(' – '),
+958:             icone: Icons.inventory_2_outlined,
+959:             cor: _amarelo,
+960:             onTap: () => _editarItem(item: item),
+961:             onDelete: () => _excluirItem(item),
+962:           ),
+963:         ),
+964:         const SizedBox(height: 8),
+965:         Row(
+966:           children: [
+967:             Expanded(
+968:               child: OutlinedButton.icon(
+969:                 onPressed: () => _editarItem(),
+970:                 icon: const Icon(Icons.add),
+971:                 label: const Text('Adicionar'),
+972:               ),
+973:             ),
+974:             const SizedBox(width: 8),
+975:             Expanded(
+976:               child: FilledButton.tonalIcon(
+977:                 onPressed: _criarItemBase,
+978:                 icon: const Icon(Icons.create_outlined),
+979:                 label: const Text('Criar'),
+980:               ),
+981:             ),
+982:           ],
+983:         ),
+984:       ],
+985:     );
+986:   }
+987: 
+988:   Widget _buildEncontrosPdi() {
+989:     return _secao(
+990:       'Encontros',
+991:       Icons.catching_pokemon,
+992:       _vermelho,
+993:       [
+994:         if (_encontros.isEmpty)
+995:           const Padding(
+996:             padding: EdgeInsets.symmetric(vertical: 12),
+997:             child: Text('Nenhum grupo de encontros cadastrado.'),
+998:           ),
+999:         ..._encontros.asMap().entries.map(
+1000:               (entrada) => Card(
+1001:                 elevation: 0,
+1002:                 child: ListTile(
+1003:                   leading: const Icon(Icons.catching_pokemon),
+1004:                   title: Text(entrada.value.nome),
+1005:                   subtitle: Text(
+1006:                     'Diurno: ${entrada.value.diurno.length} | '
+1007:                     'Noturno: ${entrada.value.noturno.length} | '
+1008:                     'Pesca: ${entrada.value.pesca.length} | '
+1009:                     'Aquático: ${entrada.value.surfe.length}',
+1010:                   ),
+1011:                   trailing: IconButton(
+1012:                     tooltip: 'Remover grupo',
+1013:                     icon: const Icon(Icons.delete_outline),
+1014:                     onPressed: () {
+1015:                       setState(() => _encontros.removeAt(entrada.key));
+1016:                     },
+1017:                   ),
+1018:                 ),
+1019:               ),
+1020:             ),
+1021:         OutlinedButton.icon(
+1022:           onPressed: _adicionarGrupoEncontro,
+1023:           icon: const Icon(Icons.add),
+1024:           label: const Text('Adicionar grupo'),
+1025:         ),
+1026:       ],
+1027:     );
+1028:   }
+1029: 
+1030:   Future<void> _adicionarGrupoEncontro() async {
+1031:     final nomeController = TextEditingController();
+1032:     final nome = await showDialog<String>(
+1033:       context: context,
+1034:       builder: (context) => AlertDialog(
+1035:         title: const Text('Novo grupo de encontros'),
+1036:         content: TextField(
+1037:           controller: nomeController,
+1038:           autofocus: true,
+1039:           decoration: const InputDecoration(labelText: 'Nome do grupo'),
+1040:         ),
+1041:         actions: [
+1042:           TextButton(
+1043:             onPressed: () => Navigator.pop(context),
+1044:             child: const Text('Cancelar'),
+1045:           ),
+1046:           FilledButton(
+1047:             onPressed: () {
+1048:               final valor = nomeController.text.trim();
+1049:               if (valor.isNotEmpty) Navigator.pop(context, valor);
+1050:             },
+1051:             child: const Text('Adicionar'),
+1052:           ),
+1053:         ],
+1054:       ),
+1055:     );
+1056:     nomeController.dispose();
+1057: 
+1058:     if (nome == null || !mounted) return;
+1059: 
+1060:     setState(() {
+1061:       _encontros.add(
+1062:         Grupo(
+1063:           id: DateTime.now().microsecondsSinceEpoch.toString(),
+1064:           nome: nome,
+1065:           diurno: const [],
+1066:           noturno: const [],
+1067:           pesca: const [],
+1068:           surfe: const [],
+1069:         ),
+1070:       );
+1071:     });
+1072:   }
+1073: 
+1074:   Widget _buildCriaturas() {
+1075:     return _secao(
+1076:       _rotuloCriatura,
+1077:       Icons.catching_pokemon,
+1078:       _roxo,
+1079:       [
+1080:         if (_criaturas.isEmpty)
+1081:           const Text('Nenhum Cadastro',
+1082:               style: TextStyle(color: _textoSecundario)),
+1083:         ..._criaturas.map(
+1084:           (criatura) => _linhaLista(
+1085:             titulo: '${criatura.nome} – Nível ${criatura.nivel}',
+1086:             subtitulo: criatura.textoMoves,
+1087:             icone: Icons.catching_pokemon,
+1088:             cor: _roxo,
+1089:             onTap: () => _editarCriatura(criatura: criatura),
+1090:             onDelete: () => _excluirCriatura(criatura),
+1091:           ),
+1092:         ),
+1093:         const SizedBox(height: 8),
+1094:         Row(
+1095:           children: [
+1096:             Expanded(
+1097:               child: OutlinedButton.icon(
+1098:                 onPressed: _adicionarCriaturaExistente,
+1099:                 icon: const Icon(Icons.add),
+1100:                 label: const Text('Adicionar'),
+1101:               ),
+1102:             ),
+1103:             const SizedBox(width: 8),
+1104:             Expanded(
+1105:               child: FilledButton.tonalIcon(
+1106:                 onPressed: _criarCriaturaBase,
+1107:                 icon: const Icon(Icons.create_outlined),
+1108:                 label: const Text('Criar'),
+1109:               ),
+1110:             ),
+1111:           ],
+1112:         ),
+1113:       ],
+1114:     );
+1115:   }
+1116: 
+1117:   @override
+1118:   Widget build(BuildContext context) {
+1119:     return Theme(
+1120:       data: Theme.of(context).copyWith(
+
+========== LINHAS 1130-1210 ==========
+1130:           elevation: 2,
+1131:         ),
+1132:       ),
+1133:       child: Scaffold(
+1134:         appBar: AppBar(
+1135:           title: Text(
+1136:             widget.ponto.id.isEmpty
+1137:                 ? 'Criar Ponto de Interesse'
+1138:                 : 'Editar Ponto de Interesse',
+1139:             style: const TextStyle(
+1140:               fontWeight: FontWeight.w700,
+1141:             ),
+1142:           ),
+1143:         ),
+1144:         body: ListView(
+1145:           padding: const EdgeInsets.fromLTRB(
+1146:             16,
+1147:             16,
+1148:             16,
+1149:             32,
+1150:           ),
+1151:           children: [
+1152:             _secao(
+1153:               'Características',
+1154:               Icons.place_outlined,
+1155:               _azul,
+1156:               [
+1157:                 _campoTexto(
+1158:                   label: 'Nome',
+1159:                   controller: _nome,
+1160:                   icone: Icons.place_outlined,
+1161:                 ),
+1162:                 const SizedBox(height: 12),
+1163:                 _campoTexto(
+1164:                   label: 'Descrição',
+1165:                   controller: _descricao,
+1166:                   icone: Icons.notes_outlined,
+1167:                   maxLines: 4,
+1168:                 ),
+1169:                 const SizedBox(height: 12),
+1170:                 _campoTexto(
+1171:                   label: 'Efeitos',
+1172:                   controller: _efeitos,
+1173:                   icone: Icons.auto_awesome_outlined,
+1174:                   maxLines: 4,
+1175:                 ),
+1176:                 const SizedBox(height: 12),
+1177:               ],
+1178:             ),
+1179:             _buildEncontrosPdi(),
+1180:             _buildCriaturas(),
+1181:             _buildPersonagens(),
+1182:             _buildItens(),
+1183:             _buildEventos(),
+1184:             const SizedBox(height: 4),
+1185:             SizedBox(
+1186:               height: 54,
+1187:               child: FilledButton.icon(
+1188:                 style: FilledButton.styleFrom(
+1189:                   backgroundColor: _vermelho,
+1190:                   foregroundColor: Colors.white,
+1191:                 ),
+1192:                 onPressed: _salvar,
+1193:                 icon: const Icon(Icons.save),
+1194:                 label: const Text(
+1195:                   'Salvar alterações',
+1196:                   style: TextStyle(
+1197:                     fontSize: 16,
+1198:                     fontWeight: FontWeight.w800,
+1199:                   ),
+1200:                 ),
+1201:               ),
+1202:             ),
+1203:           ],
+1204:         ),
+1205:       ),
+1206:     );
+1207:   }
+1208: }
+1209: 
+1210: class _CriaturaDialog extends StatefulWidget {

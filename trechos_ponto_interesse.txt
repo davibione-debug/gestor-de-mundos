@@ -1,0 +1,1013 @@
+﻿
+==================================================
+ARQUIVO: lib\models\local.dart | LINHAS 300-445
+==================================================
+300:     dynamic valor,
+301:   ) {
+302:     if (valor is! List) {
+303:       return [];
+304:     }
+305: 
+306:     return valor
+307:         .whereType<Map>()
+308:         .map(
+309:           (item) => Evento.fromMap(
+310:             Map<String, dynamic>.from(item),
+311:           ),
+312:         )
+313:         .toList();
+314:   }
+315: 
+316:   static Map<String, dynamic> _pontoInteresseToMap(
+317:     PontoInteresse ponto,
+318:   ) {
+319:     return {
+320:       'id': ponto.id,
+321:       'nome': ponto.nome,
+322:       'descricao': ponto.descricao,
+323:       'localizacao': ponto.localizacao,
+324:       'localizacaoTipo': ponto.localizacaoTipo,
+325:       'localizacaoId': ponto.localizacaoId,
+326:       'leguas': ponto.leguas,
+327:       'eventos': ponto.eventos.map((evento) => evento.toMap()).toList(),
+328:       'npcs': ponto.npcs.map((npc) => npc.toMap()).toList(),
+329:       'criaturas': ponto.criaturas.map((criatura) => criatura.toMap()).toList(),
+330:       'nivelCriatura': ponto.nivelCriatura,
+331:       'itens': ponto.itens.map((item) => item.toMap()).toList(),
+332:       'cadastroBaseId': ponto.cadastroBaseId,
+333:       'encontros': ponto.encontros
+334:           .map((grupo) => {
+335:                 'id': grupo.id,
+336:                 'nome': grupo.nome,
+337:                 'diurno': grupo.diurno.map(_encontroToMap).toList(),
+338:                 'noturno': grupo.noturno.map(_encontroToMap).toList(),
+339:                 'pesca': grupo.pesca.map(_encontroToMap).toList(),
+340:                 'surfe': grupo.surfe.map(_encontroToMap).toList(),
+341:               })
+342:           .toList(),
+343:     };
+344:   }
+345: 
+346:   static List<PontoInteresse> _pontosInteresseFromList(
+347:     dynamic valor,
+348:   ) {
+349:     if (valor is! List) {
+350:       return [];
+351:     }
+352: 
+353:     return valor
+354:         .whereType<Map>()
+355:         .map(
+356:           (item) => _pontoInteresseFromMap(
+357:             Map<String, dynamic>.from(
+358:               item,
+359:             ),
+360:           ),
+361:         )
+362:         .toList();
+363:   }
+364: 
+365:   static PontoInteresse _pontoInteresseFromMap(
+366:     Map<String, dynamic> mapa,
+367:   ) {
+368:     final eventos = _eventosFromList(
+369:       mapa['eventos'],
+370:     );
+371: 
+372:     final npcsRaw = mapa['npcs'];
+373: 
+374:     final npcs = npcsRaw is List
+375:         ? npcsRaw
+376:             .whereType<Map>()
+377:             .map(
+378:               (item) => NPC.fromMap(
+379:                 Map<String, dynamic>.from(
+380:                   item,
+381:                 ),
+382:               ),
+383:             )
+384:             .toList()
+385:         : <NPC>[];
+386: 
+387:     final criaturasRaw = mapa['criaturas'];
+388: 
+389:     final criaturas = criaturasRaw is List
+390:         ? criaturasRaw
+391:             .whereType<Map>()
+392:             .map((item) => Criatura.fromMap(
+393:                   Map<String, dynamic>.from(
+394:                     item,
+395:                   ),
+396:                 ))
+397:             .toList()
+398:         : <Criatura>[];
+399: 
+400:     final itensRaw = mapa['itens'];
+401: 
+402:     final itens = itensRaw is List
+403:         ? itensRaw
+404:             .whereType<Map>()
+405:             .map((item) => Item.fromMap(
+406:                   Map<String, dynamic>.from(
+407:                     item,
+408:                   ),
+409:                 ))
+410:             .toList()
+411:         : <Item>[];
+412: 
+413:     return PontoInteresse(
+414:       id: mapa['id']?.toString() ?? '',
+415:       nome: mapa['nome']?.toString() ?? '',
+416:       descricao: mapa['descricao']?.toString() ?? '',
+417:       localizacao: mapa['localizacao']?.toString() ?? '',
+418:       localizacaoTipo:
+419:           mapa['localizacaoTipo']?.toString().trim().isNotEmpty == true
+420:               ? mapa['localizacaoTipo'].toString()
+421:               : 'nenhuma',
+422:       localizacaoId: mapa['localizacaoId']?.toString() ?? '',
+423:       leguas: _int(mapa['leguas']),
+424:       eventos: eventos,
+425:       npcs: npcs,
+426:       criaturas: criaturas,
+427:       nivelCriatura: mapa['nivelCriatura']?.toString() ?? '',
+428:       itens: itens,
+429:       cadastroBaseId: mapa['cadastroBaseId']?.toString(),
+430:       encontros: (mapa['encontros'] is List
+431:           ? (mapa['encontros'] as List).whereType<Map>().map((item) {
+432:               final grupo = Map<String, dynamic>.from(item);
+433:               return Grupo(
+434:                   id: grupo['id']?.toString() ?? '',
+435:                   nome: grupo['nome']?.toString() ?? '',
+436:                   diurno: _encontrosFromList(grupo['diurno']),
+437:                   noturno: _encontrosFromList(grupo['noturno']),
+438:                   pesca: _encontrosFromList(grupo['pesca']),
+439:                   surfe: _encontrosFromList(grupo['surfe']));
+440:             }).toList()
+441:           : <Grupo>[]),
+442:     );
+443:   }
+444: 
+445:   static PeriodoDia? _periodoFromString(
+
+==================================================
+ARQUIVO: lib\repositories\locais_repository.dart | LINHAS 125-230
+==================================================
+125:       break;
+126:     }
+127: 
+128:     locais[indice] = Local.fromMap(mapa);
+129:     await salvarTodos(locais);
+130:   }
+131: 
+132:   Future<void> salvarPontoInteresse(String localId, PontoInteresse ponto) async {
+133:     final locais = await carregar();
+134:     final indice = locais.indexWhere((local) => local.id == localId);
+135:     if (indice == -1) return;
+136: 
+137:     final mapa = locais[indice].toMap();
+138:     final pontosRaw = mapa['pontosInteresse'];
+139:     final pontos = pontosRaw is List ? List<dynamic>.from(pontosRaw) : <dynamic>[];
+140:     final pontoMap = _pontoToMap(ponto);
+141: 
+142:     final pontoIndice = pontos.indexWhere((item) => item is Map && item['id']?.toString() == ponto.id);
+143:     if (pontoIndice == -1) {
+144:       pontos.add(pontoMap);
+145:     } else {
+146:       pontos[pontoIndice] = pontoMap;
+147:     }
+148: 
+149:     mapa['pontosInteresse'] = pontos;
+150:     locais[indice] = Local.fromMap(mapa);
+151:     await salvarTodos(locais);
+152:   }
+153: 
+154:   Future<void> removerPontoInteresse(String localId, String pontoId) async {
+155:     final locais = await carregar();
+156:     final indice = locais.indexWhere((local) => local.id == localId);
+157:     if (indice == -1) return;
+158: 
+159:     final mapa = locais[indice].toMap();
+160:     final pontos = mapa['pontosInteresse'];
+161:     if (pontos is List) {
+162:       pontos.removeWhere((ponto) => ponto is Map && ponto['id']?.toString() == pontoId);
+163:     }
+164: 
+165:     locais[indice] = Local.fromMap(mapa);
+166:     await salvarTodos(locais);
+167:   }
+168: 
+169:   Future<void> removerEventoDoLocal(String localId, String eventoId) async {
+170:     final locais = await carregar();
+171:     final indice = locais.indexWhere((local) => local.id == localId);
+172:     if (indice == -1) return;
+173: 
+174:     final mapa = locais[indice].toMap();
+175:     final eventos = mapa['eventos'];
+176:     if (eventos is List) {
+177:       eventos.removeWhere((evento) => evento is Map && evento['id']?.toString() == eventoId);
+178:     }
+179: 
+180:     locais[indice] = Local.fromMap(mapa);
+181:     await salvarTodos(locais);
+182:   }
+183: 
+184:   Future<void> removerEventoDoPonto(String localId, String pontoId, String eventoId) async {
+185:     final locais = await carregar();
+186:     final indice = locais.indexWhere((local) => local.id == localId);
+187:     if (indice == -1) return;
+188: 
+189:     final mapa = locais[indice].toMap();
+190:     final pontos = mapa['pontosInteresse'];
+191:     if (pontos is List) {
+192:       for (final ponto in pontos) {
+193:         if (ponto is Map && ponto['id']?.toString() == pontoId) {
+194:           final eventos = ponto['eventos'];
+195:           if (eventos is List) {
+196:             eventos.removeWhere((evento) => evento is Map && evento['id']?.toString() == eventoId);
+197:           }
+198:           break;
+199:         }
+200:       }
+201:     }
+202: 
+203:     locais[indice] = Local.fromMap(mapa);
+204:     await salvarTodos(locais);
+205:   }
+206: 
+207:   Map<String, dynamic> _pontoToMap(PontoInteresse ponto) {
+208:     return {
+209:       'id': ponto.id,
+210:       'nome': ponto.nome,
+211:       'descricao': ponto.descricao,
+212:       'localizacao': ponto.localizacao,
+213:       'localizacaoTipo': ponto.localizacaoTipo,
+214:       'localizacaoId': ponto.localizacaoId,
+215:       'leguas': ponto.leguas,
+216:       'eventos': ponto.eventos.map((evento) => evento.toMap()).toList(),
+217:       'npcs': ponto.npcs.map((npc) => npc.toMap()).toList(),
+218:       'criaturas': ponto.criaturas.map((criatura) => criatura.toMap()).toList(),
+219:       'nivelCriatura': ponto.nivelCriatura,
+220:       'itens': ponto.itens.map((item) => item.toMap()).toList(),
+221:     };
+222:   }
+223: 
+224:   Future<void> limpar() async {
+225:     final prefs = await SharedPreferences.getInstance();
+226:     await prefs.remove(_chave);
+227:   }
+228: }
+229: 
+
+==================================================
+ARQUIVO: lib\screens\mapa\ponto_interesse_screen.dart | LINHAS 250-340
+==================================================
+250:               crossAxisAlignment: CrossAxisAlignment.start,
+251:               children: [
+252:                 Text(
+253:                   titulo,
+254:                   style: const TextStyle(
+255:                     fontSize: 13,
+256:                     fontWeight: FontWeight.w700,
+257:                     color: _textoSecundario,
+258:                   ),
+259:                 ),
+260:                 const SizedBox(height: 2),
+261:                 Text(
+262:                   valor,
+263:                   style: const TextStyle(
+264:                     fontSize: 16,
+265:                     color: _texto,
+266:                   ),
+267:                 ),
+268:               ],
+269:             ),
+270:           ),
+271:         ],
+272:       ),
+273:     );
+274:   }
+275: 
+276:   Widget _buildCaracteristicas() {
+277:     final temLocalizacao = _pontoAtual.localizacao.trim().isNotEmpty;
+278: 
+279:     final temNivel = _pontoAtual.nivelCriatura.trim().isNotEmpty;
+280: 
+281:     final temDescricao = _pontoAtual.descricao.trim().isNotEmpty;
+282: 
+283:     if (!temDescricao &&
+284:         !temLocalizacao &&
+285:         !temNivel &&
+286:         _pontoAtual.leguas <= 0) {
+287:       return const SizedBox.shrink();
+288:     }
+289: 
+290:     return _secao(
+291:       'Informações',
+292:       Icons.info_outline,
+293:       _azul,
+294:       [
+295:         if (_pontoAtual.leguas > 0)
+296:           _linhaInformacao(
+297:             'Légua',
+298:             _pontoAtual.leguas.toString(),
+299:             Icons.route_outlined,
+300:           ),
+301:         if (temDescricao)
+302:           _linhaInformacao(
+303:             'Descrição',
+304:             _pontoAtual.descricao,
+305:             Icons.notes_outlined,
+306:           ),
+307:         if (temLocalizacao)
+308:           _linhaInformacao(
+309:             'Localização',
+310:             _pontoAtual.localizacao,
+311:             Icons.location_on_outlined,
+312:           ),
+313:         if (temNivel)
+314:           _linhaInformacao(
+315:             'Nível dos Criatura',
+316:             _pontoAtual.nivelCriatura,
+317:             Icons.pets,
+318:           ),
+319:       ],
+320:     );
+321:   }
+322: 
+323:   Widget _buildCriaturas() {
+324:     if (_pontoAtual.criaturas.isEmpty) {
+325:       return const SizedBox.shrink();
+326:     }
+327: 
+328:     return _secao(
+329:       _rotuloCriatura,
+330:       Icons.pets,
+331:       _roxo,
+332:       [
+333:         ..._pontoAtual.criaturas.map(
+334:           (criatura) => Card(
+335:             elevation: 0,
+336:             color: const Color(0xFFF8F7F3),
+337:             child: ListTile(
+338:               leading: const Icon(
+339:                 Icons.pets,
+340:                 color: _roxo,
+
+==================================================
+ARQUIVO: lib\screens\mapa\ponto_interesse_edit_screen.dart | LINHAS 1-150
+==================================================
+1: import 'package:flutter/material.dart';
+2: import 'package:shared_preferences/shared_preferences.dart';
+3: 
+4: import '../../geradores/progressao.dart';
+5: import '../../models/encontro_npc.dart';
+6: import '../../models/evento.dart';
+7: import '../../models/item.dart';
+8: import '../../models/npc.dart';
+9: import '../../models/criatura.dart';
+10: import '../../models/ponto_interesse.dart';
+11: import '../../models/grupo.dart';
+12: import '../../repositories/criaturas_repository.dart';
+13: import '../../repositories/itens_repository.dart';
+14: import '../../repositories/cadastros_repository.dart';
+15: import '../../repositories/npcs_repository.dart';
+16: import '../npcs/npc_edit_screen.dart';
+17: import '../itens/item_editar_screen.dart';
+18: import '../bestiario/criatura_editar_screen.dart';
+19: import 'evento_edit_screen.dart';
+20: 
+21: class PontoInteresseEditScreen extends StatefulWidget {
+22:   final PontoInteresse ponto;
+23: 
+24:   const PontoInteresseEditScreen({
+25:     super.key,
+26:     required this.ponto,
+27:   });
+28: 
+29:   @override
+30:   State<PontoInteresseEditScreen> createState() =>
+31:       _PontoInteresseEditScreenState();
+32: }
+33: 
+34: class _PontoInteresseEditScreenState extends State<PontoInteresseEditScreen> {
+35:   static const Color _fundo = Color(0xFFF4F1E8);
+36:   static const Color _card = Colors.white;
+37:   static const Color _borda = Color(0xFFD8D3C7);
+38:   static const Color _vermelho = Color(0xFFD64545);
+39:   static const Color _azul = Color(0xFF3D73C9);
+40:   static const Color _amarelo = Color(0xFFE3B341);
+41:   static const Color _laranja = Color(0xFFE07A32);
+42:   static const Color _verde = Color(0xFF4D9B62);
+43:   static const Color _roxo = Color(0xFF7856A8);
+44:   static const Color _texto = Color(0xFF252525);
+45:   static const Color _textoSecundario = Color(0xFF66625B);
+46: 
+47:   final CriaturasRepository _criaturasRepository = CriaturasRepository();
+48: 
+49:   late final TextEditingController _nome;
+50:   late final TextEditingController _descricao;
+51:   late final TextEditingController _efeitos;
+52:   late final TextEditingController _nivelCriatura;
+53: 
+54:   List<Evento> _eventos = [];
+55:   List<NPC> _personagens = [];
+56:   List<Item> _itens = [];
+57:   List<Criatura> _criaturas = [];
+58:   List<Criatura> _criaturasDisponiveis = [];
+59:   List<Grupo> _encontros = [];
+60: 
+61:   String _rotuloCriatura = 'Criatura';
+62: 
+63:   @override
+64:   void initState() {
+65:     super.initState();
+66: 
+67:     _nome = TextEditingController(
+68:       text: widget.ponto.nome,
+69:     );
+70: 
+71:     _descricao = TextEditingController(
+72:       text: widget.ponto.descricao,
+73:     );
+74: 
+75:     _efeitos = TextEditingController(
+76:       text: widget.ponto.efeitos,
+77:     );
+78: 
+79:     _nivelCriatura = TextEditingController(
+80:       text: widget.ponto.nivelCriatura,
+81:     );
+82: 
+83:     _eventos = List<Evento>.from(widget.ponto.eventos);
+84: 
+85:     _personagens = List<NPC>.from(widget.ponto.npcs);
+86: 
+87:     _itens = List<Item>.from(widget.ponto.itens);
+88: 
+89:     _encontros = List<Grupo>.from(widget.ponto.encontros);
+90:     _criaturas = List<Criatura>.from(widget.ponto.criaturas);
+91: 
+92:     _carregarConfiguracao();
+93:     _carregarDados();
+94:   }
+95: 
+96:   @override
+97:   void dispose() {
+98:     _nome.dispose();
+99:     _descricao.dispose();
+100: 
+101:     _efeitos.dispose();
+102:     _nivelCriatura.dispose();
+103:     super.dispose();
+104:   }
+105: 
+106:   Future<void> _carregarConfiguracao() async {
+107:     final prefs = await SharedPreferences.getInstance();
+108:     if (!mounted) return;
+109:     setState(() {
+110:       _rotuloCriatura = prefs.getString('nome_criatura') ?? 'Criatura';
+111:     });
+112:   }
+113: 
+114:   Future<void> _carregarDados() async {
+115:     final criaturas = await _criaturasRepository.carregar();
+116: 
+117:     if (!mounted) {
+118:       return;
+119:     }
+120: 
+121:     criaturas.sort(
+122:       (a, b) => a.nome.toLowerCase().compareTo(
+123:             b.nome.toLowerCase(),
+124:           ),
+125:     );
+126: 
+127:     setState(() {
+128:       _criaturasDisponiveis = criaturas;
+129:     });
+130:   }
+131: 
+132:   Future<void> _adicionarEventoExistente() async {
+133:     final eventos = await CadastrosRepository().carregarEventos();
+134:     if (!mounted) return;
+135: 
+136:     final evento = await _selecionarRegistro<Evento>(
+137:       titulo: 'Adicionar evento',
+138:       registros: eventos,
+139:       nome: (e) => e.nome,
+140:       detalhe: (e) => e.descricao,
+141:     );
+142: 
+143:     if (evento == null || !mounted) return;
+144: 
+145:     setState(() {
+146:       if (!_eventos.any((e) => e.id == evento.id)) {
+147:         _eventos.add(evento);
+148:       }
+149:     });
+150:   }
+
+==================================================
+ARQUIVO: lib\screens\mapa\ponto_interesse_edit_screen.dart | LINHAS 250-750
+==================================================
+250:     final depois = await ItensRepository().carregar();
+251:     final novos = depois
+252:         .where((item) => !antes.any((anterior) =>
+253:             anterior.nome.trim().toLowerCase() ==
+254:             item.nome.trim().toLowerCase()))
+255:         .toList();
+256: 
+257:     if (novos.isEmpty) {
+258:       await _editarItem();
+259:       return;
+260:     }
+261: 
+262:     final escolhido = novos.last;
+263:     if (!mounted) return;
+264: 
+265:     final resultado = await showDialog<Item>(
+266:       context: context,
+267:       builder: (_) => _ItemDialog(
+268:         item: escolhido.copyWith(quantidade: 1, localizacao: ''),
+269:       ),
+270:     );
+271: 
+272:     if (resultado == null || !mounted) return;
+273:     setState(() => _itens.add(resultado));
+274:   }
+275: 
+276:   Future<void> _criarCriaturaBase() async {
+277:     final nova = Criatura(
+278:       nome: '',
+279:       nivel: 1,
+280:       tipos: const [],
+281:       forca: 0,
+282:       habilidade: 0,
+283:       resistencia: 0,
+284:       armadura: 0,
+285:       defesaEspecial: 0,
+286:       poderDeFogo: 0,
+287:       poderes: const [],
+288:     );
+289: 
+290:     final resultado = await Navigator.push<Criatura>(
+291:       context,
+292:       MaterialPageRoute(
+293:         builder: (_) => CriaturaEditarScreen(
+294:           criatura: nova,
+295:           novo: true,
+296:           salvarNoRepositorio: true,
+297:         ),
+298:       ),
+299:     );
+300: 
+301:     if (resultado == null || !mounted) return;
+302: 
+303:     final baseAtualizada = await _criaturasRepository.carregar();
+304:     if (!mounted) return;
+305: 
+306:     setState(() {
+307:       _criaturasDisponiveis = baseAtualizada;
+308:       _criaturas.add(resultado);
+309:     });
+310:   }
+311: 
+312:   Future<T?> _selecionarRegistro<T>({
+313:     required String titulo,
+314:     required List<T> registros,
+315:     required String Function(T) nome,
+316:     required String Function(T) detalhe,
+317:   }) async {
+318:     if (registros.isEmpty) {
+319:       ScaffoldMessenger.of(context).showSnackBar(
+320:         const SnackBar(content: Text('Nenhum Cadastro disponível.')),
+321:       );
+322:       return null;
+323:     }
+324: 
+325:     final busca = TextEditingController();
+326:     try {
+327:       return await showDialog<T>(
+328:         context: context,
+329:         builder: (dialogContext) => StatefulBuilder(
+330:           builder: (context, atualizar) {
+331:             final filtrados = registros.where((registro) {
+332:               return nome(registro)
+333:                   .toLowerCase()
+334:                   .contains(busca.text.trim().toLowerCase());
+335:             }).toList()
+336:               ..sort((a, b) => nome(a).toLowerCase().compareTo(
+337:                     nome(b).toLowerCase(),
+338:                   ));
+339: 
+340:             return AlertDialog(
+341:               title: Text(titulo),
+342:               content: SizedBox(
+343:                 width: double.maxFinite,
+344:                 height: 420,
+345:                 child: Column(
+346:                   children: [
+347:                     TextField(
+348:                       controller: busca,
+349:                       autofocus: true,
+350:                       decoration: const InputDecoration(
+351:                         labelText: 'Buscar por nome',
+352:                         prefixIcon: Icon(Icons.search),
+353:                       ),
+354:                       onChanged: (_) => atualizar(() {}),
+355:                     ),
+356:                     const SizedBox(height: 8),
+357:                     Expanded(
+358:                       child: ListView.builder(
+359:                         itemCount: filtrados.length,
+360:                         itemBuilder: (_, index) {
+361:                           final registro = filtrados[index];
+362:                           final complemento = detalhe(registro);
+363:                           return ListTile(
+364:                             title: Text(nome(registro)),
+365:                             subtitle: complemento.trim().isEmpty
+366:                                 ? null
+367:                                 : Text(complemento),
+368:                             onTap: () => Navigator.pop(
+369:                               dialogContext,
+370:                               registro,
+371:                             ),
+372:                           );
+373:                         },
+374:                       ),
+375:                     ),
+376:                   ],
+377:                 ),
+378:               ),
+379:               actions: [
+380:                 TextButton(
+381:                   onPressed: () => Navigator.pop(dialogContext),
+382:                   child: const Text('Cancelar'),
+383:                 ),
+384:               ],
+385:             );
+386:           },
+387:         ),
+388:       );
+389:     } finally {
+390:       busca.dispose();
+391:     }
+392:   }
+393: 
+394:   Future<void> _editarEvento({
+395:     Evento? evento,
+396:   }) async {
+397:     final resultado = await Navigator.push<Evento>(
+398:       context,
+399:       MaterialPageRoute(
+400:         builder: (_) => EventoEditScreen(
+401:           evento: evento,
+402:         ),
+403:       ),
+404:     );
+405: 
+406:     if (resultado == null || !mounted) {
+407:       return;
+408:     }
+409: 
+410:     setState(() {
+411:       if (evento == null) {
+412:         _eventos.add(resultado);
+413:       } else {
+414:         final indice = _eventos.indexWhere(
+415:           (item) => item.id == evento.id,
+416:         );
+417: 
+418:         if (indice >= 0) {
+419:           _eventos[indice] = resultado;
+420:         } else {
+421:           _eventos.add(resultado);
+422:         }
+423:       }
+424:     });
+425:   }
+426: 
+427:   Future<void> _editarNPC({NPC? npc}) async {
+428:     final resultado = await showDialog<EncontroNPC>(
+429:       context: context,
+430:       builder: (_) => _NPCDialog(
+431:         npc: npc,
+432:         tipo: 'Personagem',
+433:       ),
+434:     );
+435: 
+436:     if (resultado == null || !mounted) return;
+437: 
+438:     setState(() {
+439:       if (npc == null) {
+440:         _personagens.add(resultado.npc);
+441:       } else {
+442:         final indice = _personagens.indexWhere((item) => item.id == npc.id);
+443:         if (indice >= 0) {
+444:           _personagens[indice] = resultado.npc;
+445:         } else {
+446:           _personagens.add(resultado.npc);
+447:         }
+448:       }
+449:     });
+450:   }
+451: 
+452:   Future<void> _editarItem({
+453:     Item? item,
+454:   }) async {
+455:     if (item == null) {
+456:       final itensBase = await ItensRepository().carregar();
+457: 
+458:       if (!mounted) {
+459:         return;
+460:       }
+461: 
+462:       if (itensBase.isEmpty) {
+463:         ScaffoldMessenger.of(context).showSnackBar(
+464:           const SnackBar(
+465:             content: Text('Nenhum Cadastro'),
+466:           ),
+467:         );
+468:         return;
+469:       }
+470: 
+471:       final itemBase = await showDialog<Item>(
+472:         context: context,
+473:         builder: (context) => _SelecionarItemDialog(
+474:           itens: itensBase,
+475:         ),
+476:       );
+477: 
+478:       if (itemBase == null || !mounted) {
+479:         return;
+480:       }
+481: 
+482:       final copia = itemBase.copyWith(
+483:         quantidade: 1,
+484:         localizacao: '',
+485:       );
+486: 
+487:       final resultado = await showDialog<Item>(
+488:         context: context,
+489:         builder: (_) => _ItemDialog(item: copia),
+490:       );
+491: 
+492:       if (resultado == null || !mounted) {
+493:         return;
+494:       }
+495: 
+496:       setState(() {
+497:         _itens.add(resultado);
+498:       });
+499:       return;
+500:     }
+501: 
+502:     final resultado = await showDialog<Item>(
+503:       context: context,
+504:       builder: (_) => _ItemDialog(
+505:         item: item,
+506:       ),
+507:     );
+508: 
+509:     if (resultado == null || !mounted) {
+510:       return;
+511:     }
+512: 
+513:     setState(() {
+514:       final indice = _itens.indexWhere(
+515:         (valor) => valor.nome == item.nome,
+516:       );
+517: 
+518:       if (indice >= 0) {
+519:         _itens[indice] = resultado;
+520:       }
+521:     });
+522:   }
+523: 
+524:   Future<void> _excluirEvento(Evento evento) async {
+525:     final confirmar = await _confirmar(
+526:       'Excluir evento?',
+527:       'O evento "" será removido deste ponto.',
+528:     );
+529: 
+530:     if (confirmar && mounted) {
+531:       setState(() {
+532:         _eventos.removeWhere(
+533:           (valor) => valor.id == evento.id,
+534:         );
+535:       });
+536:     }
+537:   }
+538: 
+539:   Future<void> _excluirNPC(NPC npc) async {
+540:     final confirmar = await _confirmar(
+541:       'Excluir personagem?',
+542:       'O personagem "${npc.nome}" será removido deste ponto.',
+543:     );
+544: 
+545:     if (confirmar && mounted) {
+546:       setState(() {
+547:         _personagens.removeWhere((valor) => valor.id == npc.id);
+548:       });
+549:     }
+550:   }
+551: 
+552:   Future<void> _adicionarCriaturaExistente() async {
+553:     final criaturas = await _criaturasRepository.carregar();
+554:     if (!mounted) return;
+555: 
+556:     final resultado = await showDialog<Criatura>(
+557:       context: context,
+558:       builder: (_) => _CriaturaDialog(
+559:         criaturas: criaturas,
+560:         nivelPadrao: _nivelCriatura.text.trim().isEmpty
+561:             ? '1'
+562:             : _nivelCriatura.text.trim(),
+563:       ),
+564:     );
+565: 
+566:     if (resultado == null || !mounted) return;
+567: 
+568:     setState(() {
+569:       _criaturasDisponiveis = criaturas;
+570:       _criaturas.add(resultado);
+571:     });
+572:   }
+573: 
+574:   Future<void> _editarCriatura({
+575:     Criatura? criatura,
+576:   }) async {
+577:     final criaturas = List<Criatura>.from(
+578:       _criaturasDisponiveis,
+579:     );
+580: 
+581:     if (criaturas.isEmpty) {
+582:       final carregados = await _criaturasRepository.carregar();
+583: 
+584:       if (!mounted) {
+585:         return;
+586:       }
+587: 
+588:       criaturas.addAll(carregados);
+589:       criaturas.sort(
+590:         (a, b) => a.nome.toLowerCase().compareTo(
+591:               b.nome.toLowerCase(),
+592:             ),
+593:       );
+594:     }
+595: 
+596:     if (criaturas.isEmpty) {
+597:       ScaffoldMessenger.of(context).showSnackBar(
+598:         const SnackBar(
+599:           content: Text(
+600:             'Nenhum Cadastro',
+601:           ),
+602:         ),
+603:       );
+604:       return;
+605:     }
+606: 
+607:     final resultado = await showDialog<Criatura>(
+608:       context: context,
+609:       builder: (_) => _CriaturaDialog(
+610:         criaturas: criaturas,
+611:         criatura: criatura,
+612:         nivelPadrao: _nivelCriatura.text.trim().isEmpty
+613:             ? '1'
+614:             : _nivelCriatura.text.trim(),
+615:       ),
+616:     );
+617: 
+618:     if (resultado == null || !mounted) {
+619:       return;
+620:     }
+621: 
+622:     setState(() {
+623:       if (criatura == null) {
+624:         _criaturas.add(resultado);
+625:       } else {
+626:         final indice = _criaturas.indexWhere(
+627:           (valor) => valor.id == criatura.id,
+628:         );
+629: 
+630:         if (indice >= 0) {
+631:           _criaturas[indice] = resultado;
+632:         } else {
+633:           _criaturas.add(resultado);
+634:         }
+635:       }
+636:     });
+637:   }
+638: 
+639:   Future<void> _excluirItem(Item item) async {
+640:     final confirmar = await _confirmar(
+641:       'Excluir item?',
+642:       'O item "${item.nome}" será removido deste ponto.',
+643:     );
+644: 
+645:     if (confirmar && mounted) {
+646:       setState(() {
+647:         _itens.removeWhere(
+648:           (valor) => valor.nome == item.nome,
+649:         );
+650:       });
+651:     }
+652:   }
+653: 
+654:   Future<void> _excluirCriatura(Criatura criatura) async {
+655:     final confirmar = await _confirmar(
+656:       'Excluir Criatura?',
+657:       '${criatura.nome} nível ${criatura.nivel} será removido deste ponto.',
+658:     );
+659: 
+660:     if (confirmar && mounted) {
+661:       setState(() {
+662:         _criaturas.remove(criatura);
+663:       });
+664:     }
+665:   }
+666: 
+667:   Future<bool> _confirmar(
+668:     String titulo,
+669:     String mensagem,
+670:   ) async {
+671:     final resultado = await showDialog<bool>(
+672:       context: context,
+673:       builder: (context) => AlertDialog(
+674:         title: Text(titulo),
+675:         content: Text(mensagem),
+676:         actions: [
+677:           TextButton(
+678:             onPressed: () => Navigator.pop(context, false),
+679:             child: const Text('Cancelar'),
+680:           ),
+681:           FilledButton(
+682:             style: FilledButton.styleFrom(
+683:               backgroundColor: _vermelho,
+684:               foregroundColor: Colors.white,
+685:             ),
+686:             onPressed: () => Navigator.pop(context, true),
+687:             child: const Text('Excluir'),
+688:           ),
+689:         ],
+690:       ),
+691:     );
+692: 
+693:     return resultado == true;
+694:   }
+695: 
+696:   void _salvar() {
+697:     final nome = _nome.text.trim();
+698: 
+699:     if (nome.isEmpty) {
+700:       ScaffoldMessenger.of(context).showSnackBar(
+701:         const SnackBar(
+702:           content: Text(
+703:             'Informe o nome do ponto de interesse.',
+704:           ),
+705:         ),
+706:       );
+707:       return;
+708:     }
+709: 
+710:     final ponto = PontoInteresse(
+711:       id: widget.ponto.id.isNotEmpty
+712:           ? widget.ponto.id
+713:           : DateTime.now().microsecondsSinceEpoch.toString(),
+714:       nome: nome,
+715:       descricao: _descricao.text.trim(),
+716:       efeitos: _efeitos.text.trim(),
+717:       cadastroBaseId: widget.ponto.cadastroBaseId,
+718:       localizacao: widget.ponto.localizacao,
+719:       localizacaoTipo: widget.ponto.localizacaoTipo,
+720:       localizacaoId: widget.ponto.localizacaoId,
+721:       leguas: widget.ponto.leguas,
+722:       eventos: List<Evento>.from(_eventos),
+723:       npcs: [
+724:         ..._personagens,
+725:       ],
+726:       criaturas: List<Criatura>.from(_criaturas),
+727:       nivelCriatura: _nivelCriatura.text.trim(),
+728:       itens: List<Item>.from(_itens),
+729:       encontros: List<Grupo>.from(_encontros),
+730:     );
+731: 
+732:     Navigator.pop(context, ponto);
+733:   }
+734: 
+735:   Widget _campoTexto({
+736:     required String label,
+737:     required TextEditingController controller,
+738:     required IconData icone,
+739:     int maxLines = 1,
+740:   }) {
+741:     return TextField(
+742:       controller: controller,
+743:       maxLines: maxLines,
+744:       decoration: InputDecoration(
+745:         labelText: label,
+746:         prefixIcon: Icon(icone),
+747:         filled: true,
+748:         fillColor: _card,
+749:         border: OutlineInputBorder(
+750:           borderRadius: BorderRadius.circular(14),
