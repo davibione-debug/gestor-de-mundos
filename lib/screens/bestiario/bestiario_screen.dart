@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/criatura.dart';
@@ -271,6 +271,11 @@ class _PokedexScreenState extends State<PokedexScreen> {
       return Scaffold(
         appBar: AppBar(
           title: Text(_nomeMenu),
+          leading: IconButton(
+            tooltip: 'Voltar',
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).maybePop(),
+          ),
         ),
         body: const Center(
           child: CircularProgressIndicator(),
@@ -282,6 +287,11 @@ class _PokedexScreenState extends State<PokedexScreen> {
       return Scaffold(
         appBar: AppBar(
           title: Text(_nomeMenu),
+          leading: IconButton(
+            tooltip: 'Voltar',
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).maybePop(),
+          ),
         ),
         body: const Center(
           child: Text(
@@ -301,6 +311,11 @@ class _PokedexScreenState extends State<PokedexScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_nomeMenu),
+        leading: IconButton(
+          tooltip: 'Voltar',
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).maybePop(),
+        ),
         actions: [
           IconButton(
             tooltip: 'Atualizar',
@@ -439,7 +454,7 @@ class _PokedexScreenState extends State<PokedexScreen> {
                   const SizedBox(height: 4),
                   Text(
                     'Não há Criatura com o nome '
-                    '“$_pesquisa”.',
+                    '"$_pesquisa".',
                     textAlign: TextAlign.center,
                     style: tema.textTheme.bodySmall?.copyWith(
                       color: cores.onSurfaceVariant,
