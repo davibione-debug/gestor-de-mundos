@@ -10,17 +10,13 @@ class TreinadoresScreen extends StatefulWidget {
   const TreinadoresScreen({super.key});
 
   @override
-  State<TreinadoresScreen> createState() =>
-      _TreinadoresScreenState();
+  State<TreinadoresScreen> createState() => _TreinadoresScreenState();
 }
 
-class _TreinadoresScreenState
-    extends State<TreinadoresScreen> {
-  final NPCsRepository _repository =
-      NPCsRepository();
+class _TreinadoresScreenState extends State<TreinadoresScreen> {
+  final NPCsRepository _repository = NPCsRepository();
 
-  final TextEditingController _pesquisaController =
-      TextEditingController();
+  final TextEditingController _pesquisaController = TextEditingController();
 
   List<NPC> _npcs = [];
   bool _carregando = true;
@@ -49,6 +45,7 @@ class _TreinadoresScreenState
       _nomeMenu = nome.isEmpty ? 'Personagens' : nome;
     });
   }
+
   Future<void> _carregar() async {
     setState(() {
       _carregando = true;
@@ -65,8 +62,7 @@ class _TreinadoresScreenState
         _npcs = npcs;
         _carregando = false;
 
-        if (_tipoSelecionado != 'Todos' &&
-            !_tipos.contains(_tipoSelecionado)) {
+        if (_tipoSelecionado != 'Todos' && !_tipos.contains(_tipoSelecionado)) {
           _tipoSelecionado = 'Todos';
         }
       });
@@ -102,8 +98,8 @@ class _TreinadoresScreenState
 
     tipos.sort(
       (a, b) => a.toLowerCase().compareTo(
-        b.toLowerCase(),
-      ),
+            b.toLowerCase(),
+          ),
     );
 
     return tipos;
@@ -115,22 +111,18 @@ class _TreinadoresScreenState
     final resultado = _npcs.where((npc) {
       final nome = _normalizar(npc.nome);
 
-      final correspondeNome =
-          pesquisa.isEmpty ||
-          nome.contains(pesquisa);
+      final correspondeNome = pesquisa.isEmpty || nome.contains(pesquisa);
 
       final correspondeTipo =
-          _tipoSelecionado == 'Todos' ||
-          npc.tipo.trim() == _tipoSelecionado;
+          _tipoSelecionado == 'Todos' || npc.tipo.trim() == _tipoSelecionado;
 
-      return correspondeNome &&
-          correspondeTipo;
+      return correspondeNome && correspondeTipo;
     }).toList();
 
     resultado.sort(
       (a, b) => a.nome.toLowerCase().compareTo(
-        b.nome.toLowerCase(),
-      ),
+            b.nome.toLowerCase(),
+          ),
     );
 
     return resultado;
@@ -171,15 +163,12 @@ class _TreinadoresScreenState
 
   Future<void> _adicionarTreinador() async {
     final novo = NPC(
-      id: DateTime.now()
-          .microsecondsSinceEpoch
-          .toString(),
+      id: DateTime.now().microsecondsSinceEpoch.toString(),
       nome: '',
       descricao: '',
     );
 
-    final resultado =
-        await Navigator.push<bool>(
+    final resultado = await Navigator.push<bool>(
       context,
       MaterialPageRoute(
         builder: (_) => NPCEditScreen(
@@ -195,8 +184,7 @@ class _TreinadoresScreenState
   }
 
   Future<void> _editarTreinador(NPC npc) async {
-    final resultado =
-        await Navigator.push<bool>(
+    final resultado = await Navigator.push<bool>(
       context,
       MaterialPageRoute(
         builder: (_) => NPCEditScreen(
@@ -211,8 +199,7 @@ class _TreinadoresScreenState
   }
 
   Future<void> _abrirTreinador(NPC npc) async {
-    final resultado =
-        await Navigator.push<bool>(
+    final resultado = await Navigator.push<bool>(
       context,
       MaterialPageRoute(
         builder: (_) => NPCScreen(
@@ -263,8 +250,7 @@ class _TreinadoresScreenState
                   ),
                 ),
               ),
-              if (_pesquisa.isNotEmpty ||
-                  _tipoSelecionado != 'Todos')
+              if (_pesquisa.isNotEmpty || _tipoSelecionado != 'Todos')
                 TextButton(
                   onPressed: () {
                     setState(() {
@@ -291,21 +277,20 @@ class _TreinadoresScreenState
               prefixIcon: const Icon(
                 Icons.search,
               ),
-              suffixIcon:
-                  _pesquisaController.text.isEmpty
-                      ? null
-                      : IconButton(
-                          tooltip: 'Limpar pesquisa',
-                          onPressed: () {
-                            _pesquisaController.clear();
-                            setState(() {
-                              _pesquisa = '';
-                            });
-                          },
-                          icon: const Icon(
-                            Icons.clear,
-                          ),
-                        ),
+              suffixIcon: _pesquisaController.text.isEmpty
+                  ? null
+                  : IconButton(
+                      tooltip: 'Limpar pesquisa',
+                      onPressed: () {
+                        _pesquisaController.clear();
+                        setState(() {
+                          _pesquisa = '';
+                        });
+                      },
+                      icon: const Icon(
+                        Icons.clear,
+                      ),
+                    ),
               border: const OutlineInputBorder(),
             ),
           ),
@@ -371,8 +356,7 @@ class _TreinadoresScreenState
                   color: Colors.red.withValues(
                     alpha: 0.10,
                   ),
-                  borderRadius:
-                      BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(
                   Icons.person,
@@ -383,72 +367,56 @@ class _TreinadoresScreenState
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       npc.nome,
                       maxLines: 1,
-                      overflow:
-                          TextOverflow.ellipsis,
+                      overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         fontSize: 17,
-                        fontWeight:
-                            FontWeight.w900,
+                        fontWeight: FontWeight.w900,
                       ),
                     ),
                     if (npc.tipo.trim().isNotEmpty)
                       Padding(
-                        padding:
-                            const EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                           top: 5,
                         ),
                         child: Container(
-                          padding:
-                              const EdgeInsets
-                                  .symmetric(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 8,
                             vertical: 3,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.red
-                                .withValues(
+                            color: Colors.red.withValues(
                               alpha: 0.10,
                             ),
-                            borderRadius:
-                                BorderRadius
-                                    .circular(
+                            borderRadius: BorderRadius.circular(
                               20,
                             ),
                           ),
                           child: Text(
                             npc.tipo,
-                            style:
-                                const TextStyle(
+                            style: const TextStyle(
                               color: Colors.red,
                               fontSize: 11,
-                              fontWeight:
-                                  FontWeight.w800,
+                              fontWeight: FontWeight.w800,
                             ),
                           ),
                         ),
                       ),
-                    if (npc.descricao
-                        .trim()
-                        .isNotEmpty)
+                    if (npc.descricao.trim().isNotEmpty)
                       Padding(
-                        padding:
-                            const EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                           top: 5,
                         ),
                         child: Text(
                           npc.descricao,
                           maxLines: 2,
-                          overflow:
-                              TextOverflow.ellipsis,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            color: Colors.grey
-                                .shade700,
+                            color: Colors.grey.shade700,
                             fontSize: 13,
                             height: 1.3,
                           ),
@@ -458,10 +426,8 @@ class _TreinadoresScreenState
                 ),
               ),
               IconButton(
-                tooltip:
-                    'Editar treinador',
-                onPressed: () =>
-                    _editarTreinador(npc),
+                tooltip: 'Editar treinador',
+                onPressed: () => _editarTreinador(npc),
                 icon: const Icon(
                   Icons.edit_outlined,
                 ),
@@ -511,31 +477,25 @@ class _TreinadoresScreenState
             Expanded(
               child: _npcsFiltrados.isEmpty
                   ? ListView(
-                      physics:
-                          const AlwaysScrollableScrollPhysics(),
-                      padding:
-                          const EdgeInsets.all(24),
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: const EdgeInsets.all(24),
                       children: [
                         const SizedBox(height: 45),
                         Icon(
                           Icons.person_search,
                           size: 58,
-                          color:
-                              Colors.grey.shade400,
+                          color: Colors.grey.shade400,
                         ),
                         const SizedBox(height: 14),
                         Center(
                           child: Text(
                             _npcs.isEmpty
-                                ? 'Nenhum treinador cadastrado.'
+                                ? 'Nenhum personagem cadastrado.'
                                 : 'Nenhum treinador encontrado.',
-                            textAlign:
-                                TextAlign.center,
-                            style:
-                                const TextStyle(
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
                               fontSize: 17,
-                              fontWeight:
-                                  FontWeight.w800,
+                              fontWeight: FontWeight.w800,
                             ),
                           ),
                         ),
@@ -543,12 +503,10 @@ class _TreinadoresScreenState
                           const SizedBox(height: 8),
                           const Center(
                             child: Text(
-                              'Use o botão + para cadastrar o primeiro treinador.',
-                              textAlign:
-                                  TextAlign.center,
+                              'Use o botão + para cadastrar o primeiro personagem.',
+                              textAlign: TextAlign.center,
                               style: TextStyle(
-                                color:
-                                    Colors.black54,
+                                color: Colors.black54,
                               ),
                             ),
                           ),
@@ -556,19 +514,15 @@ class _TreinadoresScreenState
                       ],
                     )
                   : ListView.builder(
-                      physics:
-                          const AlwaysScrollableScrollPhysics(),
-                      padding:
-                          const EdgeInsets.fromLTRB(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: const EdgeInsets.fromLTRB(
                         12,
                         12,
                         12,
                         90,
                       ),
-                      itemCount:
-                          _npcsFiltrados.length,
-                      itemBuilder:
-                          (context, index) {
+                      itemCount: _npcsFiltrados.length,
+                      itemBuilder: (context, index) {
                         return _buildTreinador(
                           _npcsFiltrados[index],
                         );
@@ -578,8 +532,7 @@ class _TreinadoresScreenState
           ],
         ),
       ),
-      floatingActionButton:
-          FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: _adicionarTreinador,
         icon: const Icon(Icons.add),
         label: const Text(
@@ -589,5 +542,3 @@ class _TreinadoresScreenState
     );
   }
 }
-
-
