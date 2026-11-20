@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PersonalizarScreen extends StatefulWidget {
@@ -10,7 +10,7 @@ class PersonalizarScreen extends StatefulWidget {
 
 class _PersonalizarScreenState extends State<PersonalizarScreen> {
   final _formKey = GlobalKey<FormState>();
-  
+
   // Controladores para cada campo
   final _appTituloController = TextEditingController();
   final _appSubtituloController = TextEditingController();
@@ -52,56 +52,73 @@ class _PersonalizarScreenState extends State<PersonalizarScreen> {
   Future<void> _carregarDados() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _appTituloController.text = prefs.getString('app_titulo') ?? 'Painel do Mestre';
-      _appSubtituloController.text = prefs.getString('app_subtitulo') ?? 'Escolha uma ferramenta';
+      _appTituloController.text =
+          prefs.getString('app_titulo') ?? 'Painel do Mestre';
+      _appSubtituloController.text =
+          prefs.getString('app_subtitulo') ?? 'Escolha uma ferramenta';
       _menuMapaController.text = prefs.getString('menu_mapa') ?? 'Mapa';
-      _menuBestiarioController.text = prefs.getString('menu_bestiario') ?? 'Bestiário';
-      _menuPersonagensController.text = prefs.getString('menu_personagens') ?? 'Personagens';
+      _menuBestiarioController.text =
+          prefs.getString('menu_bestiario') ?? 'Bestiário';
+      _menuPersonagensController.text =
+          prefs.getString('menu_personagens') ?? 'Personagens';
       _menuItensController.text = prefs.getString('menu_itens') ?? 'Itens';
-      _menuCriaturasController.text = prefs.getString('menu_criaturas') ?? 'Criaturas';
-      _menuAliadosController.text = prefs.getString('menu_aliados') ?? 'Aliados';
-      _menuInimigosController.text = prefs.getString('menu_inimigos') ?? 'Inimigos';
-      _nomePersonagemController.text = prefs.getString('nome_personagem') ?? 'Personagem';
-      _nomeCriaturaController.text = prefs.getString('nome_criatura') ?? 'Criatura';
+      _menuCriaturasController.text =
+          prefs.getString('menu_criaturas') ?? 'Criaturas';
+      _menuAliadosController.text =
+          prefs.getString('menu_aliados') ?? 'Aliados';
+      _menuInimigosController.text =
+          prefs.getString('menu_inimigos') ?? 'Inimigos';
+      _nomePersonagemController.text =
+          prefs.getString('nome_personagem') ?? 'Personagem';
+      _nomeCriaturaController.text =
+          prefs.getString('nome_criatura') ?? 'Criatura';
       _carregando = false;
     });
   }
 
-  Future<void> _salvarString(SharedPreferences prefs, String chave, String valor) async {
+  Future<void> _salvarString(
+      SharedPreferences prefs, String chave, String valor) async {
     final texto = valor.trim();
     // Salva a string vazia em vez de remover a chave
     await prefs.setString(chave, texto);
   }
-  }
-Future<void> _salvar() async {
+
+  Future<void> _salvar() async {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _salvando = true);
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      
+
       await _salvarString(prefs, 'app_titulo', _appTituloController.text);
       await _salvarString(prefs, 'app_subtitulo', _appSubtituloController.text);
       await _salvarString(prefs, 'menu_mapa', _menuMapaController.text);
-      await _salvarString(prefs, 'menu_bestiario', _menuBestiarioController.text);
-      await _salvarString(prefs, 'menu_personagens', _menuPersonagensController.text);
+      await _salvarString(
+          prefs, 'menu_bestiario', _menuBestiarioController.text);
+      await _salvarString(
+          prefs, 'menu_personagens', _menuPersonagensController.text);
       await _salvarString(prefs, 'menu_itens', _menuItensController.text);
-      await _salvarString(prefs, 'menu_criaturas', _menuCriaturasController.text);
+      await _salvarString(
+          prefs, 'menu_criaturas', _menuCriaturasController.text);
       await _salvarString(prefs, 'menu_aliados', _menuAliadosController.text);
       await _salvarString(prefs, 'menu_inimigos', _menuInimigosController.text);
-      await _salvarString(prefs, 'nome_personagem', _nomePersonagemController.text);
+      await _salvarString(
+          prefs, 'nome_personagem', _nomePersonagemController.text);
       await _salvarString(prefs, 'nome_criatura', _nomeCriaturaController.text);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Configurações salvas com sucesso!'), backgroundColor: Colors.green),
+          const SnackBar(
+              content: Text('Configurações salvas com sucesso!'),
+              backgroundColor: Colors.green),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro ao salvar: $e'), backgroundColor: Colors.red),
+          SnackBar(
+              content: Text('Erro ao salvar: $e'), backgroundColor: Colors.red),
         );
       }
     } finally {
@@ -148,7 +165,6 @@ Future<void> _salvar() async {
             _secao('Geral'),
             _campo('Título do App', _appTituloController),
             _campo('Subtítulo do App', _appSubtituloController),
-            
             _secao('Menus'),
             _campo('Menu Mapa', _menuMapaController),
             _campo('Menu Bestiário', _menuBestiarioController),
@@ -157,17 +173,20 @@ Future<void> _salvar() async {
             _campo('Menu Criaturas', _menuCriaturasController),
             _campo('Menu Aliados', _menuAliadosController),
             _campo('Menu Inimigos', _menuInimigosController),
-            
             _secao('Termos'),
             _campo('Termo para Personagem', _nomePersonagemController),
             _campo('Termo para Criatura', _nomeCriaturaController),
-            
             const SizedBox(height: 32),
             SizedBox(
               height: 56,
               child: ElevatedButton.icon(
                 onPressed: _salvando ? null : _salvar,
-                icon: _salvando ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2)) : const Icon(Icons.save),
+                icon: _salvando
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2))
+                    : const Icon(Icons.save),
                 label: Text(_salvando ? 'Salvando...' : 'Salvar Configurações'),
               ),
             ),
