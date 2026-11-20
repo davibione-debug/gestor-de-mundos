@@ -581,15 +581,6 @@ class _CriaturaDetalheScreenState extends ConsumerState<CriaturaDetalheScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _linhaPv(batalha),
-            if (widget.origem == OrigemCriatura.treinador &&
-                batalha.criatura.itemEquipado != null) ...[
-              const Divider(height: 28),
-              _itemCard(
-                titulo: 'ITEM EQUIPADO',
-                item: batalha.criatura.itemEquipado!,
-                destaque: false,
-              ),
-            ],
             if (batalha.criatura.poderes.isNotEmpty) ...[
               const Divider(height: 28),
               for (var i = 0; i < batalha.criatura.poderes.length; i++)
@@ -1097,9 +1088,7 @@ class _CriaturaDetalheScreenState extends ConsumerState<CriaturaDetalheScreen> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: _itemCard(
-                  titulo: widget.origem == OrigemCriatura.treinador
-                      ? 'Item Equipado'
-                      : 'Item Comum (50%)',
+                  titulo: '',
                   item: comum,
                   destaque: false,
                 ),
@@ -1136,16 +1125,21 @@ class _CriaturaDetalheScreenState extends ConsumerState<CriaturaDetalheScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            titulo,
-            style: TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w800,
-              color: destaque ? Colors.amber.shade900 : Colors.grey.shade700,
-              letterSpacing: 0.5,
-            ),
-          ),
-          const SizedBox(height: 6),
+          if (titulo.isNotEmpty) ...[
+            if (titulo.isNotEmpty) ...[
+              Text(
+                titulo,
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w800,
+                  color:
+                      destaque ? Colors.amber.shade900 : Colors.grey.shade700,
+                  letterSpacing: 0.5,
+                ),
+              ),
+              const SizedBox(height: 6),
+            ],
+          ],
           Row(
             children: [
               Icon(
@@ -1200,13 +1194,13 @@ class _CriaturaDetalheScreenState extends ConsumerState<CriaturaDetalheScreen> {
                 ),
             ],
           ),
-          if (item.efeito.trim().isNotEmpty) ...[
-            const SizedBox(height: 6),
-            Text(
-              item.efeito,
-              style: const TextStyle(fontSize: 13, height: 1.3),
-            ),
-          ],
+          const SizedBox(height: 6),
+          Text(
+            item.efeito.trim().isEmpty
+                ? 'Efeito não cadastrado.'
+                : 'Efeito: ${item.efeito}',
+            style: const TextStyle(fontSize: 13, height: 1.3),
+          ),
         ],
       ),
     );

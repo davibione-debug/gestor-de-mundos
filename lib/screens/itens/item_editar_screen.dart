@@ -52,20 +52,18 @@ class _ItemEditarScreenState extends State<ItemEditarScreen> {
   }
 
   Future<void> _salvar() async {
-    if (!_formKey.currentState!.validate()) {
+    if (_salvando || !_formKey.currentState!.validate()) {
       return;
     }
 
     final custo = int.tryParse(
-      _custoController.text.trim().replaceAll(',', '.'),
+      _custoController.text.trim(),
     );
 
     if (custo == null || custo < 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(
-            'Informe um custo válido.',
-          ),
+          content: Text('Informe um custo válido.'),
         ),
       );
       return;
@@ -82,69 +80,40 @@ class _ItemEditarScreenState extends State<ItemEditarScreen> {
       custoEmCreditos: custo,
       efeito: _efeitoController.text.trim(),
       localizacao: widget.item.localizacao,
+      quantidade: widget.item.quantidade,
     );
 
     try {
-      if (!widget.novo &&
-          item.nome.toLowerCase() != widget.item.nome.toLowerCase()) {
-        final existente = await _repository.carregar();
+      final existente = await _repository.carregar();
 
-        final duplicado = existente.any(
-          (outro) =>
-              outro.nome.trim().toLowerCase() ==
-                  item.nome.trim().toLowerCase() &&
-              outro.nome.trim().toLowerCase() !=
-                  widget.item.nome.trim().toLowerCase(),
+      if (!mounted) {
+        return;
+      }
+
+      final nomeOriginal = widget.item.nome.trim().toLowerCase();
+      final nomeNovo = item.nome.trim().toLowerCase();
+
+      final duplicado = existente.any(
+        (outro) =>
+            outro.nome.trim().toLowerCase() == nomeNovo &&
+            (widget.novo || outro.nome.trim().toLowerCase() != nomeOriginal),
+      );
+
+      if (duplicado) {
+        setState(() {
+          _salvando = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Já existe um item com esse nome.'),
+          ),
         );
+        return;
+      }
 
-        if (duplicado) {
-          if (!mounted) {
-            return;
-          }
-
-          setState(() {
-            _salvando = false;
-          });
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                'Já existe um item com esse nome.',
-              ),
-            ),
-          );
-          return;
-        }
-
-        await _repository.remover(
-          widget.item.nome,
-        );
-      } else if (widget.novo) {
-        final existente = await _repository.carregar();
-
-        final duplicado = existente.any(
-          (outro) =>
-              outro.nome.trim().toLowerCase() == item.nome.trim().toLowerCase(),
-        );
-
-        if (duplicado) {
-          if (!mounted) {
-            return;
-          }
-
-          setState(() {
-            _salvando = false;
-          });
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                'Já existe um item com esse nome.',
-              ),
-            ),
-          );
-          return;
-        }
+      if (!widget.novo && nomeNovo != nomeOriginal) {
+        await _repository.remover(widget.item.nome);
       }
 
       await _repository.salvar(item);
@@ -153,8 +122,11 @@ class _ItemEditarScreenState extends State<ItemEditarScreen> {
         return;
       }
 
-      Navigator.pop(context, true);
-    } catch (e) {
+      Navigator.of(context).pop<Item>(item);
+    } catch (e, stackTrace) {
+      debugPrint('[ERRO AO SALVAR ITEM] $e');
+      debugPrintStack(stackTrace: stackTrace);
+
       if (!mounted) {
         return;
       }
@@ -165,9 +137,8 @@ class _ItemEditarScreenState extends State<ItemEditarScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            'Não foi possível salvar o item: ',
-          ),
+          content: Text('Não foi possível salvar o item: $e'),
+          duration: const Duration(seconds: 10),
         ),
       );
     }
@@ -205,21 +176,14 @@ class _ItemEditarScreenState extends State<ItemEditarScreen> {
                       strokeWidth: 2,
                     ),
                   )
-                : const Icon(
-                    Icons.save_outlined,
-                  ),
+                : const Icon(Icons.save_outlined),
           ),
         ],
       ),
       body: Form(
         key: _formKey,
         child: ListView(
-          padding: const EdgeInsets.fromLTRB(
-            16,
-            16,
-            16,
-            100,
-          ),
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
           children: [
             TextFormField(
               controller: _nomeController,
@@ -233,7 +197,6 @@ class _ItemEditarScreenState extends State<ItemEditarScreen> {
                 if (valor == null || valor.trim().isEmpty) {
                   return 'Informe o nome do item.';
                 }
-
                 return null;
               },
             ),
@@ -250,7 +213,6 @@ class _ItemEditarScreenState extends State<ItemEditarScreen> {
                 if (valor == null || valor.trim().isEmpty) {
                   return 'Informe o tipo do item.';
                 }
-
                 return null;
               },
             ),
@@ -264,14 +226,10 @@ class _ItemEditarScreenState extends State<ItemEditarScreen> {
                 icon: Icons.monetization_on_outlined,
               ),
               validator: (valor) {
-                final numero = int.tryParse(
-                  valor?.trim() ?? '',
-                );
-
+                final numero = int.tryParse(valor?.trim() ?? '');
                 if (numero == null || numero < 0) {
                   return 'Informe um custo válido.';
                 }
-
                 return null;
               },
             ),
@@ -304,9 +262,7 @@ class _ItemEditarScreenState extends State<ItemEditarScreen> {
               height: 50,
               child: FilledButton.icon(
                 onPressed: _salvando ? null : _salvar,
-                icon: const Icon(
-                  Icons.save_outlined,
-                ),
+                icon: const Icon(Icons.save_outlined),
                 label: Text(
                   widget.novo ? 'Adicionar Item' : 'Salvar Alterações',
                 ),
