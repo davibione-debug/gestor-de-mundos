@@ -1608,7 +1608,7 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
           maxLines: 1,
           decoration: InputDecoration(
             labelText:
-                'Resultado dos dados ,? ${_modalidades[_abaEncontro]}',
+                'Resultado dos dados,{_modalidades[_abaEncontro]}',
             hintText: 'Ex.: 1-3 Nada, 4-5 Criatura, 6 Personagem',
             prefixIcon: const Icon(
               Icons.casino_outlined,
@@ -1869,7 +1869,7 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
     }
 
     return partes.isEmpty
-        ? 'Sem restrií§íµes'
+        ? 'Sem restrições'
         : partes.join(' ,Á‚Â¢ ');
   }
 
@@ -2207,7 +2207,7 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
                       child: TextField(
                         controller: _regiaoController,
                         decoration: const InputDecoration(
-                          labelText: 'Regií£o',
+                          labelText: 'Região',
                           prefixIcon: Icon(Icons.public),
                           border: OutlineInputBorder(),
                         ),
@@ -2455,7 +2455,7 @@ class _ItemLocalDialogState extends State<_ItemLocalDialog> {
                 controller: _descricao,
                 maxLines: 3,
                 decoration: const InputDecoration(
-                  labelText: 'Descrií§í£o',
+                  labelText: 'Descrição',
                 ),
               ),
               const SizedBox(height: 10),

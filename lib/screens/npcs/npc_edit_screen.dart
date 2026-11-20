@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/npc.dart';
@@ -105,72 +105,6 @@ class _NPCEditScreenState extends State<NPCEditScreen> {
     _itens = List<Item>.from(npc.itens);
   }
 
-  Future<void> _preencherPoderesDasFichas() async {
-    final criaturasBase = await CriaturasRepository().carregar();
-    bool alterou = false;
-
-    for (int i = 0; i < _fichasCriatura.length; i++) {
-      final ficha = _fichasCriatura[i];
-      final base = criaturasBase.firstWhere(
-        (c) => _normalizarNome(c.nome) == _normalizarNome(ficha.nome),
-        orElse: () => Criatura(nome: '', tipos: const [], forca: 0, habilidade: 0, resistencia: 0, armadura: 0, defesaEspecial: 0, poderDeFogo: 0, poderes: const []),
-      );
-
-      if (base.poderes.isEmpty) continue;
-
-      // Junta os poderes da base com os poderes ja existentes na ficha
-      final poderesMesclados = <Poder>[];
-      final tiposAdicionados = <String>{};
-
-      // Adiciona os poderes da base primeiro
-      for (final p in base.poderes) {
-        if (!tiposAdicionados.contains(p.tipo)) {
-          poderesMesclados.add(p);
-          tiposAdicionados.add(p.tipo);
-        }
-      }
-
-      // Adiciona os poderes que estao na ficha mas nao na base
-      for (final p in ficha.poderes) {
-        if (!tiposAdicionados.contains(p.tipo)) {
-          poderesMesclados.add(p);
-          tiposAdicionados.add(p.tipo);
-        } else {
-          // Se o poder ja existe na base, mantem o bonus da ficha
-          final index = poderesMesclados.indexWhere((mp) => mp.tipo == p.tipo);
-          if (index >= 0) {
-            poderesMesclados[index] = Poder(
-              tipo: p.tipo,
-              valorBase: poderesMesclados[index].valorBase,
-              bonus: p.bonus,
-              original: poderesMesclados[index].original,
-            );
-          }
-        }
-      }
-
-      _fichasCriatura[i] = CriaturaTreinador(
-        nome: ficha.nome,
-        nivel: ficha.nivel,
-        bonusForca: ficha.bonusForca,
-        bonusHabilidade: ficha.bonusHabilidade,
-        bonusResistencia: ficha.bonusResistencia,
-        bonusArmadura: ficha.bonusArmadura,
-        bonusDefesaEspecial: ficha.bonusDefesaEspecial,
-        bonusPoderDeFogo: ficha.bonusPoderDeFogo,
-        poderes: poderesMesclados,
-        poderesExtras: ficha.poderesExtras,
-        pv: ficha.pv,
-        pe: ficha.pe,
-        moves: List<String>.from(ficha.moves),
-      );
-      alterou = true;
-    }
-
-    if (alterou && mounted) {
-      setState(() {});
-    }
-  }
   Future<void> _carregarNomesConfigurados() async {
     final prefs = await SharedPreferences.getInstance();
     if (!mounted) return;
@@ -225,6 +159,7 @@ class _NPCEditScreenState extends State<NPCEditScreen> {
     }
     return null;
   }
+
   String _normalizarNome(String texto) {
     return texto
         .trim()
@@ -260,9 +195,20 @@ class _NPCEditScreenState extends State<NPCEditScreen> {
 
     // Busca os poderes da criatura base
     final criaturasBase = await CriaturasRepository().carregar();
+
+    if (!mounted) return;
     final base = criaturasBase.firstWhere(
       (c) => _normalizarNome(c.nome) == _normalizarNome(nome),
-      orElse: () => Criatura(nome: '', tipos: const [], forca: 0, habilidade: 0, resistencia: 0, armadura: 0, defesaEspecial: 0, poderDeFogo: 0, poderes: const []),
+      orElse: () => Criatura(
+          nome: '',
+          tipos: const [],
+          forca: 0,
+          habilidade: 0,
+          resistencia: 0,
+          armadura: 0,
+          defesaEspecial: 0,
+          poderDeFogo: 0,
+          poderes: const []),
     );
 
     // Mescla os poderes da base com os da ficha
@@ -309,6 +255,10 @@ class _NPCEditScreenState extends State<NPCEditScreen> {
       pv: fichaExistente?.pv ?? 0,
       pe: fichaExistente?.pe ?? 0,
       moves: fichaExistente?.moves ?? const [],
+      creditos: fichaExistente?.creditos ?? 0,
+      itemComum: fichaExistente?.itemComum,
+      itemEquipado: fichaExistente?.itemEquipado,
+      itemRaro: fichaExistente?.itemRaro,
     );
 
     final resultado = await showDialog<CriaturaTreinador>(
@@ -334,6 +284,7 @@ class _NPCEditScreenState extends State<NPCEditScreen> {
       }
     });
   }
+
   Future<void> _adicionarCriatura() async {
     final criaturasBase = await CriaturasRepository().carregar();
 
@@ -515,6 +466,7 @@ class _NPCEditScreenState extends State<NPCEditScreen> {
       );
     });
   }
+
   Future<void> _editarItem(int indice) async {
     final item = _itens[indice];
 
@@ -747,6 +699,7 @@ class _NPCEditScreenState extends State<NPCEditScreen> {
       ),
     );
   }
+
   Widget _gradeNumerica(
     List<MapEntry<String, TextEditingController>> campos,
   ) {
@@ -850,9 +803,8 @@ class _NPCEditScreenState extends State<NPCEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final titulo = widget.novo
-        ? 'Novo $_nomePersonagens'
-        : 'Editar $_nomePersonagens';
+    final titulo =
+        widget.novo ? 'Novo $_nomePersonagens' : 'Editar $_nomePersonagens';
 
     return Scaffold(
       appBar: AppBar(
@@ -907,7 +859,8 @@ class _NPCEditScreenState extends State<NPCEditScreen> {
                     ),
                     child: Text(
                       '${_int(_resistenciaController) * 5}',
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
@@ -997,6 +950,7 @@ class _NPCEditScreenState extends State<NPCEditScreen> {
     );
   }
 }
+
 class _FichaCriaturaDialog extends StatefulWidget {
   final CriaturaTreinador ficha;
 
@@ -1019,6 +973,7 @@ class _FichaCriaturaDialogState extends State<_FichaCriaturaDialog> {
   late final TextEditingController _moves;
 
   late List<Poder> _poderes;
+  Item? _itemEquipado;
 
   @override
   void initState() {
@@ -1039,6 +994,7 @@ class _FichaCriaturaDialogState extends State<_FichaCriaturaDialog> {
     _moves = TextEditingController(text: ficha.moves.join('\n'));
 
     _poderes = List<Poder>.from(ficha.poderes);
+    _itemEquipado = ficha.itemEquipado;
   }
 
   @override
@@ -1056,6 +1012,58 @@ class _FichaCriaturaDialogState extends State<_FichaCriaturaDialog> {
 
   int _int(TextEditingController controller) {
     return int.tryParse(controller.text.trim()) ?? 0;
+  }
+
+  Future<void> _selecionarItemEquipado() async {
+    final itens = await ItensRepository().carregar();
+
+    if (!mounted) return;
+
+    if (itens.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Nenhum item cadastrado nos Registros.'),
+        ),
+      );
+      return;
+    }
+
+    itens.sort(
+      (a, b) => a.nome.toLowerCase().compareTo(b.nome.toLowerCase()),
+    );
+
+    final item = await showDialog<Item>(
+      context: context,
+      builder: (_) => _SelecionarItemDialog(itens: itens),
+    );
+
+    if (item == null || !mounted) return;
+
+    setState(() {
+      _itemEquipado = item.copyWith();
+    });
+  }
+
+  Future<void> _criarItemEquipado() async {
+    final resultado = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ItemEditarScreen(
+          item: const Item(
+            nome: '',
+            tipo: '',
+            custoEmCreditos: 0,
+            efeito: '',
+          ),
+          novo: true,
+        ),
+      ),
+    );
+
+    if (resultado != true || !mounted) return;
+
+    // Reabre os Registros para selecionar o item criado.
+    await _selecionarItemEquipado();
   }
 
   Future<void> _adicionarPoder() async {
@@ -1114,8 +1122,7 @@ class _FichaCriaturaDialogState extends State<_FichaCriaturaDialog> {
                   context,
                   Poder(
                     tipo: tipo,
-                    valorBase:
-                        int.tryParse(valorController.text.trim()) ?? 0,
+                    valorBase: int.tryParse(valorController.text.trim()) ?? 0,
                     bonus: int.tryParse(bonusController.text.trim()) ?? 0,
                     original: false,
                   ),
@@ -1208,6 +1215,10 @@ class _FichaCriaturaDialogState extends State<_FichaCriaturaDialog> {
       pv: widget.ficha.pv,
       pe: widget.ficha.pe,
       moves: moves,
+      creditos: widget.ficha.creditos,
+      itemComum: widget.ficha.itemComum,
+      itemEquipado: _itemEquipado,
+      itemRaro: widget.ficha.itemRaro,
     );
 
     Navigator.pop(context, ficha);
@@ -1238,7 +1249,8 @@ class _FichaCriaturaDialogState extends State<_FichaCriaturaDialog> {
                 MapEntry('Bônus Poder de Fogo', _bonusPoderDeFogo),
               ]),
               const SizedBox(height: 4),
-              const Text('Poderes', style: TextStyle(fontSize: 19, fontWeight: FontWeight.w900)),
+              const Text('Poderes',
+                  style: TextStyle(fontSize: 19, fontWeight: FontWeight.w900)),
               const SizedBox(height: 8),
               if (_poderes.isEmpty) const Text('Nenhum poder configurado.'),
               ...List.generate(
@@ -1251,7 +1263,10 @@ class _FichaCriaturaDialogState extends State<_FichaCriaturaDialog> {
                       children: [
                         Expanded(
                           flex: 3,
-                          child: Text('${poder.tipo} (Base: ${poder.valorBase})', style: const TextStyle(fontWeight: FontWeight.w800)),
+                          child: Text(
+                              '${poder.tipo} (Base: ${poder.valorBase})',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w800)),
                         ),
                         const SizedBox(width: 8),
                         Expanded(
@@ -1259,11 +1274,18 @@ class _FichaCriaturaDialogState extends State<_FichaCriaturaDialog> {
                           child: TextFormField(
                             initialValue: poder.bonus.toString(),
                             keyboardType: TextInputType.number,
-                            decoration: const InputDecoration(labelText: 'Bônus', border: OutlineInputBorder(), isDense: true),
+                            decoration: const InputDecoration(
+                                labelText: 'Bônus',
+                                border: OutlineInputBorder(),
+                                isDense: true),
                             onChanged: (valor) {
                               final novoBonus = int.tryParse(valor) ?? 0;
                               setState(() {
-                                _poderes[indice] = Poder(tipo: poder.tipo, valorBase: poder.valorBase, bonus: novoBonus, original: poder.original);
+                                _poderes[indice] = Poder(
+                                    tipo: poder.tipo,
+                                    valorBase: poder.valorBase,
+                                    bonus: novoBonus,
+                                    original: poder.original);
                               });
                             },
                           ),
@@ -1283,7 +1305,61 @@ class _FichaCriaturaDialogState extends State<_FichaCriaturaDialog> {
                 icon: const Icon(Icons.add),
                 label: const Text('Adicionar poder'),
               ),
-
+              const Text(
+                'Item Equipado',
+                style: TextStyle(fontSize: 19, fontWeight: FontWeight.w900),
+              ),
+              const SizedBox(height: 8),
+              if (_itemEquipado == null)
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: Text('Nenhum item equipado.'),
+                )
+              else
+                Card(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: ListTile(
+                    leading: const Icon(Icons.inventory_2_outlined),
+                    title: Text(
+                      _itemEquipado!.nome,
+                      style: const TextStyle(fontWeight: FontWeight.w800),
+                    ),
+                    subtitle: Text(
+                      _itemEquipado!.tipo.isEmpty
+                          ? _itemEquipado!.descricao
+                          : _itemEquipado!.tipo,
+                    ),
+                    trailing: IconButton(
+                      tooltip: 'Remover item equipado',
+                      icon: const Icon(Icons.delete_outline),
+                      onPressed: () {
+                        setState(() {
+                          _itemEquipado = null;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: _selecionarItemEquipado,
+                      icon: const Icon(Icons.library_add_outlined),
+                      label: const Text('Adicionar'),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: _criarItemEquipado,
+                      icon: const Icon(Icons.add),
+                      label: const Text('Criar'),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
               const Text(
                 'Moves',
                 style: TextStyle(fontSize: 19, fontWeight: FontWeight.w900),
@@ -1536,9 +1612,8 @@ class _SelecionarCriaturaDialogState extends State<_SelecionarCriaturaDialog> {
                   return ListTile(
                     leading: const Icon(Icons.pets),
                     title: Text(c.nome.isEmpty ? 'Sem nome' : c.nome),
-                    subtitle: Text(c.tipos.isNotEmpty
-                        ? c.tipos.join(', ')
-                        : 'Sem tipo'),
+                    subtitle: Text(
+                        c.tipos.isNotEmpty ? c.tipos.join(', ') : 'Sem tipo'),
                     onTap: () => Navigator.pop(context, c),
                   );
                 },
@@ -1556,20 +1631,3 @@ class _SelecionarCriaturaDialogState extends State<_SelecionarCriaturaDialog> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

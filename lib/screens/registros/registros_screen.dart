@@ -19,14 +19,13 @@ class _RegistrosScreenState extends State<RegistrosScreen> {
   final _repo = RegistrosRepository();
   final _audioRecorder = AudioRecorder();
   final _audioPlayer = AudioPlayer();
-  
+
   List<Registro> _registros = [];
   bool _carregando = true;
   bool _gravando = false;
   int _segundosGravados = 0;
   Timer? _timer;
 
-  
   // --- Estado do player ---
   Registro? _registroTocando;
   bool _estaTocando = false;
@@ -36,11 +35,11 @@ class _RegistrosScreenState extends State<RegistrosScreen> {
   // --- Busca ---
   final _buscaController = TextEditingController();
   String _termoBusca = '';
-@override
+  @override
   void initState() {
     super.initState();
     _carregarRegistros();
-  
+
     _audioPlayer.onPositionChanged.listen((pos) {
       if (mounted) setState(() => _posicaoAtual = pos);
     });
@@ -54,15 +53,17 @@ class _RegistrosScreenState extends State<RegistrosScreen> {
           _posicaoAtual = Duration.zero;
         });
       }
-    });}
+    });
+  }
 
   @override
   void dispose() {
     _timer?.cancel();
     _audioRecorder.dispose();
     _audioPlayer.dispose();
-    
-    _buscaController.dispose();super.dispose();
+
+    _buscaController.dispose();
+    super.dispose();
   }
 
   Future<void> _carregarRegistros() async {
@@ -85,7 +86,8 @@ class _RegistrosScreenState extends State<RegistrosScreen> {
       String caminho = '';
       if (!kIsWeb) {
         final dir = await getTemporaryDirectory();
-        caminho = '${dir.path}/registro_${DateTime.now().millisecondsSinceEpoch}.m4a';
+        caminho =
+            '${dir.path}/registro_${DateTime.now().millisecondsSinceEpoch}.m4a';
       }
 
       final config = const RecordConfig(
@@ -95,16 +97,19 @@ class _RegistrosScreenState extends State<RegistrosScreen> {
       );
 
       await _audioRecorder.start(config, path: caminho);
-      
+
       setState(() {
         _gravando = true;
         _segundosGravados = 0;
       });
 
       _timer = Timer.periodic(const Duration(seconds: 1), (t) {
-        if (!mounted) { t.cancel(); return; }
+        if (!mounted) {
+          t.cancel();
+          return;
+        }
         setState(() => _segundosGravados++);
-        
+
         if (_segundosGravados >= 300) {
           _pararGravacao();
         }
@@ -116,7 +121,7 @@ class _RegistrosScreenState extends State<RegistrosScreen> {
 
   Future<void> _pararGravacao() async {
     _timer?.cancel();
-    
+
     try {
       final path = await _audioRecorder.stop();
       setState(() => _gravando = false);
@@ -181,7 +186,7 @@ class _RegistrosScreenState extends State<RegistrosScreen> {
 
     if (confirmado == true && tituloController.text.trim().isNotEmpty) {
       final nomeArquivo = caminhoAudio.split(RegExp(r'[/\\]')).last;
-      
+
       final novoRegistro = Registro(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         titulo: tituloController.text.trim(),
@@ -271,7 +276,8 @@ class _RegistrosScreenState extends State<RegistrosScreen> {
   Future<void> _tocarRegistro(Registro r) async {
     try {
       if (kIsWeb) {
-        _mostrarMensagem('Reprodução na Web requer implementação adicional.', erro: true);
+        _mostrarMensagem('Reprodução na Web requer implementação adicional.',
+            erro: true);
         return;
       }
 
@@ -333,6 +339,7 @@ class _RegistrosScreenState extends State<RegistrosScreen> {
       });
     }
   }
+
   Future<void> _excluirRegistro(Registro r) async {
     final confirmado = await showDialog<bool>(
       context: context,
@@ -340,7 +347,9 @@ class _RegistrosScreenState extends State<RegistrosScreen> {
         title: const Text('Excluir Registro'),
         content: Text('Deseja excluir "${r.titulo}"?'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancelar')),
+          TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: const Text('Cancelar')),
           ElevatedButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
@@ -386,11 +395,12 @@ class _RegistrosScreenState extends State<RegistrosScreen> {
     final s = (seg % 60).toString().padLeft(2, '0');
     return '$m:$s';
   }
+
   Widget _buildListaFiltrada() {
     final filtrados = _registros.where((r) {
       if (_termoBusca.isEmpty) return true;
       return r.titulo.toLowerCase().contains(_termoBusca) ||
-             r.resumo.toLowerCase().contains(_termoBusca);
+          r.resumo.toLowerCase().contains(_termoBusca);
     }).toList();
 
     if (filtrados.isEmpty) {
@@ -461,44 +471,65 @@ class _RegistrosScreenState extends State<RegistrosScreen> {
     return '$m:$s';
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Registros de Áudio')),
+      appBar: AppBar(title: const Text('Registros de Áudio')),
+      bottomNavigationBar: _carregando
+          ? null
+          : SafeArea(
+              top: false,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: _gravando ? _pararGravacao : _iniciarGravacao,
+                    icon: Icon(_gravando ? Icons.stop : Icons.mic),
+                    label: Text(
+                      _gravando ? 'Parar Gravação' : 'Iniciar Gravação',
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _gravando ? Colors.red : Colors.blue,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 32,
+                        vertical: 16,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
       body: _carregando
           ? const Center(child: CircularProgressIndicator())
           : Column(
               children: [
-                // ---- BLOCO DE GRAVAÇÁO ----
+                // ---- INFORMAÇÕES E CRONÔMETRO ----
                 Container(
                   padding: const EdgeInsets.all(24),
                   color: _gravando ? Colors.red.shade50 : Colors.blue.shade50,
                   child: Column(
                     children: [
                       Text(
-                        _gravando ? _formatarTempo(_segundosGravados) : 'Pronto para gravar',
+                        _gravando
+                            ? _formatarTempo(_segundosGravados)
+                            : 'Anote suas ideias, registre informações e grave os momentos importantes da sua campanha.',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
+                          fontSize: _gravando ? 32 : 14,
+                          fontWeight:
+                              _gravando ? FontWeight.bold : FontWeight.normal,
                           color: _gravando ? Colors.red : Colors.black87,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton.icon(
-                        onPressed: _gravando ? _pararGravacao : _iniciarGravacao,
-                        icon: Icon(_gravando ? Icons.stop : Icons.mic),
-                        label: Text(_gravando ? 'Parar Gravação' : 'Iniciar Gravação'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: _gravando ? Colors.red : Colors.blue,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                         ),
                       ),
                       if (_gravando)
                         const Padding(
                           padding: EdgeInsets.only(top: 8),
-                          child: Text('Limite: 5 minutos', style: TextStyle(fontSize: 12)),
+                          child: Text(
+                            'Limite: 5 minutos',
+                            style: TextStyle(fontSize: 12),
+                          ),
                         ),
                     ],
                   ),
@@ -518,7 +549,8 @@ class _RegistrosScreenState extends State<RegistrosScreen> {
                               Expanded(
                                 child: Text(
                                   _registroTocando!.titulo,
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -529,10 +561,15 @@ class _RegistrosScreenState extends State<RegistrosScreen> {
                             ],
                           ),
                           Slider(
-                            value: _posicaoAtual.inSeconds.toDouble().clamp(0, _duracaoTotal.inSeconds.toDouble()),
+                            value: _posicaoAtual.inSeconds
+                                .toDouble()
+                                .clamp(0, _duracaoTotal.inSeconds.toDouble()),
                             min: 0,
-                            max: _duracaoTotal.inSeconds > 0 ? _duracaoTotal.inSeconds.toDouble() : 1,
-                            onChanged: (v) => _seek(Duration(seconds: v.toInt())),
+                            max: _duracaoTotal.inSeconds > 0
+                                ? _duracaoTotal.inSeconds.toDouble()
+                                : 1,
+                            onChanged: (v) =>
+                                _seek(Duration(seconds: v.toInt())),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -542,9 +579,12 @@ class _RegistrosScreenState extends State<RegistrosScreen> {
                                 onPressed: _recuar10s,
                               ),
                               IconButton(
-                                icon: Icon(_estaTocando ? Icons.pause : Icons.play_arrow),
+                                icon: Icon(_estaTocando
+                                    ? Icons.pause
+                                    : Icons.play_arrow),
                                 iconSize: 36,
-                                onPressed: () => _tocarRegistro(_registroTocando!),
+                                onPressed: () =>
+                                    _tocarRegistro(_registroTocando!),
                               ),
                               IconButton(
                                 icon: const Icon(Icons.forward_10),
@@ -554,7 +594,8 @@ class _RegistrosScreenState extends State<RegistrosScreen> {
                           ),
                           Text(
                             '${_formatarDuracao(_posicaoAtual)} / ${_formatarDuracao(_duracaoTotal)}',
-                            style: const TextStyle(fontSize: 12, color: Colors.grey),
+                            style: const TextStyle(
+                                fontSize: 12, color: Colors.grey),
                           ),
                         ],
                       ),
@@ -562,7 +603,8 @@ class _RegistrosScreenState extends State<RegistrosScreen> {
                   ),
                 // ---- BUSCADOR ----
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   child: TextField(
                     controller: _buscaController,
                     decoration: const InputDecoration(
@@ -570,7 +612,8 @@ class _RegistrosScreenState extends State<RegistrosScreen> {
                       prefixIcon: Icon(Icons.search),
                       border: OutlineInputBorder(),
                     ),
-                    onChanged: (v) => setState(() => _termoBusca = v.trim().toLowerCase()),
+                    onChanged: (v) =>
+                        setState(() => _termoBusca = v.trim().toLowerCase()),
                   ),
                 ),
                 Expanded(

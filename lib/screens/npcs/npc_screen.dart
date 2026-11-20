@@ -1,4 +1,4 @@
-﻿import 'dart:math';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -139,6 +139,7 @@ class _NPCScreenState extends State<NPCScreen> {
       );
     }
   }
+
   Future<void> _editarNPC(
     NPC npc,
   ) async {
@@ -309,6 +310,7 @@ class _NPCScreenState extends State<NPCScreen> {
       pv: ficha.pv,
       pe: ficha.pe,
       localizacao: criatura.localizacao,
+      itemEquipado: ficha.itemEquipado,
     );
   }
 
@@ -366,6 +368,7 @@ class _NPCScreenState extends State<NPCScreen> {
           maximo - minimo + 1,
         );
   }
+
   Widget _tituloSecao(
     String titulo,
     Color cor,
@@ -984,8 +987,8 @@ class _NPCScreenState extends State<NPCScreen> {
                             if (indice++ > 0) const Text(', '),
                             InkWell(
                               onTap: () {
-                                final tela =
-                                    widgetReferenciaNPC(context, referencias[i]);
+                                final tela = widgetReferenciaNPC(
+                                    context, referencias[i]);
                                 if (tela != null) {
                                   Navigator.push(
                                     context,
@@ -1077,7 +1080,7 @@ class _NPCScreenState extends State<NPCScreen> {
         ),
         children: [
           _cabecalhoNPC(npc),
-           _cabecalhoSecao(
+          _cabecalhoSecao(
             'Características',
             _azul,
             Icons.bar_chart,
@@ -1113,7 +1116,6 @@ class _NPCScreenState extends State<NPCScreen> {
                   npc.poderDeFogo,
                   _amarelo,
                 ),
-
               ],
             ),
           ),
@@ -1152,7 +1154,7 @@ class _NPCScreenState extends State<NPCScreen> {
               ],
             ),
           ),
-                    const SizedBox(height: 12),
+          const SizedBox(height: 12),
           _cabecalhoSecao(
             'Recursos',
             _azul,
@@ -1268,7 +1270,3 @@ class _NPCScreenState extends State<NPCScreen> {
     );
   }
 }
-
-
-
-

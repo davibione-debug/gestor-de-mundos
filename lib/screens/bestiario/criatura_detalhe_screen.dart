@@ -1,4 +1,4 @@
-﻿import 'dart:math';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -578,6 +578,15 @@ class _CriaturaDetalheScreenState extends ConsumerState<CriaturaDetalheScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _linhaPv(batalha),
+            if (widget.origem == OrigemCriatura.treinador &&
+                batalha.criatura.itemEquipado != null) ...[
+              const Divider(height: 28),
+              _itemCard(
+                titulo: 'ITEM EQUIPADO',
+                item: batalha.criatura.itemEquipado!,
+                destaque: false,
+              ),
+            ],
             if (batalha.criatura.poderes.isNotEmpty) ...[
               const Divider(height: 28),
               for (var i = 0; i < batalha.criatura.poderes.length; i++)
@@ -648,7 +657,7 @@ class _CriaturaDetalheScreenState extends ConsumerState<CriaturaDetalheScreen> {
                 ref.read(batalhasProvider.notifier).inicioTurno(batalha.id);
               },
               child: const Text(
-                'INÍCIO DE TURNO',
+                'INÍCIO DE TURNO',
               ),
             ),
             const SizedBox(height: 8),
@@ -764,8 +773,8 @@ class _CriaturaDetalheScreenState extends ConsumerState<CriaturaDetalheScreen> {
     try {
       final fichas = personagem.fichasCriatura;
       if (fichas is Iterable &&
-          fichas.any((f) =>
-              f.nome?.toString().trim().toLowerCase() == nomeAtual)) {
+          fichas.any(
+              (f) => f.nome?.toString().trim().toLowerCase() == nomeAtual)) {
         return true;
       }
     } catch (_) {}
@@ -884,7 +893,8 @@ class _CriaturaDetalheScreenState extends ConsumerState<CriaturaDetalheScreen> {
         }
 
         if (!pontoTemReferenciaDireta) {
-          pontoTemReferenciaDireta = _grupoContemCriatura(ponto.encontrosCriaturas);
+          pontoTemReferenciaDireta =
+              _grupoContemCriatura(ponto.encontrosCriaturas);
         }
         if (pontoTemReferenciaDireta) {
           _adicionarReferencia(
@@ -920,13 +930,15 @@ class _CriaturaDetalheScreenState extends ConsumerState<CriaturaDetalheScreen> {
       }
     }
 
-
     // Pontos de Interesse do cadastro-base (desvinculados de Locais)
     try {
       final pontosBase = await CadastrosRepository().carregarPontos();
       debugPrint('[DEBUG] Pontos base encontrados: ${pontosBase.length}');
       for (final ponto in pontosBase) {
-        if (referencias.values.any((r) => r.tipo == 'Ponto de Interesse' && r.nome == ponto.nome)) continue;
+        if (referencias.values.any(
+            (r) => r.tipo == 'Ponto de Interesse' && r.nome == ponto.nome)) {
+          continue;
+        }
         var temRef = false;
         try {
           temRef = ponto.criaturas.any(_referenciaEstaCriatura);
@@ -939,7 +951,7 @@ class _CriaturaDetalheScreenState extends ConsumerState<CriaturaDetalheScreen> {
           _adicionarReferencia(referencias, 'Ponto de Interesse', ponto);
         }
       }
-    } catch (_) {}    // Eventos-base (cadastro)
+    } catch (_) {} // Eventos-base (cadastro)
     try {
       final eventosBase = await CadastrosRepository().carregarEventos();
       for (final evento in eventosBase) {
@@ -1015,7 +1027,7 @@ class _CriaturaDetalheScreenState extends ConsumerState<CriaturaDetalheScreen> {
     );
   }
 
-    Future<void> _sortearItensPadrao() async {
+  Future<void> _sortearItensPadrao() async {
     // Criatura de NPC NUNCA tem item sorteado. Usa o item da ficha (ou nenhum).
     if (widget.origem == OrigemCriatura.treinador) {
       _itemComumSorteado = _criatura.itemEquipado;
@@ -1082,7 +1094,9 @@ class _CriaturaDetalheScreenState extends ConsumerState<CriaturaDetalheScreen> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: _itemCard(
-                  titulo: 'Item Comum (50%)',
+                  titulo: widget.origem == OrigemCriatura.treinador
+                      ? 'Item Equipado'
+                      : 'Item Comum (50%)',
                   item: comum,
                   destaque: false,
                 ),
@@ -1133,19 +1147,22 @@ class _CriaturaDetalheScreenState extends ConsumerState<CriaturaDetalheScreen> {
             children: [
               Icon(
                 Icons.inventory_2_outlined,
-                color: destaque ? Colors.amber.shade800 : Colors.orange.shade800,
+                color:
+                    destaque ? Colors.amber.shade800 : Colors.orange.shade800,
                 size: 20,
               ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   item.nome,
-                  style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w800, fontSize: 15),
                 ),
               ),
               if (item.tipo.trim().isNotEmpty)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
                     color: Colors.orange.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(20),
@@ -1291,43 +1308,42 @@ class _CriaturaDetalheScreenState extends ConsumerState<CriaturaDetalheScreen> {
         Navigator.pop(context, _criatura);
       },
       child: Scaffold(
-      appBar: AppBar(
-        title: Text(criaturaExibido.nome),
-        actions: [
-          if (widget.onDelete != null)
-            IconButton(
-              tooltip: 'Excluir Criatura',
-              icon: const Icon(
-                Icons.delete_outline,
+        appBar: AppBar(
+          title: Text(criaturaExibido.nome),
+          actions: [
+            if (widget.onDelete != null)
+              IconButton(
+                tooltip: 'Excluir Criatura',
+                icon: const Icon(
+                  Icons.delete_outline,
+                ),
+                onPressed: _excluir,
               ),
-              onPressed: _excluir,
-            ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(
-          14,
-          14,
-          14,
-          24,
+          ],
         ),
-        children: [
-          CriaturaCard(
-            criatura: criaturaExibido,
-            batalhaAberta: batalhaAberta,
-            onBatalha: _abrirBatalha,
-            nivelAlteravel: widget.nivelAlteravel && !batalhaAberta,
-            onNivelChanged:
-                widget.nivelAlteravel && !batalhaAberta ? _alterarNivel : null,
+        body: ListView(
+          padding: const EdgeInsets.fromLTRB(
+            14,
+            14,
+            14,
+            24,
           ),
-          _secaoItens(),
-          if (!batalhaAberta) _secaoLocalizacao(),
-          if (batalha != null) _painelBatalha(batalha),
-        ],
+          children: [
+            CriaturaCard(
+              criatura: criaturaExibido,
+              batalhaAberta: batalhaAberta,
+              onBatalha: _abrirBatalha,
+              nivelAlteravel: widget.nivelAlteravel && !batalhaAberta,
+              onNivelChanged: widget.nivelAlteravel && !batalhaAberta
+                  ? _alterarNivel
+                  : null,
+            ),
+            _secaoItens(),
+            if (!batalhaAberta) _secaoLocalizacao(),
+            if (batalha != null) _painelBatalha(batalha),
+          ],
+        ),
       ),
-    ),
     );
   }
 }
-
-
