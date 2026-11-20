@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PersonalizarScreen extends StatefulWidget {
@@ -55,7 +55,7 @@ class _PersonalizarScreenState extends State<PersonalizarScreen> {
       _appTituloController.text = prefs.getString('app_titulo') ?? 'Painel do Mestre';
       _appSubtituloController.text = prefs.getString('app_subtitulo') ?? 'Escolha uma ferramenta';
       _menuMapaController.text = prefs.getString('menu_mapa') ?? 'Mapa';
-      _menuBestiarioController.text = prefs.getString('menu_Bestiário') ?? 'Bestiário';
+      _menuBestiarioController.text = prefs.getString('menu_bestiario') ?? 'Bestiário';
       _menuPersonagensController.text = prefs.getString('menu_personagens') ?? 'Personagens';
       _menuItensController.text = prefs.getString('menu_itens') ?? 'Itens';
       _menuCriaturasController.text = prefs.getString('menu_criaturas') ?? 'Criaturas';
@@ -86,7 +86,7 @@ Future<void> _salvar() async {
       await _salvarString(prefs, 'app_titulo', _appTituloController.text);
       await _salvarString(prefs, 'app_subtitulo', _appSubtituloController.text);
       await _salvarString(prefs, 'menu_mapa', _menuMapaController.text);
-      await _salvarString(prefs, 'menu_Bestiário', _menuBestiarioController.text);
+      await _salvarString(prefs, 'menu_bestiario', _menuBestiarioController.text);
       await _salvarString(prefs, 'menu_personagens', _menuPersonagensController.text);
       await _salvarString(prefs, 'menu_itens', _menuItensController.text);
       await _salvarString(prefs, 'menu_criaturas', _menuCriaturasController.text);
