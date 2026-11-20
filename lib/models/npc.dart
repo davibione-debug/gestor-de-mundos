@@ -1,4 +1,4 @@
-﻿import 'poder.dart';
+import 'poder.dart';
 import 'item.dart';
 
 class CriaturaTreinador {
@@ -23,7 +23,7 @@ class CriaturaTreinador {
   final List<String> moves;
 
   final Item? itemComum;
-  final Item? itemEquipado;
+  final String? itemEquipado;
   final Item? itemRaro;
 
   const CriaturaTreinador({
@@ -70,7 +70,7 @@ class CriaturaTreinador {
       'pe': pe,
       'moves': moves,
       'itemComum': itemComum?.toMap(),
-      'itemEquipado': itemEquipado?.toMap(),
+      'itemEquipado': itemEquipado,
       'itemRaro': itemRaro?.toMap(),
     };
   }
@@ -82,8 +82,7 @@ class CriaturaTreinador {
 
     final poderes = poderesRaw is List
         ? poderesRaw.whereType<Map>().map((poderMap) {
-            final dados =
-                Map<String, dynamic>.from(poderMap);
+            final dados = Map<String, dynamic>.from(poderMap);
 
             return Poder(
               tipo: dados['tipo']?.toString() ?? '',
@@ -113,29 +112,36 @@ class CriaturaTreinador {
         map['nivel'],
         padrao: 1,
       ),
-      bonusForca:
-          _int(map['bonusForca']),
-      bonusHabilidade:
-          _int(map['bonusHabilidade']),
-      bonusResistencia:
-          _int(map['bonusResistencia']),
-      bonusArmadura:
-          _int(map['bonusArmadura']),
-      bonusDefesaEspecial:
-          _int(map['bonusDefesaEspecial']),
-      bonusPoderDeFogo:
-          _int(map['bonusPoderDeFogo']),
+      bonusForca: _int(map['bonusForca']),
+      bonusHabilidade: _int(map['bonusHabilidade']),
+      bonusResistencia: _int(map['bonusResistencia']),
+      bonusArmadura: _int(map['bonusArmadura']),
+      bonusDefesaEspecial: _int(map['bonusDefesaEspecial']),
+      bonusPoderDeFogo: _int(map['bonusPoderDeFogo']),
       poderes: poderes,
-      poderesExtras:
-          _int(map['poderesExtras']),
+      poderesExtras: _int(map['poderesExtras']),
       pv: _int(map['pv']),
       creditos: _int(map['creditos']),
       pe: _int(map['pe']),
       moves: moves,
       itemComum: _itemFromMap(map['itemComum']),
-      itemEquipado: _itemFromMap(map['itemEquipado']),
+      itemEquipado: _nomeItemFromValor(map['itemEquipado']),
       itemRaro: _itemFromMap(map['itemRaro']),
     );
+  }
+
+  static String? _nomeItemFromValor(dynamic valor) {
+    if (valor is String) {
+      final nome = valor.trim();
+      return nome.isEmpty ? null : nome;
+    }
+
+    if (valor is Map) {
+      final nome = valor['nome']?.toString().trim() ?? '';
+      return nome.isEmpty ? null : nome;
+    }
+
+    return null;
   }
 
   static Item? _itemFromMap(dynamic valor) {
@@ -164,17 +170,13 @@ class CriaturaTreinador {
     }
 
     return double.tryParse(
-          valor
-              .toString()
-              .trim()
-              .replaceAll(',', '.'),
+          valor.toString().trim().replaceAll(',', '.'),
         )?.round() ??
         padrao;
   }
 
   static bool _bool(dynamic valor) {
-    final texto =
-        valor?.toString().trim().toLowerCase() ?? '';
+    final texto = valor?.toString().trim().toLowerCase() ?? '';
 
     return valor == true ||
         texto == 'true' ||
@@ -280,10 +282,11 @@ class NPC {
       'vantagens': vantagens,
       'desvantagens': desvantagens,
       'criaturas': criaturas,
-      'fichasCriatura':
-          fichasCriatura.map(
-        (criatura) => criatura.toMap(),
-      ).toList(),
+      'fichasCriatura': fichasCriatura
+          .map(
+            (criatura) => criatura.toMap(),
+          )
+          .toList(),
       'nivelCriatura': nivelCriatura,
       'inventario': inventario,
       'pv': pv,
@@ -303,8 +306,7 @@ class NPC {
               (criatura) => criatura.toString(),
             )
             .where(
-              (criatura) =>
-                  criatura.trim().isNotEmpty,
+              (criatura) => criatura.trim().isNotEmpty,
             )
             .toList()
         : <String>[];
@@ -322,64 +324,48 @@ class NPC {
             .toList()
         : <Item>[];
 
-    final fichasRaw =
-        map['fichasCriatura'];
+    final fichasRaw = map['fichasCriatura'];
 
-    final fichasCriatura =
-        fichasRaw is List
-            ? fichasRaw
-                .whereType<Map>()
-                .map(
-                  (criaturaMap) =>
-                      CriaturaTreinador.fromMap(
-                    Map<String, dynamic>.from(
-                      criaturaMap,
-                    ),
-                  ),
-                )
-                .toList()
-            : <CriaturaTreinador>[];
+    final fichasCriatura = fichasRaw is List
+        ? fichasRaw
+            .whereType<Map>()
+            .map(
+              (criaturaMap) => CriaturaTreinador.fromMap(
+                Map<String, dynamic>.from(
+                  criaturaMap,
+                ),
+              ),
+            )
+            .toList()
+        : <CriaturaTreinador>[];
 
     return NPC(
       id: map['id']?.toString() ?? '',
       nome: map['nome']?.toString() ?? '',
       tipo: map['tipo']?.toString() ?? '',
-      descricao:
-          map['descricao']?.toString() ?? '',
-      cadastroBaseId:
-          _textoNulo(map['cadastroBaseId']),
-      localizacao:
-          map['localizacao']?.toString() ?? '',
+      descricao: map['descricao']?.toString() ?? '',
+      cadastroBaseId: _textoNulo(map['cadastroBaseId']),
+      localizacao: map['localizacao']?.toString() ?? '',
       forca: _int(map['forca']),
       habilidade: _int(map['habilidade']),
-      inteligencia:
-          _int(map['inteligencia']),
-      resistencia:
-          _int(map['resistencia']),
+      inteligencia: _int(map['inteligencia']),
+      resistencia: _int(map['resistencia']),
       armadura: _int(map['armadura']),
-      poderDeFogo:
-          _int(map['poderDeFogo']),
+      poderDeFogo: _int(map['poderDeFogo']),
       captura: _int(map['captura']),
       controle: _int(map['controle']),
-      compreensao:
-          _int(map['compreensao']),
-      tratamento:
-          _int(map['tratamento']),
+      compreensao: _int(map['compreensao']),
+      tratamento: _int(map['tratamento']),
       ecologia: _int(map['ecologia']),
       kit: map['kit']?.toString() ?? '',
-      manobras:
-          map['manobras']?.toString() ?? '',
-      vantagens:
-          map['vantagens']?.toString() ?? '',
-      desvantagens:
-          map['desvantagens']?.toString() ?? '',
+      manobras: map['manobras']?.toString() ?? '',
+      vantagens: map['vantagens']?.toString() ?? '',
+      desvantagens: map['desvantagens']?.toString() ?? '',
       criaturas: criaturas,
       fichasCriatura: fichasCriatura,
       itens: itens,
-      nivelCriatura:
-          map['nivelCriatura']?.toString() ?? '',
-      inventario:
-          map['inventario']?.toString() ?? '',
+      nivelCriatura: map['nivelCriatura']?.toString() ?? '',
+      inventario: map['inventario']?.toString() ?? '',
       pv: _int(map['pv']),
       creditos: _int(map['creditos']),
     );
@@ -413,14 +399,8 @@ class NPC {
     }
 
     return double.tryParse(
-          valor
-              .toString()
-              .trim()
-              .replaceAll(',', '.'),
+          valor.toString().trim().replaceAll(',', '.'),
         )?.round() ??
         0;
   }
 }
-
-
-

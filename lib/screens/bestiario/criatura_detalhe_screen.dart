@@ -20,6 +20,7 @@ import '../mapa/local_screen.dart';
 import '../mapa/evento_screen.dart';
 import '../mapa/ponto_interesse_screen.dart';
 import '../npcs/npc_screen.dart';
+import '../itens/item_detalhe_screen.dart';
 
 class _ReferenciaLocalizacao {
   final String tipo;
@@ -163,7 +164,9 @@ class _CriaturaDetalheScreenState extends ConsumerState<CriaturaDetalheScreen> {
 
     ref.read(batalhasProvider.notifier).minimizar(id);
 
-    Navigator.of(context).pop();
+    setState(() {
+      _batalhaId = null;
+    });
   }
 
   void _fecharBatalha() {
@@ -1153,10 +1156,29 @@ class _CriaturaDetalheScreenState extends ConsumerState<CriaturaDetalheScreen> {
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: Text(
-                  item.nome,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w800, fontSize: 15),
+                child: InkWell(
+                  onTap: widget.origem == OrigemCriatura.treinador
+                      ? () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => ItemDetalheScreen(item: item),
+                            ),
+                          );
+                        }
+                      : null,
+                  child: Text(
+                    item.nome,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 15,
+                      color: widget.origem == OrigemCriatura.treinador
+                          ? Theme.of(context).colorScheme.primary
+                          : null,
+                      decoration: widget.origem == OrigemCriatura.treinador
+                          ? TextDecoration.underline
+                          : TextDecoration.none,
+                    ),
+                  ),
                 ),
               ),
               if (item.tipo.trim().isNotEmpty)
@@ -1302,7 +1324,7 @@ class _CriaturaDetalheScreenState extends ConsumerState<CriaturaDetalheScreen> {
     final batalhaAberta = batalha != null;
 
     return PopScope<Criatura>(
-      canPop: false,
+      canPop: true,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         Navigator.pop(context, _criatura);

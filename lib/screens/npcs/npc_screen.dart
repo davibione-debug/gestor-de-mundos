@@ -5,8 +5,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/npc.dart';
 import '../../models/criatura.dart';
+import '../../models/item.dart';
 import '../../repositories/npcs_repository.dart';
 import '../../repositories/criaturas_repository.dart';
+import '../../repositories/itens_repository.dart';
 import '../bestiario/criatura_detalhe_screen.dart';
 import '../itens/item_detalhe_screen.dart';
 import 'npc_edit_screen.dart';
@@ -270,6 +272,7 @@ class _NPCScreenState extends State<NPCScreen> {
   Criatura _criaturaComFicha(
     Criatura criatura,
     CriaturaTreinador ficha,
+    Item? itemEquipado,
   ) {
     return Criatura(
       id: criatura.id,
@@ -310,7 +313,7 @@ class _NPCScreenState extends State<NPCScreen> {
       pv: ficha.pv,
       pe: ficha.pe,
       localizacao: criatura.localizacao,
-      itemEquipado: ficha.itemEquipado,
+      itemEquipado: itemEquipado,
     );
   }
 
@@ -742,9 +745,25 @@ class _NPCScreenState extends State<NPCScreen> {
     late final Criatura criaturaExibido;
 
     if (ficha != null) {
+      Item? itemEquipado;
+      final nomeItem = ficha.itemEquipado?.trim();
+
+      if (nomeItem != null && nomeItem.isNotEmpty) {
+        final itens = await ItensRepository().carregar();
+        final chaveItem = _chaveNome(nomeItem);
+
+        for (final item in itens) {
+          if (_chaveNome(item.nome) == chaveItem) {
+            itemEquipado = item;
+            break;
+          }
+        }
+      }
+
       criaturaExibido = _criaturaComFicha(
         criatura,
         ficha,
+        itemEquipado,
       );
     } else {
       final nivel = _sortearNivelCriatura();

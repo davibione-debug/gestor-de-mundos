@@ -18,13 +18,13 @@ import '../mapa/evento_screen.dart';
 import '../mapa/ponto_interesse_screen.dart';
 import '../npcs/npc_screen.dart';
 
-
 class _ReferenciaItem {
   final String tipo;
   final String nome;
   final Object registro;
   final String? localId;
   final String? pontoId;
+  final String? chavePersonalizada;
 
   const _ReferenciaItem({
     required this.tipo,
@@ -32,9 +32,13 @@ class _ReferenciaItem {
     required this.registro,
     this.localId,
     this.pontoId,
+    this.chavePersonalizada,
   });
 
   String get chave {
+    if (chavePersonalizada != null) {
+      return chavePersonalizada!;
+    }
     try {
       final dynamic item = registro;
       final id = item.id?.toString() ?? '';
@@ -53,14 +57,11 @@ class ItemDetalheScreen extends StatefulWidget {
   });
 
   @override
-  State<ItemDetalheScreen> createState() =>
-      _ItemDetalheScreenState();
+  State<ItemDetalheScreen> createState() => _ItemDetalheScreenState();
 }
 
-class _ItemDetalheScreenState
-    extends State<ItemDetalheScreen> {
-  final ItensRepository _repository =
-      ItensRepository();
+class _ItemDetalheScreenState extends State<ItemDetalheScreen> {
+  final ItensRepository _repository = ItensRepository();
 
   late Item _item;
 
@@ -74,8 +75,7 @@ class _ItemDetalheScreenState
   }
 
   Future<void> _editar() async {
-    final resultado =
-        await Navigator.push<Item>(
+    final resultado = await Navigator.push<Item>(
       context,
       MaterialPageRoute(
         builder: (_) => ItemEditarScreen(
@@ -92,8 +92,7 @@ class _ItemDetalheScreenState
       final itens = await _repository.carregar();
 
       for (final item in itens) {
-        if (item.nome.trim().toLowerCase() ==
-            _item.nome.trim().toLowerCase()) {
+        if (item.nome.trim().toLowerCase() == _item.nome.trim().toLowerCase()) {
           setState(() {
             _item = item;
           });
@@ -104,8 +103,7 @@ class _ItemDetalheScreenState
   }
 
   Future<void> _excluir() async {
-    final confirmar =
-        await showDialog<bool>(
+    final confirmar = await showDialog<bool>(
       context: context,
       builder: (context) {
         return AlertDialog(
@@ -117,13 +115,11 @@ class _ItemDetalheScreenState
           ),
           actions: [
             TextButton(
-              onPressed: () =>
-                  Navigator.pop(context, false),
+              onPressed: () => Navigator.pop(context, false),
               child: const Text('Cancelar'),
             ),
             FilledButton(
-              onPressed: () =>
-                  Navigator.pop(context, true),
+              onPressed: () => Navigator.pop(context, true),
               style: FilledButton.styleFrom(
                 backgroundColor: Colors.red,
               ),
@@ -208,8 +204,8 @@ class _ItemDetalheScreenState
       final pontosBase = await CadastrosRepository().carregarPontos();
       for (final ponto in pontosBase) {
         if (contemItem(ponto.itens)) {
-          if (referencias.values.any((r) =>
-              r.tipo == 'Ponto de Interesse' && r.nome == ponto.nome)) {
+          if (referencias.values.any(
+              (r) => r.tipo == 'Ponto de Interesse' && r.nome == ponto.nome)) {
             continue;
           }
           _adicionar(referencias, 'Ponto de Interesse', ponto);
@@ -224,6 +220,19 @@ class _ItemDetalheScreenState
         if (contemItem(npc.itens)) {
           _adicionar(referencias, 'Personagem', npc);
         }
+
+        for (final ficha in npc.fichasCriatura) {
+          if (ficha.itemEquipado?.trim().toLowerCase() == nomeAtual) {
+            _adicionar(
+              referencias,
+              'Criatura de Personagem',
+              npc,
+              nomeExibicao: '${ficha.nome} de ${npc.nome}',
+              chavePersonalizada:
+                  'Criatura de Personagem:${npc.id}:${ficha.nome}',
+            );
+          }
+        }
       }
     } catch (_) {}
 
@@ -233,7 +242,8 @@ class _ItemDetalheScreenState
       debugPrint('[DEBUG ITEM] Criaturas carregadas: ${criaturas.length}');
       debugPrint('[DEBUG ITEM] Procurando: $nomeAtual');
       for (final c in criaturas) {
-        debugPrint('[DEBUG ITEM] Criatura ${c.nome}: comum=${c.itemComum?.nome} raro=${c.itemRaro?.nome}');
+        debugPrint(
+            '[DEBUG ITEM] Criatura ${c.nome}: comum=${c.itemComum?.nome} raro=${c.itemRaro?.nome}');
         if (c.itemComum?.nome.trim().toLowerCase() == nomeAtual ||
             c.itemRaro?.nome.trim().toLowerCase() == nomeAtual) {
           _adicionar(referencias, 'Criatura', c);
@@ -241,7 +251,14 @@ class _ItemDetalheScreenState
       }
     } catch (_) {}
 
-    const ordemTipos = ['Local', 'Personagem', 'Criatura', 'Evento', 'Ponto de Interesse'];
+    const ordemTipos = [
+      'Local',
+      'Personagem',
+      'Criatura de Personagem',
+      'Criatura',
+      'Evento',
+      'Ponto de Interesse',
+    ];
     final resultado = referencias.values.toList()
       ..sort((a, b) {
         final ordemA = ordemTipos.indexOf(a.tipo);
@@ -258,8 +275,10 @@ class _ItemDetalheScreenState
     dynamic registro, {
     String? localId,
     String? pontoId,
+    String? nomeExibicao,
+    String? chavePersonalizada,
   }) {
-    final nome = _nomeRegistro(registro);
+    final nome = nomeExibicao ?? _nomeRegistro(registro);
     if (nome.isEmpty) return;
     final referencia = _ReferenciaItem(
       tipo: tipo,
@@ -267,6 +286,7 @@ class _ItemDetalheScreenState
       registro: registro as Object,
       localId: localId,
       pontoId: pontoId,
+      chavePersonalizada: chavePersonalizada,
     );
     destino.putIfAbsent(referencia.chave, () => referencia);
   }
@@ -302,6 +322,7 @@ class _ItemDetalheScreenState
           ),
         );
         return;
+      case 'Criatura de Personagem':
       case 'Personagem':
         Navigator.push(
           context,
@@ -358,6 +379,7 @@ class _ItemDetalheScreenState
         const ordemTipos = [
           'Local',
           'Personagem',
+          'Criatura de Personagem',
           'Criatura',
           'Evento',
           'Ponto de Interesse',
@@ -400,9 +422,8 @@ class _ItemDetalheScreenState
                                 child: Text(
                                   referencias[i].nome,
                                   style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .primary,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
                                     decoration: TextDecoration.underline,
                                   ),
                                 ),
@@ -433,8 +454,7 @@ class _ItemDetalheScreenState
         bottom: 16,
       ),
       child: Row(
-        crossAxisAlignment:
-            CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (icone != null) ...[
             Icon(
@@ -446,8 +466,7 @@ class _ItemDetalheScreenState
           ],
           Expanded(
             child: Column(
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   titulo,
@@ -489,8 +508,7 @@ class _ItemDetalheScreenState
           color: Colors.orange.withValues(
             alpha: 0.07,
           ),
-          borderRadius:
-              BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: Colors.orange.withValues(
               alpha: 0.18,
@@ -498,8 +516,7 @@ class _ItemDetalheScreenState
           ),
         ),
         child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -537,10 +554,8 @@ class _ItemDetalheScreenState
 
   @override
   Widget build(BuildContext context) {
-    final temDescricao =
-        _item.descricao.trim().isNotEmpty;
-    final temEfeito =
-        _item.efeito.trim().isNotEmpty;
+    final temDescricao = _item.descricao.trim().isNotEmpty;
+    final temEfeito = _item.efeito.trim().isNotEmpty;
 
     return Scaffold(
       appBar: AppBar(
@@ -574,8 +589,7 @@ class _ItemDetalheScreenState
         ),
         children: [
           Row(
-            crossAxisAlignment:
-                CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 width: 58,
@@ -584,8 +598,7 @@ class _ItemDetalheScreenState
                   color: Colors.orange.withValues(
                     alpha: 0.12,
                   ),
-                  borderRadius:
-                      BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 child: Icon(
                   Icons.inventory_2_outlined,
@@ -596,8 +609,7 @@ class _ItemDetalheScreenState
               const SizedBox(width: 14),
               Expanded(
                 child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       _item.nome,
@@ -606,29 +618,23 @@ class _ItemDetalheScreenState
                         fontWeight: FontWeight.w900,
                       ),
                     ),
-                    if (_item.tipo
-                        .trim()
-                        .isNotEmpty) ...[
+                    if (_item.tipo.trim().isNotEmpty) ...[
                       const SizedBox(height: 7),
                       Container(
-                        padding:
-                            const EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 10,
                           vertical: 5,
                         ),
                         decoration: BoxDecoration(
-                          color:
-                              Colors.orange.withValues(
+                          color: Colors.orange.withValues(
                             alpha: 0.12,
                           ),
-                          borderRadius:
-                              BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
                           _item.tipo,
                           style: TextStyle(
-                            color:
-                                Colors.orange.shade900,
+                            color: Colors.orange.shade900,
                             fontSize: 12,
                             fontWeight: FontWeight.w900,
                           ),
@@ -647,8 +653,7 @@ class _ItemDetalheScreenState
               color: Colors.orange.withValues(
                 alpha: 0.08,
               ),
-              borderRadius:
-                  BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(14),
             ),
             child: Row(
               children: [
@@ -678,21 +683,18 @@ class _ItemDetalheScreenState
             const SizedBox(height: 18),
             if (temDescricao && temEfeito)
               Row(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _blocoCompacto(
                     titulo: 'Descrição',
                     texto: _item.descricao,
-                    icone:
-                        Icons.description_outlined,
+                    icone: Icons.description_outlined,
                   ),
                   const SizedBox(width: 10),
                   _blocoCompacto(
                     titulo: 'Efeito',
                     texto: _item.efeito,
-                    icone:
-                        Icons.auto_awesome_outlined,
+                    icone: Icons.auto_awesome_outlined,
                   ),
                 ],
               )
@@ -700,15 +702,13 @@ class _ItemDetalheScreenState
               _blocoCompacto(
                 titulo: 'Descrição',
                 texto: _item.descricao,
-                icone:
-                    Icons.description_outlined,
+                icone: Icons.description_outlined,
               )
             else
               _blocoCompacto(
                 titulo: 'Efeito',
                 texto: _item.efeito,
-                icone:
-                    Icons.auto_awesome_outlined,
+                icone: Icons.auto_awesome_outlined,
               ),
           ],
           if (_item.localizacao.trim().isNotEmpty) ...[

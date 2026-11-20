@@ -994,7 +994,32 @@ class _FichaCriaturaDialogState extends State<_FichaCriaturaDialog> {
     _moves = TextEditingController(text: ficha.moves.join('\n'));
 
     _poderes = List<Poder>.from(ficha.poderes);
-    _itemEquipado = ficha.itemEquipado;
+    _carregarItemEquipado(ficha.itemEquipado);
+  }
+
+  Future<void> _carregarItemEquipado(String? nome) async {
+    if (nome == null || nome.trim().isEmpty) return;
+
+    final itens = await ItensRepository().carregar();
+
+    if (!mounted) return;
+
+    final nomeNormalizado = nome.trim().toLowerCase();
+
+    Item? encontrado;
+
+    for (final item in itens) {
+      if (item.nome.trim().toLowerCase() == nomeNormalizado) {
+        encontrado = item;
+        break;
+      }
+    }
+
+    if (encontrado != null) {
+      setState(() {
+        _itemEquipado = encontrado;
+      });
+    }
   }
 
   @override
@@ -1217,7 +1242,7 @@ class _FichaCriaturaDialogState extends State<_FichaCriaturaDialog> {
       moves: moves,
       creditos: widget.ficha.creditos,
       itemComum: widget.ficha.itemComum,
-      itemEquipado: _itemEquipado,
+      itemEquipado: _itemEquipado?.nome,
       itemRaro: widget.ficha.itemRaro,
     );
 
