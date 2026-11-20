@@ -67,13 +67,11 @@ class _PersonalizarScreenState extends State<PersonalizarScreen> {
     });
   }
 
-    Future<void> _salvarString(SharedPreferences prefs, String chave, String valor) async {
+  Future<void> _salvarString(SharedPreferences prefs, String chave, String valor) async {
     final texto = valor.trim();
-    if (texto.isEmpty) {
-      await prefs.remove(chave);
-    } else {
-      await prefs.setString(chave, texto);
-    }
+    // Salva a string vazia em vez de remover a chave
+    await prefs.setString(chave, texto);
+  }
   }
 Future<void> _salvar() async {
     if (!_formKey.currentState!.validate()) return;
