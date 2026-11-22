@@ -28,6 +28,7 @@ class NPCScreen extends StatefulWidget {
 
 class _NPCScreenState extends State<NPCScreen> {
   String _nomePersonagens = 'Personagens';
+  String _nomeCriatura = 'Criatura';
   final NPCsRepository _npcsRepository = NPCsRepository();
 
   final CriaturasRepository _criaturasRepository = CriaturasRepository();
@@ -65,6 +66,7 @@ class _NPCScreenState extends State<NPCScreen> {
     if (!mounted) return;
     setState(() {
       _nomePersonagens = prefs.getString('menu_personagens') ?? 'Personagens';
+      _nomeCriatura = prefs.getString('nome_criatura') ?? 'Criatura';
     });
   }
 
@@ -1245,7 +1247,7 @@ class _NPCScreenState extends State<NPCScreen> {
           if (npc.criaturas.isNotEmpty) ...[
             const SizedBox(height: 4),
             _cabecalhoSecao(
-              'Criatura',
+              _nomeCriatura,
               _vermelho,
               Icons.pets,
               Column(

@@ -1283,9 +1283,9 @@ class _LocalScreenState extends State<LocalScreen> {
                 Expanded(
                   child: _chipInfo(
                     icon: Icons.pets,
-                    titulo: 'NÍVEL DE ENCONTRO',
+                    titulo: 'NÍVEL DE ENCONTRO',
                     valor:
-                        '${local.nivelMinCriatura} – ${local.nivelMaxCriatura}',
+                        '${local.nivelMinCriatura} - ${local.nivelMaxCriatura}',
                     cor: _amarelo,
                   ),
                 ),

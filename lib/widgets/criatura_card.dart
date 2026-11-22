@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 import '../models/criatura.dart';
 import '../theme/app_colors.dart';
@@ -489,26 +489,7 @@ class CriaturaCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                   ],
-                  _tituloSecao(
-                    'Efetividade de Tipo',
-                    PTColors.psychic,
-                  ),
-                  _efetividade(
-                    'Super Efetivo',
-                    criatura.superEfetivo,
-                    PTColors.grass,
-                  ),
-                  _efetividade(
-                    'Pouco Efetivo',
-                    criatura.poucoEfetivo,
-                    PTColors.fighting,
-                  ),
-                  _efetividade(
-                    'Imune',
-                    criatura.imune,
-                    PTColors.subtitle,
-                  ),
-                  const SizedBox(height: 8),
+
                   Row(
                     children: [
                       _atributo(
@@ -556,7 +537,26 @@ class CriaturaCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  if (!batalhaAberta) ...[
+                  _tituloSecao(
+                    'Efetividade de Tipo',
+                    PTColors.psychic,
+                  ),
+                  _efetividade(
+                    'Super Efetivo',
+                    criatura.superEfetivo,
+                    PTColors.grass,
+                  ),
+                  _efetividade(
+                    'Pouco Efetivo',
+                    criatura.poucoEfetivo,
+                    PTColors.fighting,
+                  ),
+                  _efetividade(
+                    'Imune',
+                    criatura.imune,
+                    PTColors.subtitle,
+                  ),
+                  const SizedBox(height: 8),                  if (!batalhaAberta) ...[
                     const SizedBox(height: 8),
                     Row(
                       children: [

@@ -1302,7 +1302,7 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
                 item.tipo.trim().isEmpty ? 'Sem tipo' : item.tipo,
                 if (item.localizacao.trim().isNotEmpty)
                   'Localização: ${item.localizacao.trim()}',
-              ].join(' ,Á‚Â¢ ')),
+              ].join(' • ')),
               onTap: () => _editarItem(item),
               trailing: IconButton(
                 tooltip: 'Excluir',
@@ -1608,7 +1608,7 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
           maxLines: 1,
           decoration: InputDecoration(
             labelText:
-                'Resultado dos dados,{_modalidades[_abaEncontro]}',
+                "Resultado dos dados - ${_modalidades[_abaEncontro]}",
             hintText: 'Ex.: 1-3 Nada, 4-5 Criatura, 6 Personagem',
             prefixIcon: const Icon(
               Icons.casino_outlined,
@@ -1718,7 +1718,7 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
     if (encontro.leguaMin != null || encontro.leguaMax != null) {
       final min = encontro.leguaMin?.toString() ?? '?';
       final max = encontro.leguaMax?.toString() ?? '?';
-      partes.add('Léguas $min,?o$max');
+      partes.add('Léguas $min–$max');
     }
 
     if (encontro.nivelFixo != null) {
@@ -1730,8 +1730,8 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
     }
 
     return partes.isEmpty
-        ? 'Sem restrií§íµes'
-        : partes.join(' ,Á‚Â¢ ');
+        ? 'Sem restrições'
+        : partes.join(' • ');
   }
 
   Widget _buildNPCs({
@@ -1861,7 +1861,7 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
     if (encontro.leguaMin != null || encontro.leguaMax != null) {
       final min = encontro.leguaMin?.toString() ?? '?';
       final max = encontro.leguaMax?.toString() ?? '?';
-      partes.add('Léguas $min,?o$max');
+      partes.add('Léguas $min–$max');
     }
 
     if (encontro.npc.localizacao.trim().isNotEmpty) {
@@ -1870,7 +1870,7 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
 
     return partes.isEmpty
         ? 'Sem restrições'
-        : partes.join(' ,Á‚Â¢ ');
+        : partes.join(' • ');
   }
 
   Widget _buildEventos() {
@@ -1883,7 +1883,7 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
           controller: _dadoEventosController,
           maxLines: 1,
           decoration: InputDecoration(
-            labelText: 'Resultado dos dados ,? Eventos',
+            labelText: 'Resultado dos dados - Eventos',
             hintText: 'Ex.: 1-2 Nada, 3-5 Criatura, 6 Personagem',
             prefixIcon: const Icon(Icons.casino_outlined),
             filled: true,
@@ -1921,7 +1921,7 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
               ),
               subtitle: Text(
                 evento.descricao.isEmpty
-                    ? 'Sem descrií§í£o'
+                    ? 'Sem descrição'
                     : evento.descricao,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -2055,7 +2055,7 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
                                   const SizedBox(height: 4),
                                   Text(
                                     ponto.descricao.isEmpty
-                                        ? 'Sem descrií§í£o'
+                                        ? 'Sem descrição'
                                         : ponto.descricao,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
@@ -2194,7 +2194,7 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
                 ),
                 const SizedBox(height: 12),
                 _campoTexto(
-                  label: 'Descrií§í£o',
+                  label: 'Descrição',
                   controller: _descricaoController,
                   icone: Icons.description_outlined,
                   maxLines: 3,
@@ -2463,7 +2463,7 @@ class _ItemLocalDialogState extends State<_ItemLocalDialog> {
                 controller: _custo,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                  labelText: 'Preí§o',
+                  labelText: 'Preço',
                 ),
               ),
               const SizedBox(height: 10),
@@ -2548,7 +2548,7 @@ class _EncontroDialog extends StatefulWidget {
 }
 
 class _EncontroDialogState extends State<_EncontroDialog> {
-  late Criatura _criatura;
+  Criatura? _criatura;
   late final TextEditingController _condicao;
   late final TextEditingController _leguaMin;
   late final TextEditingController _leguaMax;
@@ -2562,7 +2562,7 @@ class _EncontroDialogState extends State<_EncontroDialog> {
   void initState() {
     super.initState();
 
-    _criatura = widget.encontro?.criatura ?? widget.criaturas.first;
+    _criatura = widget.encontro?.criatura;
 
     _condicao = TextEditingController(
       text: widget.encontro?.condicao ?? '',
@@ -2727,9 +2727,9 @@ class _EncontroDialogState extends State<_EncontroDialog> {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  _criatura.numero == null
-                      ? _criatura.nome
-                      : '#${_criatura.numero} ${_criatura.nome}',
+                  _criatura!.numero == null
+                      ? _criatura!.nome
+                      : '#${_criatura!.numero} ${_criatura!.nome}',
                   style: const TextStyle(fontWeight: FontWeight.w800),
                 ),
               ),
@@ -2757,7 +2757,7 @@ class _EncontroDialogState extends State<_EncontroDialog> {
               TextField(
                 controller: _condicao,
                 decoration: const InputDecoration(
-                  labelText: 'Condií§í£o',
+                  labelText: 'Condição',
                   hintText: 'Ex.: Comum, Raro, durante chuva...',
                 ),
               ),
@@ -2846,11 +2846,11 @@ class _EncontroDialogState extends State<_EncontroDialog> {
           child: const Text('Cancelar'),
         ),
         FilledButton(
-          onPressed: () {
+          onPressed: _criatura == null ? null : () {
             Navigator.pop(
               context,
               Encontro(
-                criatura: _criatura,
+                criatura: _criatura!,
                 condicao: _condicao.text.trim(),
                 raro: _raro,
                 periodo: _periodo,
@@ -3180,7 +3180,7 @@ class _NPCDialogState extends State<_NPCDialog> {
                 enabled: !incluindo || _npcBaseSelecionado != null,
                 maxLines: 3,
                 decoration: const InputDecoration(
-                  labelText: 'Descrií§í£o',
+                  labelText: 'Descrição',
                 ),
               ),
               const SizedBox(height: 12),
@@ -3188,7 +3188,7 @@ class _NPCDialogState extends State<_NPCDialog> {
                 controller: _localizacao,
                 enabled: !incluindo || _npcBaseSelecionado != null,
                 decoration: const InputDecoration(
-                  labelText: 'Localizaí§í£o',
+                  labelText: 'Localização',
                   prefixIcon: Icon(
                     Icons.location_on_outlined,
                   ),

@@ -27,6 +27,7 @@ class NPCEditScreen extends StatefulWidget {
 
 class _NPCEditScreenState extends State<NPCEditScreen> {
   String _nomePersonagens = 'Personagens';
+  String _tituloCriaturas = 'Criatura';
   final NPCsRepository _repository = NPCsRepository();
 
   late final TextEditingController _nomeController;
@@ -110,6 +111,7 @@ class _NPCEditScreenState extends State<NPCEditScreen> {
     if (!mounted) return;
     setState(() {
       _nomePersonagens = prefs.getString('menu_personagens') ?? 'Personagens';
+      _tituloCriaturas = prefs.getString('nome_criatura')?.trim().isNotEmpty == true ? prefs.getString('nome_criatura')!.trim() : 'Criatura';
     });
   }
 
@@ -327,7 +329,39 @@ class _NPCEditScreenState extends State<NPCEditScreen> {
       return;
     }
 
-    setState(() {});
+    // Mescla os poderes base da criatura antes de abrir a ficha
+    final base = criaturasBase.firstWhere(
+      (c) => _normalizarNome(c.nome) == _normalizarNome(nome),
+      orElse: () => Criatura(
+          nome: '',
+          tipos: const [],
+          forca: 0,
+          habilidade: 0,
+          resistencia: 0,
+          armadura: 0,
+          defesaEspecial: 0,
+          poderDeFogo: 0,
+          poderes: const []),
+    );
+
+    final poderesMesclados = <Poder>[];
+    final tiposAdicionados = <String>{};
+    for (final p in base.poderes) {
+      if (!tiposAdicionados.contains(p.tipo)) {
+        poderesMesclados.add(p);
+        tiposAdicionados.add(p.tipo);
+      }
+    }
+
+    setState(() {
+      _fichasCriatura.add(
+        CriaturaTreinador(
+          nome: nome.trim(),
+          nivel: 1,
+          poderes: poderesMesclados,
+        ),
+      );
+    });
 
     await _editarFichaCriatura(nome);
   }
@@ -897,7 +931,7 @@ class _NPCEditScreenState extends State<NPCEditScreen> {
               ],
             ),
             const SizedBox(height: 14),
-            _secao('Criatura'),
+            _secao(_tituloCriaturas),
             _listaCriatura(),
             Row(
               children: [
@@ -1591,7 +1625,7 @@ class _SelecionarCriaturaDialogState extends State<_SelecionarCriaturaDialog> {
   @override
   void initState() {
     super.initState();
-    _filtrados = List<Criatura>.from(widget.criaturas);
+    _filtrados = [];
   }
 
   @override
@@ -1603,10 +1637,14 @@ class _SelecionarCriaturaDialogState extends State<_SelecionarCriaturaDialog> {
   void _filtrar(String valor) {
     final termo = valor.trim().toLowerCase();
     setState(() {
-      _filtrados = widget.criaturas
-          .where((c) => c.nome.toLowerCase().contains(termo))
-          .toList()
-        ..sort((a, b) => a.nome.toLowerCase().compareTo(b.nome.toLowerCase()));
+      if (termo.isEmpty) {
+        _filtrados = [];
+      } else {
+        _filtrados = widget.criaturas
+            .where((c) => c.nome.toLowerCase().contains(termo))
+            .toList()
+          ..sort((a, b) => a.nome.toLowerCase().compareTo(b.nome.toLowerCase()));
+      }
     });
   }
 
@@ -1629,7 +1667,7 @@ class _SelecionarCriaturaDialogState extends State<_SelecionarCriaturaDialog> {
             ),
             const SizedBox(height: 12),
             Expanded(
-              child: ListView.separated(
+              child: _filtrados.isEmpty ? const Center(child: Text('Digite para buscar...')) : ListView.separated(
                 itemCount: _filtrados.length,
                 separatorBuilder: (_, __) => const Divider(height: 1),
                 itemBuilder: (context, index) {
