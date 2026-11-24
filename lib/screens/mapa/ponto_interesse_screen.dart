@@ -10,6 +10,7 @@ import '../../models/periodo_dia.dart';
 import '../../geradores/progressao.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../bestiario/criatura_detalhe_screen.dart';
+import '../itens/item_detalhe_screen.dart';
 import '../npcs/npc_screen.dart';
 import '../../models/encontro.dart';
 import '../../models/grupo.dart';
@@ -68,7 +69,6 @@ class _PontoInteresseScreenState extends State<PontoInteresseScreen> {
     });
   }
 
-
   Future<bool> _confirmarExclusao({
     required String titulo,
     required String mensagem,
@@ -104,7 +104,7 @@ class _PontoInteresseScreenState extends State<PontoInteresseScreen> {
     final confirmar = await _confirmarExclusao(
       titulo: 'Excluir ponto de interesse?',
       mensagem:
-          'O ponto "${_pontoAtual.nome}" serÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â¡ removido deste Local.\n\nA planilha nÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â£o serÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â¡ alterada.',
+          'O ponto "${_pontoAtual.nome}" será removido deste Local.\n\nA planilha não será alterada.',
     );
 
     if (!confirmar || !mounted) {
@@ -130,7 +130,7 @@ class _PontoInteresseScreenState extends State<PontoInteresseScreen> {
     final confirmar = await _confirmarExclusao(
       titulo: 'Excluir evento?',
       mensagem:
-          'O evento "$eventoNome" serÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â¡ removido deste ponto de interesse.\n\nA planilha nÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â£o serÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â¡ alterada.',
+          'O evento "$eventoNome" será removido deste ponto de interesse.\n\nA planilha não será alterada.',
     );
 
     if (!confirmar || !mounted) {
@@ -177,7 +177,7 @@ class _PontoInteresseScreenState extends State<PontoInteresseScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Evento excluÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â­do.'),
+        content: Text('Evento excluído.'),
       ),
     );
   }
@@ -186,12 +186,18 @@ class _PontoInteresseScreenState extends State<PontoInteresseScreen> {
     final c = _pontoAtual.encontrosCriaturas;
     final a = _pontoAtual.encontrosAliados;
     final i = _pontoAtual.encontrosInimigos;
-    return c.diurno.isNotEmpty || c.noturno.isNotEmpty ||
-        c.pesca.isNotEmpty || c.surfe.isNotEmpty ||
-        a.diurno.isNotEmpty || a.noturno.isNotEmpty ||
-        a.pesca.isNotEmpty || a.surfe.isNotEmpty ||
-        i.diurno.isNotEmpty || i.noturno.isNotEmpty ||
-        i.pesca.isNotEmpty || i.surfe.isNotEmpty;
+    return c.diurno.isNotEmpty ||
+        c.noturno.isNotEmpty ||
+        c.pesca.isNotEmpty ||
+        c.surfe.isNotEmpty ||
+        a.diurno.isNotEmpty ||
+        a.noturno.isNotEmpty ||
+        a.pesca.isNotEmpty ||
+        a.surfe.isNotEmpty ||
+        i.diurno.isNotEmpty ||
+        i.noturno.isNotEmpty ||
+        i.pesca.isNotEmpty ||
+        i.surfe.isNotEmpty;
   }
 
   PeriodoDia _periodoDoTexto(String texto) {
@@ -227,7 +233,7 @@ class _PontoInteresseScreenState extends State<PontoInteresseScreen> {
                     DropdownButtonFormField<String>(
                       initialValue: periodoTexto,
                       decoration: const InputDecoration(
-                        labelText: 'PerÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â­odo',
+                        labelText: 'Período',
                         border: OutlineInputBorder(),
                       ),
                       items: _periodosDisponiveis
@@ -303,7 +309,7 @@ class _PontoInteresseScreenState extends State<PontoInteresseScreen> {
       ].where((e) => _disponivelNoPeriodo(e.periodo, periodo)).toList();
 
       if (lista.isEmpty) {
-        _aviso('Nenhuma criatura disponÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â­vel para este perÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â­odo.');
+        _aviso('Nenhuma criatura disponível para este período.');
         return;
       }
 
@@ -324,11 +330,12 @@ class _PontoInteresseScreenState extends State<PontoInteresseScreen> {
       final max = _pontoAtual.nivelMaxCriatura;
 
       if (escolhido.nivelFixo == null && (min <= 0 || max <= 0)) {
-        _aviso('Configure os nÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â­veis mÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â­nimo e mÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â¡ximo deste ponto.');
+        _aviso('Configure os níveis mínimo e máximo deste ponto.');
         return;
       }
 
-      final nivel = escolhido.nivelFixo ?? (min + _random.nextInt(max - min + 1));
+      final nivel =
+          escolhido.nivelFixo ?? (min + _random.nextInt(max - min + 1));
 
       final criatura = Progressao.aplicarProgressaoNivel(
         escolhido.criatura.comNivel(nivel),
@@ -339,9 +346,8 @@ class _PontoInteresseScreenState extends State<PontoInteresseScreen> {
     }
 
     final rocket = tipo == 'Inimigo';
-    final grupo = rocket
-        ? _pontoAtual.encontrosInimigos
-        : _pontoAtual.encontrosAliados;
+    final grupo =
+        rocket ? _pontoAtual.encontrosInimigos : _pontoAtual.encontrosAliados;
     final lista = [
       ...grupo.diurno,
       ...grupo.noturno,
@@ -352,8 +358,8 @@ class _PontoInteresseScreenState extends State<PontoInteresseScreen> {
     if (lista.isEmpty) {
       _aviso(
         rocket
-            ? 'Nenhum $_menuInimigos disponÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â­vel para este perÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â­odo.'
-            : 'Nenhum $_menuAliados disponÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â­vel para este perÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â­odo.',
+            ? 'Nenhum $_menuInimigos disponível para este período.'
+            : 'Nenhum $_menuAliados disponível para este período.',
       );
       return;
     }
@@ -404,7 +410,7 @@ class _PontoInteresseScreenState extends State<PontoInteresseScreen> {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  'NÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â­vel ${criatura.nivel}',
+                  'Nível ${criatura.nivel}',
                   style: const TextStyle(
                     fontSize: 18,
                     color: _textoSecundario,
@@ -455,6 +461,7 @@ class _PontoInteresseScreenState extends State<PontoInteresseScreen> {
       },
     );
   }
+
   void _aviso(String mensagem) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(mensagem)),
@@ -565,27 +572,30 @@ class _PontoInteresseScreenState extends State<PontoInteresseScreen> {
   Widget _buildCaracteristicas() {
     final temLocalizacao = _pontoAtual.localizacao.trim().isNotEmpty;
     final temDescricao = _pontoAtual.descricao.trim().isNotEmpty;
-    final temNiveis = _pontoAtual.nivelMinCriatura > 0 ||
-        _pontoAtual.nivelMaxCriatura > 0;
+    final temNiveis =
+        _pontoAtual.nivelMinCriatura > 0 || _pontoAtual.nivelMaxCriatura > 0;
 
-    if (!temDescricao && !temLocalizacao && !temNiveis && _pontoAtual.efeitos.trim().isEmpty) {
+    if (!temDescricao &&
+        !temLocalizacao &&
+        !temNiveis &&
+        _pontoAtual.efeitos.trim().isEmpty) {
       return const SizedBox.shrink();
     }
 
     return _secao(
-      'InformaÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â§ÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Âµes',
+      'Informações',
       Icons.info_outline,
       _azul,
       [
         if (temDescricao)
           _linhaInformacao(
-            'DescriÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â§ÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â£o',
+            'Descrição',
             _pontoAtual.descricao,
             Icons.notes_outlined,
           ),
         if (temLocalizacao)
           _linhaInformacao(
-            'LocalizaÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â§ÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â£o',
+            'Localização',
             _pontoAtual.localizacao,
             Icons.location_on_outlined,
           ),
@@ -597,13 +607,14 @@ class _PontoInteresseScreenState extends State<PontoInteresseScreen> {
           ),
         if (temNiveis)
           _linhaInformacao(
-            'NÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â­vel de Encontro',
-            '${_pontoAtual.nivelMinCriatura} ÁƒÆ’Á†’Áƒâ€šÁ‚Â¢ÁƒÆ’Á‚Â¢ÁƒÂ¢ââ€šÂ¬Á…Â¡Áƒâ€šÁ‚Â¬ÁƒÆ’Á‚Â¢ÁƒÂ¢ââ‚¬Å¡Á‚Â¬Áƒ…ââ‚¬Å“ ${_pontoAtual.nivelMaxCriatura}',
+            'Nível de Encontro',
+            '${_pontoAtual.nivelMinCriatura} – ${_pontoAtual.nivelMaxCriatura}',
             Icons.pets,
           ),
       ],
     );
   }
+
   Widget _buildEncontros() {
     final listaCriaturas = [
       ..._pontoAtual.encontrosCriaturas.diurno,
@@ -659,21 +670,24 @@ class _PontoInteresseScreenState extends State<PontoInteresseScreen> {
           children: [
             Expanded(
               child: OutlinedButton(
-                onPressed: () => _mostrarEncontrosDialog(listaCriaturas, tipo: 'criatura'),
+                onPressed: () =>
+                    _mostrarEncontrosDialog(listaCriaturas, tipo: 'criatura'),
                 child: Text(_nomeCriatura),
               ),
             ),
             const SizedBox(width: 8),
             Expanded(
               child: OutlinedButton(
-                onPressed: () => _mostrarEncontrosDialog(listaAliados, tipo: 'aliado'),
+                onPressed: () =>
+                    _mostrarEncontrosDialog(listaAliados, tipo: 'aliado'),
                 child: Text(_menuAliados),
               ),
             ),
             const SizedBox(width: 8),
             Expanded(
               child: OutlinedButton(
-                onPressed: () => _mostrarEncontrosDialog(listaInimigos, tipo: 'inimigo'),
+                onPressed: () =>
+                    _mostrarEncontrosDialog(listaInimigos, tipo: 'inimigo'),
                 child: Text(_menuInimigos),
               ),
             ),
@@ -756,7 +770,6 @@ class _PontoInteresseScreenState extends State<PontoInteresseScreen> {
       );
     }
   }
-
 
   void _mostrarEncontrosDialog(List<dynamic> lista, {required String tipo}) {
     showDialog<void>(
@@ -866,7 +879,8 @@ class _PontoInteresseScreenState extends State<PontoInteresseScreen> {
                 Expanded(child: Text(_pontoAtual.dadoEventos)),
               ],
             ),
-          ),        ..._pontoAtual.eventos.map(
+          ),
+        ..._pontoAtual.eventos.map(
           (evento) => Card(
             elevation: 0,
             color: const Color(0xFFF8F7F3),
@@ -941,7 +955,7 @@ class _PontoInteresseScreenState extends State<PontoInteresseScreen> {
                   if (npc.nivelCriatura.isNotEmpty)
                     'Criatura: ${npc.nivelCriatura}',
                   'PV: ${npc.pv}',
-                ].join(' ÁƒÆ’Á†’Áƒâ€šÁ‚Â¢ÁƒÆ’Á‚Â¢ÁƒÂ¢ââ€šÂ¬Á…Â¡Áƒâ€šÁ‚Â¬ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â¢ '),
+                ].join(' • '),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -992,16 +1006,23 @@ class _PontoInteresseScreenState extends State<PontoInteresseScreen> {
               ),
               subtitle: Text(
                 [
-                  if (item.tipo.isNotEmpty) item.tipo,
-                  if (item.descricao.isNotEmpty) item.descricao,
-                  if (item.efeito.isNotEmpty) item.efeito,
-                  if (item.localizacao.isNotEmpty) item.localizacao,
+                  if (item.efeito.trim().isNotEmpty) 'Efeito: ${item.efeito}',
                   'Quantidade: ${item.quantidade}',
-                  'Custo: ${item.custoEmCreditos}',
-                ].join(' ÁƒÆ’Á†’Áƒâ€šÁ‚Â¢ÁƒÆ’Á‚Â¢ÁƒÂ¢ââ€šÂ¬Á…Â¡Áƒâ€šÁ‚Â¬ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â¢ '),
+                  if (item.localizacao.trim().isNotEmpty)
+                    'Localização: ${item.localizacao}',
+                ].join(' • '),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ItemDetalheScreen(item: item),
+                  ),
+                );
+              },
             ),
           ),
         ),
@@ -1098,39 +1119,39 @@ class _PontoInteresseScreenState extends State<PontoInteresseScreen> {
             _buildCaracteristicas(),
             _buildEncontros(),
             if (_temEncontros)
-            Container(
-              margin: const EdgeInsets.only(top: 12, bottom: 16),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: const [
-                  BoxShadow(
-                    blurRadius: 9,
-                    offset: Offset(0, 4),
-                    color: Color(0x28000000),
+              Container(
+                margin: const EdgeInsets.only(top: 12, bottom: 16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: const [
+                    BoxShadow(
+                      blurRadius: 9,
+                      offset: Offset(0, 4),
+                      color: Color(0x28000000),
+                    ),
+                  ],
+                ),
+                child: FilledButton.icon(
+                  onPressed: _abrirGerador,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: _vermelho,
+                    foregroundColor: Colors.white,
+                    minimumSize: const Size.fromHeight(56),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                   ),
-                ],
-              ),
-              child: FilledButton.icon(
-                onPressed: _abrirGerador,
-                style: FilledButton.styleFrom(
-                  backgroundColor: _vermelho,
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size.fromHeight(56),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
+                  icon: const Icon(Icons.casino),
+                  label: const Text(
+                    'GERAR ENCONTRO',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0.5,
+                    ),
                   ),
                 ),
-                icon: const Icon(Icons.casino),
-                label: const Text(
-                  'GERAR ENCONTRO',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: 0.5,
-                  ),
-                ),
               ),
-            ),
             _buildNPCs(),
             _buildItens(),
             _buildEventos(),
@@ -1151,7 +1172,7 @@ class _PontoInteresseScreenState extends State<PontoInteresseScreen> {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      'Este ponto de interesse ainda nÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â£o possui informaÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Â§ÁƒÆ’Á†’Áƒâ€ ââ‚¬â„¢ÁƒÆ’ââ‚¬Å¡Áƒâ€šÁ‚Âµes cadastradas.',
+                      'Este ponto de interesse ainda não possui informações cadastradas.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
