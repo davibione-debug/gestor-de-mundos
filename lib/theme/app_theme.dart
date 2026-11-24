@@ -63,7 +63,6 @@ class AppTheme {
       cardTheme: CardThemeData(
         color: PTColors.surface,
         elevation: 0,
-        color: PTColors.surface,
         margin: const EdgeInsets.symmetric(
           horizontal: 12,
           vertical: 8,
@@ -71,7 +70,8 @@ class AppTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20), // Mais arredondado
           side: BorderSide(
-            color: PTColors.border.withValues(alpha: 0.4), // Borda quase invisível
+            color:
+                PTColors.border.withValues(alpha: 0.4), // Borda quase invisível
             width: 1,
           ),
         ),
@@ -168,25 +168,20 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: PTColors.surface,
-
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 15,
         ),
-
         labelStyle: const TextStyle(
           fontSize: 15,
           color: PTColors.text,
         ),
-
         hintStyle: TextStyle(
           fontSize: 15,
           color: PTColors.text.withValues(alpha: 0.55),
         ),
-
         prefixIconColor: PTColors.primary,
         suffixIconColor: PTColors.text,
-
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(
@@ -194,7 +189,6 @@ class AppTheme {
             width: 1,
           ),
         ),
-
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(
@@ -202,7 +196,6 @@ class AppTheme {
             width: 2,
           ),
         ),
-
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(
@@ -210,7 +203,6 @@ class AppTheme {
             width: 1.2,
           ),
         ),
-
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(
@@ -218,14 +210,12 @@ class AppTheme {
             width: 2,
           ),
         ),
-
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide(
             color: PTColors.border.withValues(alpha: 0.6),
           ),
         ),
-
         floatingLabelStyle: const TextStyle(
           color: PTColors.primary,
           fontWeight: FontWeight.w600,
@@ -372,80 +362,67 @@ class AppTheme {
           color: PTColors.text,
           letterSpacing: -0.5,
         ),
-
         displayMedium: TextStyle(
           fontSize: 28,
           fontWeight: FontWeight.w800,
           color: PTColors.text,
         ),
-
         headlineLarge: TextStyle(
           fontSize: 26,
           fontWeight: FontWeight.w800,
           color: PTColors.primary,
           letterSpacing: -0.2,
         ),
-
         headlineMedium: TextStyle(
           fontSize: 22,
           fontWeight: FontWeight.w700,
           color: PTColors.primary,
         ),
-
         headlineSmall: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.w700,
           color: PTColors.text,
         ),
-
         titleLarge: TextStyle(
           fontSize: 19,
           fontWeight: FontWeight.w700,
           color: PTColors.text,
         ),
-
         titleMedium: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w700,
           color: PTColors.text,
         ),
-
         titleSmall: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w700,
           color: PTColors.text,
         ),
-
         bodyLarge: TextStyle(
           fontSize: 16,
           height: 1.45,
           color: PTColors.text,
         ),
-
         bodyMedium: TextStyle(
           fontSize: 15,
           height: 1.4,
           color: PTColors.text,
         ),
-
         bodySmall: TextStyle(
           fontSize: 13,
           height: 1.35,
           color: PTColors.text,
         ),
-
         labelLarge: TextStyle(
           fontSize: 15,
           fontWeight: FontWeight.w700,
           color: PTColors.text,
         ),
-
         labelMedium: TextStyle(
           fontSize: 13,
           fontWeight: FontWeight.w600,
           color: PTColors.text,
         ),
-
         labelSmall: TextStyle(
           fontSize: 11,
           fontWeight: FontWeight.w600,
