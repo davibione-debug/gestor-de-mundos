@@ -111,7 +111,10 @@ class _NPCEditScreenState extends State<NPCEditScreen> {
     if (!mounted) return;
     setState(() {
       _nomePersonagens = prefs.getString('menu_personagens') ?? 'Personagens';
-      _tituloCriaturas = prefs.getString('nome_criatura')?.trim().isNotEmpty == true ? prefs.getString('nome_criatura')!.trim() : 'Criatura';
+      _tituloCriaturas =
+          prefs.getString('nome_criatura')?.trim().isNotEmpty == true
+              ? prefs.getString('nome_criatura')!.trim()
+              : 'Criatura';
     });
   }
 
@@ -294,8 +297,9 @@ class _NPCEditScreenState extends State<NPCEditScreen> {
 
     if (criaturasBase.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Nenhuma criatura cadastrada no bestiário.'),
+        SnackBar(
+          content: Text(
+              'Nenhum cadastro de ${_tituloCriaturas.toLowerCase()} no bestiário.'),
         ),
       );
       return;
@@ -307,7 +311,8 @@ class _NPCEditScreenState extends State<NPCEditScreen> {
 
     final criaturaSelecionada = await showDialog<Criatura>(
       context: context,
-      builder: (context) => _SelecionarCriaturaDialog(criaturas: criaturasBase),
+      builder: (context) => _SelecionarCriaturaDialog(
+          criaturas: criaturasBase, tituloCriaturas: _tituloCriaturas),
     );
 
     if (criaturaSelecionada == null || !mounted) {
@@ -322,8 +327,9 @@ class _NPCEditScreenState extends State<NPCEditScreen> {
 
     if (existe) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Essa criatura já está na ficha.'),
+        SnackBar(
+          content: Text(
+              'Este registro de ${_tituloCriaturas.toLowerCase()} já está na ficha.'),
         ),
       );
       return;
@@ -823,7 +829,7 @@ class _NPCEditScreenState extends State<NPCEditScreen> {
                   onPressed: () => _editarCriaturaSelecionado(nome),
                 ),
                 IconButton(
-                  tooltip: 'Remover Criatura',
+                  tooltip: 'Remover ${_tituloCriaturas}',
                   icon: const Icon(Icons.delete_outline),
                   onPressed: () => _removerCriatura(nome),
                 ),
@@ -1452,32 +1458,149 @@ class _FichaCriaturaDialogState extends State<_FichaCriaturaDialog> {
   }
 }
 
-class _SelecionarItemDialog extends StatelessWidget {
+class _SelecionarItemDialog extends StatefulWidget {
   final List<Item> itens;
 
   const _SelecionarItemDialog({required this.itens});
 
   @override
+  State<_SelecionarItemDialog> createState() => _SelecionarItemDialogState();
+}
+
+class _SelecionarItemDialogState extends State<_SelecionarItemDialog> {
+  static const String _todosTipos = '*';
+
+  final TextEditingController _busca = TextEditingController();
+
+  late final List<String> _tipos;
+  String _tipoSelecionado = _todosTipos;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _tipos = widget.itens.map((item) => item.tipo.trim()).toSet().toList()
+      ..sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
+  }
+
+  @override
+  void dispose() {
+    _busca.dispose();
+    super.dispose();
+  }
+
+  List<Item> get _itensFiltrados {
+    final termo = _busca.text.trim().toLowerCase();
+    final temFiltro = termo.isNotEmpty || _tipoSelecionado != _todosTipos;
+
+    if (!temFiltro) {
+      return [];
+    }
+
+    return widget.itens.where((item) {
+      final correspondeNome =
+          termo.isEmpty || item.nome.toLowerCase().contains(termo);
+
+      final correspondeTipo = _tipoSelecionado == _todosTipos ||
+          item.tipo.trim() == _tipoSelecionado;
+
+      return correspondeNome && correspondeTipo;
+    }).toList()
+      ..sort(
+        (a, b) => a.nome.toLowerCase().compareTo(b.nome.toLowerCase()),
+      );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final temFiltro =
+        _busca.text.trim().isNotEmpty || _tipoSelecionado != _todosTipos;
+
+    final resultados = _itensFiltrados;
+    final quantidadeVisivel = resultados.length > 3 ? 3 : resultados.length;
+
     return AlertDialog(
       title: const Text('Selecionar item'),
       content: SizedBox(
-        width: double.maxFinite,
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: itens.length,
-          itemBuilder: (context, indice) {
-            final item = itens[indice];
-            return ListTile(
-              leading: const Icon(Icons.inventory_2_outlined),
-              title: Text(
-                item.nome,
-                style: const TextStyle(fontWeight: FontWeight.w800),
+        width: 520,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: _busca,
+              onChanged: (_) => setState(() {}),
+              decoration: const InputDecoration(
+                labelText: 'Buscar por nome',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(),
+                isDense: true,
               ),
-              subtitle: Text(item.tipo.isEmpty ? item.descricao : item.tipo),
-              onTap: () => Navigator.pop(context, item),
-            );
-          },
+            ),
+            const SizedBox(height: 10),
+            DropdownButtonFormField<String>(
+              value: _tipoSelecionado,
+              isExpanded: true,
+              decoration: const InputDecoration(
+                labelText: 'Filtrar por tipo',
+                border: OutlineInputBorder(),
+                isDense: true,
+              ),
+              items: [
+                const DropdownMenuItem<String>(
+                  value: _todosTipos,
+                  child: Text('Todos os tipos'),
+                ),
+                ..._tipos.map(
+                  (tipo) => DropdownMenuItem<String>(
+                    value: tipo,
+                    child: Text(tipo.isEmpty ? 'Sem tipo' : tipo),
+                  ),
+                ),
+              ],
+              onChanged: (valor) {
+                if (valor == null) return;
+                setState(() {
+                  _tipoSelecionado = valor;
+                });
+              },
+            ),
+            if (temFiltro) ...[
+              const SizedBox(height: 10),
+              if (resultados.isEmpty)
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 12),
+                  child: Text('Nenhum item encontrado.'),
+                )
+              else
+                SizedBox(
+                  height: quantidadeVisivel * 68.0,
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: resultados.length,
+                    separatorBuilder: (_, __) => const Divider(height: 1),
+                    itemBuilder: (context, indice) {
+                      final item = resultados[indice];
+
+                      return ListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        leading: const Icon(Icons.inventory_2_outlined),
+                        title: Text(
+                          item.nome,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        subtitle: Text(
+                          item.tipo.isEmpty ? item.descricao : item.tipo,
+                        ),
+                        onTap: () => Navigator.pop(context, item),
+                      );
+                    },
+                  ),
+                ),
+            ],
+          ],
         ),
       ),
       actions: [
@@ -1610,8 +1733,10 @@ class _ItemDialogState extends State<_ItemDialog> {
 
 class _SelecionarCriaturaDialog extends StatefulWidget {
   final List<Criatura> criaturas;
+  final String tituloCriaturas;
 
-  const _SelecionarCriaturaDialog({required this.criaturas});
+  const _SelecionarCriaturaDialog(
+      {required this.criaturas, required this.tituloCriaturas});
 
   @override
   State<_SelecionarCriaturaDialog> createState() =>
@@ -1643,7 +1768,8 @@ class _SelecionarCriaturaDialogState extends State<_SelecionarCriaturaDialog> {
         _filtrados = widget.criaturas
             .where((c) => c.nome.toLowerCase().contains(termo))
             .toList()
-          ..sort((a, b) => a.nome.toLowerCase().compareTo(b.nome.toLowerCase()));
+          ..sort(
+              (a, b) => a.nome.toLowerCase().compareTo(b.nome.toLowerCase()));
       }
     });
   }
@@ -1651,36 +1777,39 @@ class _SelecionarCriaturaDialogState extends State<_SelecionarCriaturaDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Selecionar Criatura'),
+      title: Text('Selecionar ${widget.tituloCriaturas}'),
       content: SizedBox(
         width: 520,
-        height: 460,
+        height: 140,
         child: Column(
           children: [
             TextField(
               controller: _busca,
               onChanged: _filtrar,
-              decoration: const InputDecoration(
-                labelText: 'Buscar criatura',
+              decoration: InputDecoration(
+                labelText: 'Buscar ${widget.tituloCriaturas.toLowerCase()}',
                 prefixIcon: Icon(Icons.search),
               ),
             ),
             const SizedBox(height: 12),
             Expanded(
-              child: _filtrados.isEmpty ? const Center(child: Text('Digite para buscar...')) : ListView.separated(
-                itemCount: _filtrados.length,
-                separatorBuilder: (_, __) => const Divider(height: 1),
-                itemBuilder: (context, index) {
-                  final c = _filtrados[index];
-                  return ListTile(
-                    leading: const Icon(Icons.pets),
-                    title: Text(c.nome.isEmpty ? 'Sem nome' : c.nome),
-                    subtitle: Text(
-                        c.tipos.isNotEmpty ? c.tipos.join(', ') : 'Sem tipo'),
-                    onTap: () => Navigator.pop(context, c),
-                  );
-                },
-              ),
+              child: _filtrados.isEmpty
+                  ? const Center(child: Text('Digite para buscar...'))
+                  : ListView.separated(
+                      itemCount: _filtrados.length,
+                      separatorBuilder: (_, __) => const Divider(height: 1),
+                      itemBuilder: (context, index) {
+                        final c = _filtrados[index];
+                        return ListTile(
+                          leading: const Icon(Icons.pets),
+                          title: Text(c.nome.isEmpty ? 'Sem nome' : c.nome),
+                          subtitle: Text(c.tipos.isNotEmpty
+                              ? c.tipos.join(', ')
+                              : 'Sem tipo'),
+                          onTap: () => Navigator.pop(context, c),
+                        );
+                      },
+                    ),
             ),
           ],
         ),

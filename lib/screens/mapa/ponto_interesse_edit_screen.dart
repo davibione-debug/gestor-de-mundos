@@ -463,7 +463,8 @@ class _PontoInteresseEditScreenState extends State<PontoInteresseEditScreen> {
         );
       } else {
         _encontrosInimigos = GrupoNPC(
-          diurno: _encontrosInimigos.diurno.where((e) => e != encontro).toList(),
+          diurno:
+              _encontrosInimigos.diurno.where((e) => e != encontro).toList(),
           noturno: _encontrosInimigos.noturno,
           pesca: _encontrosInimigos.pesca,
           surfe: _encontrosInimigos.surfe,
@@ -539,10 +540,8 @@ class _PontoInteresseEditScreenState extends State<PontoInteresseEditScreen> {
         ),
         const SizedBox(height: 16),
         if (listaAliados.isEmpty)
-          const Text(
-            'Nenhum aliado cadastrado.',
-            style: TextStyle(color: _textoSecundario),
-          ),
+          Text('Nenhum cadastro de ${_menuAliados.toLowerCase()}.',
+              style: const TextStyle(color: _textoSecundario)),
         ...listaAliados.map(
           (e) => _linhaLista(
             titulo: e.npc.nome,
@@ -575,10 +574,8 @@ class _PontoInteresseEditScreenState extends State<PontoInteresseEditScreen> {
         ),
         const SizedBox(height: 16),
         if (listaInimigos.isEmpty)
-          const Text(
-            'Nenhum inimigo cadastrado.',
-            style: TextStyle(color: _textoSecundario),
-          ),
+          Text('Nenhum cadastro de ${_menuInimigos.toLowerCase()}.',
+              style: const TextStyle(color: _textoSecundario)),
         ...listaInimigos.map(
           (e) => _linhaLista(
             titulo: e.npc.nome,
@@ -1005,7 +1002,8 @@ class _PontoInteresseEditScreenState extends State<PontoInteresseEditScreen> {
             ),
           ),
         ),
-        const SizedBox(height: 12),        if (_eventos.isEmpty)
+        const SizedBox(height: 12),
+        if (_eventos.isEmpty)
           const Text(
             'Nenhum Cadastro',
             style: TextStyle(
@@ -1465,6 +1463,7 @@ class _ItemDialogState extends State<_ItemDialog> {
     );
   }
 }
+
 class _EncontroDialog extends StatefulWidget {
   final List<Criatura> criaturas;
   final Encontro? encontro;
@@ -1496,9 +1495,12 @@ class _EncontroDialogState extends State<_EncontroDialog> {
     super.initState();
     _criatura = widget.encontro?.criatura ?? widget.criaturas.first;
     _condicao = TextEditingController(text: widget.encontro?.condicao ?? '');
-    _leguaMin = TextEditingController(text: widget.encontro?.leguaMin?.toString() ?? '');
-    _leguaMax = TextEditingController(text: widget.encontro?.leguaMax?.toString() ?? '');
-    _nivelFixo = TextEditingController(text: widget.encontro?.nivelFixo?.toString() ?? '');
+    _leguaMin = TextEditingController(
+        text: widget.encontro?.leguaMin?.toString() ?? '');
+    _leguaMax = TextEditingController(
+        text: widget.encontro?.leguaMax?.toString() ?? '');
+    _nivelFixo = TextEditingController(
+        text: widget.encontro?.nivelFixo?.toString() ?? '');
     _buscaCriatura = TextEditingController();
     _raro = widget.encontro?.raro ?? false;
     _periodo = widget.encontro?.periodo;
@@ -1535,7 +1537,8 @@ class _EncontroDialogState extends State<_EncontroDialog> {
     final resultados = _criaturasFiltradas();
 
     return AlertDialog(
-      title: Text(widget.encontro == null ? 'Adicionar encontro' : 'Editar encontro'),
+      title: Text(
+          widget.encontro == null ? 'Adicionar encontro' : 'Editar encontro'),
       content: SizedBox(
         width: 520,
         child: SingleChildScrollView(
@@ -1582,7 +1585,8 @@ class _EncontroDialogState extends State<_EncontroDialog> {
               const SizedBox(height: 8),
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                 decoration: BoxDecoration(
                   color: const Color(0xFFF8F7F3),
                   borderRadius: BorderRadius.circular(12),
@@ -1601,7 +1605,6 @@ class _EncontroDialogState extends State<_EncontroDialog> {
                   ],
                 ),
               ),
-
               const SizedBox(height: 12),
               DropdownButtonFormField<PeriodoDia?>(
                 initialValue: _periodo,
@@ -1623,7 +1626,6 @@ class _EncontroDialogState extends State<_EncontroDialog> {
                 ],
                 onChanged: (p) => setState(() => _periodo = p),
               ),
-
               const SizedBox(height: 12),
               TextField(
                 controller: _nivelFixo,
@@ -1699,8 +1701,10 @@ class _NPCDialogState extends State<_NPCDialog> {
   void initState() {
     super.initState();
     _npc = widget.encontro?.npc;
-    _leguaMin = TextEditingController(text: widget.encontro?.leguaMin?.toString() ?? '');
-    _leguaMax = TextEditingController(text: widget.encontro?.leguaMax?.toString() ?? '');
+    _leguaMin = TextEditingController(
+        text: widget.encontro?.leguaMin?.toString() ?? '');
+    _leguaMax = TextEditingController(
+        text: widget.encontro?.leguaMax?.toString() ?? '');
     _busca = TextEditingController();
     _raro = widget.encontro?.raro ?? false;
     _periodo = widget.encontro?.periodo;
@@ -1807,7 +1811,6 @@ class _NPCDialogState extends State<_NPCDialog> {
                 ],
                 onChanged: (p) => setState(() => _periodo = p),
               ),
-
               const SizedBox(height: 4),
               SwitchListTile(
                 contentPadding: EdgeInsets.zero,
@@ -1845,6 +1848,7 @@ class _NPCDialogState extends State<_NPCDialog> {
     );
   }
 }
+
 class _SelecionarEventoDialog extends StatefulWidget {
   final List<Evento> eventos;
 
@@ -1924,6 +1928,7 @@ class _SelecionarEventoDialogState extends State<_SelecionarEventoDialog> {
     );
   }
 }
+
 class _ItemQuantidadeDialog extends StatefulWidget {
   final Item item;
 
