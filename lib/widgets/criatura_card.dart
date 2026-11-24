@@ -93,7 +93,11 @@ class CriaturaCard extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: PTColors.softSurface,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: PTColors.border.withValues(alpha: 0.3),
+            width: 1,
+          ),
         ),
         child: Row(
           children: [
@@ -395,7 +399,16 @@ class CriaturaCard extends StatelessWidget {
                 10,
                 11,
               ),
-              color: PTColors.fire,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    PTColors.fire.withValues(alpha: 0.9),
+                    const Color(0xFF9A2424),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

@@ -62,16 +62,16 @@ class AppTheme {
 
       cardTheme: CardThemeData(
         color: PTColors.surface,
-        elevation: 2,
-        shadowColor: PTColors.shadow,
+        elevation: 0,
+        color: PTColors.surface,
         margin: const EdgeInsets.symmetric(
           horizontal: 12,
           vertical: 8,
         ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(
-            color: PTColors.border,
+          borderRadius: BorderRadius.circular(20), // Mais arredondado
+          side: BorderSide(
+            color: PTColors.border.withValues(alpha: 0.4), // Borda quase invisível
             width: 1,
           ),
         ),
@@ -98,7 +98,7 @@ class AppTheme {
             letterSpacing: 0.2,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(14),
           ),
         ),
       ),
@@ -117,7 +117,7 @@ class AppTheme {
             fontWeight: FontWeight.w700,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(14),
           ),
         ),
       ),
@@ -139,7 +139,7 @@ class AppTheme {
             fontWeight: FontWeight.w700,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(14),
           ),
         ),
       ),
@@ -156,7 +156,7 @@ class AppTheme {
             fontWeight: FontWeight.w700,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(12),
           ),
         ),
       ),
@@ -188,7 +188,7 @@ class AppTheme {
         suffixIconColor: PTColors.text,
 
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(
             color: PTColors.border,
             width: 1,
@@ -196,7 +196,7 @@ class AppTheme {
         ),
 
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(
             color: PTColors.primary,
             width: 2,
@@ -204,7 +204,7 @@ class AppTheme {
         ),
 
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(
             color: PTColors.danger,
             width: 1.2,
@@ -212,7 +212,7 @@ class AppTheme {
         ),
 
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(
             color: PTColors.danger,
             width: 2,
@@ -220,7 +220,7 @@ class AppTheme {
         ),
 
         disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide(
             color: PTColors.border.withValues(alpha: 0.6),
           ),
@@ -248,7 +248,7 @@ class AppTheme {
           elevation: const WidgetStatePropertyAll(4),
           shape: WidgetStatePropertyAll(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(14),
             ),
           ),
         ),
@@ -330,7 +330,7 @@ class AppTheme {
         behavior: SnackBarBehavior.floating,
         elevation: 4,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
         ),
         contentTextStyle: const TextStyle(
           fontSize: 15,

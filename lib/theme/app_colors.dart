@@ -13,7 +13,7 @@ class PTColors {
   // ============================================================
 
   /// Fundo principal das telas.
-  static const Color background = Color(0xFFF5F7FB);
+  static const Color background = Color(0xFFF8F3E9);
 
   /// Fundo de cards, menus e superfícies.
   static const Color surface = Color(0xFFFFFFFF);
@@ -54,7 +54,7 @@ class PTColors {
   static const Color border = Color(0xFFB8C7DD);
 
   /// Texto principal.
-  static const Color text = Color(0xFF202124);
+  static const Color text = Color(0xFF2C2A27);
 
   /// Texto secundário.
   static const Color subtitle = Color(0xFF5F6368);
@@ -79,37 +79,37 @@ class PTColors {
   // CORES DOS TIPOS DE CRIATURA
   // ============================================================
 
-  static const Color fire = Color(0xFFD64545);
+  static const Color fire = Color(0xFFE53935);
 
-  static const Color water = Color(0xFF3D73C9);
+  static const Color water = Color(0xFF1E88E5);
 
-  static const Color grass = Color(0xFF4D9A5F);
+  static const Color grass = Color(0xFF43A047);
 
-  static const Color electric = Color(0xFFE3B341);
+  static const Color electric = Color(0xFFFDD835);
 
-  static const Color psychic = Color(0xFF7856A8);
+  static const Color psychic = Color(0xFF8E24AA);
 
-  static const Color ice = Color(0xFF2796B8);
+  static const Color ice = Color(0xFF00ACC1);
 
-  static const Color fighting = Color(0xFFE07A32);
+  static const Color fighting = Color(0xFFF4511E);
 
   // ============================================================
   // FUNDOS SUAVES DOS TIPOS
   // ============================================================
 
-  static const Color fireLight = Color(0xFFFBEAEA);
+  static const Color fireLight = Color(0xFFFFEBEE);
 
-  static const Color waterLight = Color(0xFFEAF1FB);
+  static const Color waterLight = Color(0xFFE3F2FD);
 
-  static const Color grassLight = Color(0xFFEAF5EC);
+  static const Color grassLight = Color(0xFFE8F5E9);
 
-  static const Color electricLight = Color(0xFFFFF7DF);
+  static const Color electricLight = Color(0xFFFFFDE7);
 
-  static const Color psychicLight = Color(0xFFF1ECF8);
+  static const Color psychicLight = Color(0xFFF3E5F5);
 
-  static const Color iceLight = Color(0xFFE7F5F8);
+  static const Color iceLight = Color(0xFFE0F7FA);
 
-  static const Color fightingLight = Color(0xFFFBEDE3);
+  static const Color fightingLight = Color(0xFFFBE9E7);
 
   // ============================================================
   // ELEMENTOS DE FICHA / DESTAQUE
@@ -119,5 +119,5 @@ class PTColors {
   static const Color powerBackground = Color(0xFFFFF8E7);
 
   /// Fundo neutro suave.
-  static const Color softSurface = Color(0xFFF8F9FC);
+  static const Color softSurface = Color(0xFFFDFAF4);
 }
