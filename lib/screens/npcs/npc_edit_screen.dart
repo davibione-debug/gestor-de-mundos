@@ -476,7 +476,7 @@ class _NPCEditScreenState extends State<NPCEditScreen> {
   }
 
   Future<void> _criarItem() async {
-    final resultado = await Navigator.push<bool>(
+    final resultado = await Navigator.push<Item>(
       context,
       MaterialPageRoute(
         builder: (_) => ItemEditarScreen(
@@ -491,18 +491,14 @@ class _NPCEditScreenState extends State<NPCEditScreen> {
       ),
     );
 
-    if (resultado != true || !mounted) return;
-
-    final itens = await ItensRepository().carregar();
-    if (!mounted) return;
-    if (itens.isEmpty) return;
-
-    itens.sort((a, b) => a.nome.toLowerCase().compareTo(b.nome.toLowerCase()));
-    final novo = itens.last;
+    if (resultado == null || !mounted) return;
 
     setState(() {
       _itens.add(
-        novo.copyWith(quantidade: 1, localizacao: ''),
+        resultado.copyWith(
+          quantidade: 1,
+          localizacao: '',
+        ),
       );
     });
   }
@@ -1110,7 +1106,7 @@ class _FichaCriaturaDialogState extends State<_FichaCriaturaDialog> {
   }
 
   Future<void> _criarItemEquipado() async {
-    final resultado = await Navigator.push<bool>(
+    final resultado = await Navigator.push<Item>(
       context,
       MaterialPageRoute(
         builder: (_) => ItemEditarScreen(
@@ -1125,9 +1121,8 @@ class _FichaCriaturaDialogState extends State<_FichaCriaturaDialog> {
       ),
     );
 
-    if (resultado != true || !mounted) return;
+    if (resultado == null || !mounted) return;
 
-    // Reabre os Registros para selecionar o item criado.
     await _selecionarItemEquipado();
   }
 

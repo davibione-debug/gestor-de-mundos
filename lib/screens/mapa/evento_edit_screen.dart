@@ -490,7 +490,7 @@ class _EventoEditScreenState extends State<EventoEditScreen> {
   }
 
   Future<void> _criarItem() async {
-    await Navigator.push<bool>(
+    final criado = await Navigator.push<Item>(
       context,
       MaterialPageRoute(
         builder: (_) => ItemEditarScreen(
@@ -505,24 +505,13 @@ class _EventoEditScreenState extends State<EventoEditScreen> {
       ),
     );
 
-    if (!mounted) return;
-
-    final lista = await ItensRepository().carregar();
-    if (!mounted) return;
-
-    final escolhido = await _escolher<Item>(
-      titulo: 'Selecionar Item criado',
-      opcoes: lista,
-      rotulo: (item) => item.nome,
-    );
-
-    if (escolhido == null || !mounted) return;
+    if (criado == null || !mounted) return;
 
     final quantidade = await _solicitarQuantidade();
     if (quantidade == null || !mounted) return;
 
     setState(() {
-      _itens.add(escolhido.copyWith(quantidade: quantidade));
+      _itens.add(criado.copyWith(quantidade: quantidade));
     });
   }
 
@@ -760,6 +749,7 @@ class _EventoEditScreenState extends State<EventoEditScreen> {
     );
   }
 }
+
 class _SelecionarItemEventoDialog extends StatefulWidget {
   final List<Item> itens;
 

@@ -795,7 +795,7 @@ class _PontoInteresseEditScreenState extends State<PontoInteresseEditScreen> {
   }
 
   Future<void> _criarItemBase() async {
-    final resultado = await Navigator.push<bool>(
+    final resultado = await Navigator.push<Item>(
       context,
       MaterialPageRoute(
         builder: (_) => ItemEditarScreen(
@@ -810,27 +810,13 @@ class _PontoInteresseEditScreenState extends State<PontoInteresseEditScreen> {
       ),
     );
 
-    if (resultado != true || !mounted) return;
+    if (resultado == null || !mounted) return;
 
-    final lista = await ItensRepository().carregar();
-    if (!mounted) return;
-
-    final escolhido = await showDialog<Item>(
-      context: context,
-      builder: (ctx) => SimpleDialog(
-        title: const Text('Selecionar item criado'),
-        children: lista
-            .map((it) => SimpleDialogOption(
-                  onPressed: () => Navigator.pop(ctx, it),
-                  child: Text(it.nome),
-                ))
-            .toList(),
-      ),
+    final copia = resultado.copyWith(
+      quantidade: 1,
+      localizacao: '',
     );
 
-    if (escolhido == null || !mounted) return;
-
-    final copia = escolhido.copyWith(quantidade: 1, localizacao: '');
     final ajustado = await showDialog<Item>(
       context: context,
       builder: (_) => _ItemQuantidadeDialog(item: copia),

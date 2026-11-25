@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 import '../../models/poder.dart';
 import '../../models/item.dart';
@@ -75,7 +75,8 @@ class _CriaturaEditarScreenState extends State<CriaturaEditarScreen> {
     _habilidade = TextEditingController(text: criatura.habilidade.toString());
     _resistencia = TextEditingController(text: criatura.resistencia.toString());
     _armadura = TextEditingController(text: criatura.armadura.toString());
-    _defesaEspecial = TextEditingController(text: criatura.defesaEspecial.toString());
+    _defesaEspecial =
+        TextEditingController(text: criatura.defesaEspecial.toString());
     _poderDeFogo = TextEditingController(text: criatura.poderDeFogo.toString());
 
     _moves = TextEditingController(text: criatura.moves.join('\n'));
@@ -202,6 +203,7 @@ class _CriaturaEditarScreenState extends State<CriaturaEditarScreen> {
         .toList();
 
     final criatura = Criatura(
+      id: widget.criatura.id, // <-- GARANTE QUE O ID ANTIGO SEJA MANTIDO
       numero: numero,
       nome: nome,
       descricao: _descricao.text.trim(),
@@ -238,7 +240,9 @@ class _CriaturaEditarScreenState extends State<CriaturaEditarScreen> {
       pv: (_int(_resistencia) + widget.criatura.bonusResistencia) * 5,
       pe: _poderes.fold(0, (somaTotal, poder) {
         final ehTipoUnico = _tipos.length == 1;
-        final mesmoTipo = ehTipoUnico && _tipos.first.trim().toLowerCase() == poder.tipo.trim().toLowerCase();
+        final mesmoTipo = ehTipoUnico &&
+            _tipos.first.trim().toLowerCase() ==
+                poder.tipo.trim().toLowerCase();
         final valorPoder = mesmoTipo ? 2 : 1;
         return somaTotal + valorPoder;
       }),
@@ -285,7 +289,7 @@ class _CriaturaEditarScreenState extends State<CriaturaEditarScreen> {
   }
 
   Future<void> _criarItem({required bool raro}) async {
-    await Navigator.push<bool>(
+    final criado = await Navigator.push<Item>(
       context,
       MaterialPageRoute(
         builder: (_) => ItemEditarScreen(
@@ -294,21 +298,14 @@ class _CriaturaEditarScreenState extends State<CriaturaEditarScreen> {
         ),
       ),
     );
-    if (!mounted) return;
-    final lista = await ItensRepository().carregar();
-    if (!mounted) return;
-    if (lista.isEmpty) return;
-    lista.sort((a, b) => a.nome.toLowerCase().compareTo(b.nome.toLowerCase()));
-    final escolhido = await showDialog<Item>(
-      context: context,
-      builder: (_) => _SelecionarItemCriaturaDialog(itens: lista),
-    );
-    if (escolhido == null || !mounted) return;
+
+    if (criado == null || !mounted) return;
+
     setState(() {
       if (raro) {
-        _itemRaro = escolhido;
+        _itemRaro = criado;
       } else {
-        _itemComum = escolhido;
+        _itemComum = criado;
       }
     });
   }
@@ -325,7 +322,9 @@ class _CriaturaEditarScreenState extends State<CriaturaEditarScreen> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: raro ? Colors.amber.withValues(alpha: 0.12) : const Color(0xFFF8F7F3),
+              color: raro
+                  ? Colors.amber.withValues(alpha: 0.12)
+                  : const Color(0xFFF8F7F3),
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
                 color: raro ? Colors.amber.shade700 : const Color(0xFFD8D3C7),
@@ -342,7 +341,8 @@ class _CriaturaEditarScreenState extends State<CriaturaEditarScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(item.nome, style: const TextStyle(fontWeight: FontWeight.w800)),
+                      Text(item.nome,
+                          style: const TextStyle(fontWeight: FontWeight.w800)),
                       if (item.efeito.trim().isNotEmpty)
                         Text(item.efeito, style: const TextStyle(fontSize: 12)),
                     ],
@@ -522,16 +522,22 @@ class _CriaturaEditarScreenState extends State<CriaturaEditarScreen> {
               const SizedBox(height: 10),
               Row(
                 children: [
-                  Expanded(child: _campoInteiro('Defesa Especial', _defesaEspecial)),
+                  Expanded(
+                      child: _campoInteiro('Defesa Especial', _defesaEspecial)),
                   const SizedBox(width: 8),
                   Expanded(child: _campoInteiro('Poder de Fogo', _poderDeFogo)),
                 ],
               ),
             ],
           ),
-          _buildItemSecao(titulo: 'Item Comum (50% de chance)', item: _itemComum, raro: false),
-          _buildItemSecao(titulo: 'Item Raro (1/6 de chance)', item: _itemRaro, raro: true),
-          _secao('Vantagens', [_campo('Um Move por linha', _moves, maxLinhas: 6)]),
+          _buildItemSecao(
+              titulo: 'Item Comum (50% de chance)',
+              item: _itemComum,
+              raro: false),
+          _buildItemSecao(
+              titulo: 'Item Raro (1/6 de chance)', item: _itemRaro, raro: true),
+          _secao(
+              'Vantagens', [_campo('Um Move por linha', _moves, maxLinhas: 6)]),
           _secao(
             'Poderes',
             [
@@ -547,8 +553,11 @@ class _CriaturaEditarScreenState extends State<CriaturaEditarScreen> {
                   return Card(
                     margin: const EdgeInsets.only(bottom: 7),
                     child: ListTile(
-                      title: Text(poder.texto, style: const TextStyle(fontWeight: FontWeight.w800)),
-                      subtitle: Text(poder.original ? 'Original' : 'Adquirido por progressão'),
+                      title: Text(poder.texto,
+                          style: const TextStyle(fontWeight: FontWeight.w800)),
+                      subtitle: Text(poder.original
+                          ? 'Original'
+                          : 'Adquirido por progressão'),
                       onTap: poder.original ? () => _editarPoder(indice) : null,
                       trailing: poder.original
                           ? IconButton(
@@ -598,7 +607,8 @@ class _PoderDialogState extends State<_PoderDialog> {
     super.initState();
     final poder = widget.poder;
     _tipo = TextEditingController(text: poder?.tipo ?? '');
-    _valorBase = TextEditingController(text: poder?.valorBase.toString() ?? '1');
+    _valorBase =
+        TextEditingController(text: poder?.valorBase.toString() ?? '1');
     _bonus = TextEditingController(text: poder?.bonus.toString() ?? '0');
   }
 
@@ -613,7 +623,9 @@ class _PoderDialogState extends State<_PoderDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.poder == null ? 'Adicionar Poder Original' : 'Editar Poder Original'),
+      title: Text(widget.poder == null
+          ? 'Adicionar Poder Original'
+          : 'Editar Poder Original'),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -644,7 +656,8 @@ class _PoderDialogState extends State<_PoderDialog> {
               ),
             ),
             const SizedBox(height: 4),
-            const Text('A progressão da criatura é controlada pelo ajuste de nível.'),
+            const Text(
+                'A progressão da criatura é controlada pelo ajuste de nível.'),
           ],
         ),
       ),
@@ -727,7 +740,8 @@ class _SelecionarItemCriaturaDialogState
                         return ListTile(
                           leading: const Icon(Icons.inventory_2_outlined),
                           title: Text(item.nome),
-                          subtitle: Text(item.tipo.isEmpty ? 'Sem tipo' : item.tipo),
+                          subtitle:
+                              Text(item.tipo.isEmpty ? 'Sem tipo' : item.tipo),
                           onTap: () => Navigator.pop(context, item),
                         );
                       },

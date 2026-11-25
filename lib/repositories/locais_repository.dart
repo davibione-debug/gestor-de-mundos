@@ -25,7 +25,7 @@ class LocaisRepository {
           )
           .toList();
     } catch (e) {
-      debugPrint("Erro ao carregar locais: \$e");
+      debugPrint("Erro ao carregar: $e");
       return [];
     }
   }
@@ -43,7 +43,7 @@ class LocaisRepository {
 
       await prefs.setStringList(_chave, dados);
     } catch (e) {
-      debugPrint("Erro ao salvar todos os locais: \$e");
+      debugPrint("Erro ao salvar: $e");
     }
   }
 
@@ -63,7 +63,7 @@ class LocaisRepository {
 
       await salvarTodos(locais);
     } catch (e) {
-      debugPrint("Erro ao salvar local individual: \$e");
+      debugPrint("Erro ao salvar: $e");
     }
   }
 

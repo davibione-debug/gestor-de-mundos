@@ -37,17 +37,22 @@ class CriaturasRepository {
 
   Future<void> salvar(Criatura criatura) async {
     final criaturas = await carregar();
+    final idParaBuscar = criatura.id.trim();
 
     final indice = criaturas.indexWhere(
-      (existente) =>
-          existente.id.trim().toLowerCase() == criatura.id.trim().toLowerCase() ||
-          existente.nome.trim().toLowerCase() == criatura.nome.trim().toLowerCase(),
+      (existente) => existente.id.trim() == idParaBuscar,
     );
 
-    if (indice == -1) {
-      criaturas.add(criatura);
-    } else {
+    if (indice != -1) {
       criaturas[indice] = criatura;
+    } else {
+      if (idParaBuscar.isEmpty) {
+        final mapa = criatura.toMap();
+        mapa['id'] = DateTime.now().microsecondsSinceEpoch.toString();
+        criaturas.add(Criatura.fromMap(mapa));
+      } else {
+        criaturas.add(criatura);
+      }
     }
 
     await salvarTodos(criaturas);

@@ -550,15 +550,16 @@ class CriaturaCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  _tituloSecao(
-                    'Efetividade de Tipo',
-                    PTColors.psychic,
-                  ),
-                  _efetividade(
-                    'Super Efetivo',
-                    criatura.superEfetivo,
-                    PTColors.grass,
-                  ),
+
+                  const SizedBox(height: 16),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _efetividade(
+                        'Super Efetivo',
+                        criatura.superEfetivo,
+                        PTColors.grass,
+                      ),
                   _efetividade(
                     'Pouco Efetivo',
                     criatura.poucoEfetivo,
@@ -569,6 +570,8 @@ class CriaturaCard extends StatelessWidget {
                     criatura.imune,
                     PTColors.subtitle,
                   ),
+                  ],
+                ),
                   const SizedBox(height: 8),                  if (!batalhaAberta) ...[
                     const SizedBox(height: 8),
                     Row(

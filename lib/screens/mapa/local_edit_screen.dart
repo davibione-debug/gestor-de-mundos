@@ -482,10 +482,8 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
         ? <String>['Local não encontrado pelo ID']
         : <String>[
             if (confirmado.first.nome != nome) 'nome',
-            if (confirmado.first.regiaoId != mapa['regiaoId'])
-              'região',
-            if (confirmado.first.descricao != mapa['descricao'])
-              'descrição',
+            if (confirmado.first.regiaoId != mapa['regiaoId']) 'região',
+            if (confirmado.first.descricao != mapa['descricao']) 'descrição',
             if (confirmado.first.leguas != mapa['leguas']) 'léguas',
             if (confirmado.first.terreno != mapa['terreno']) 'terreno',
             if (confirmado.first.nivelMinCriatura != mapa['nivelMinCriatura'])
@@ -951,9 +949,7 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
                   evento.nome.isEmpty ? 'Evento sem nome' : evento.nome,
                 ),
                 subtitle: Text(
-                  evento.descricao.isEmpty
-                      ? 'Sem descrição'
-                      : evento.descricao,
+                  evento.descricao.isEmpty ? 'Sem descrição' : evento.descricao,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -1112,9 +1108,7 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
                   ponto.nome.isEmpty ? 'Ponto sem nome' : ponto.nome,
                 ),
                 subtitle: Text(
-                  ponto.descricao.isEmpty
-                      ? 'Sem descrição'
-                      : ponto.descricao,
+                  ponto.descricao.isEmpty ? 'Sem descrição' : ponto.descricao,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -1293,7 +1287,7 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
                 color: _amarelo,
               ),
               title: Text(
-                '${item.nome.isEmpty ? 'Item sem nome' : item.nome} ,? ${item.quantidade}',
+                '${item.nome.isEmpty ? 'Item sem nome' : item.nome} x${item.quantidade}',
                 style: const TextStyle(
                   fontWeight: FontWeight.w800,
                 ),
@@ -1301,7 +1295,7 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
               subtitle: Text([
                 item.tipo.trim().isEmpty ? 'Sem tipo' : item.tipo,
                 if (item.localizacao.trim().isNotEmpty)
-                  'Localização: ${item.localizacao.trim()}',
+                  'Légua ${item.localizacao.trim()}',
               ].join(' • ')),
               onTap: () => _editarItem(item),
               trailing: IconButton(
@@ -1340,7 +1334,7 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
   }
 
   Future<void> _criarItemBase() async {
-    await Navigator.push<bool>(
+    await Navigator.push<Item>(
       context,
       MaterialPageRoute(
         builder: (_) => ItemEditarScreen(
@@ -1607,8 +1601,7 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
           controller: dadoController,
           maxLines: 1,
           decoration: InputDecoration(
-            labelText:
-                "Resultado dos dados - ${_modalidades[_abaEncontro]}",
+            labelText: "Resultado dos dados - ${_modalidades[_abaEncontro]}",
             hintText: 'Ex.: 1-3 Nada, 4-5 Criatura, 6 Personagem',
             prefixIcon: const Icon(
               Icons.casino_outlined,
@@ -1729,9 +1722,7 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
       partes.add(encontro.condicao.trim());
     }
 
-    return partes.isEmpty
-        ? 'Sem restrições'
-        : partes.join(' • ');
+    return partes.isEmpty ? 'Sem restrições' : partes.join(' • ');
   }
 
   Widget _buildNPCs({
@@ -1868,9 +1859,7 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
       partes.add(encontro.npc.localizacao.trim());
     }
 
-    return partes.isEmpty
-        ? 'Sem restrições'
-        : partes.join(' • ');
+    return partes.isEmpty ? 'Sem restrições' : partes.join(' • ');
   }
 
   Widget _buildEventos() {
@@ -1920,9 +1909,7 @@ class _LocalEditScreenState extends State<LocalEditScreen> {
                 ),
               ),
               subtitle: Text(
-                evento.descricao.isEmpty
-                    ? 'Sem descrição'
-                    : evento.descricao,
+                evento.descricao.isEmpty ? 'Sem descrição' : evento.descricao,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -2846,26 +2833,28 @@ class _EncontroDialogState extends State<_EncontroDialog> {
           child: const Text('Cancelar'),
         ),
         FilledButton(
-          onPressed: _criatura == null ? null : () {
-            Navigator.pop(
-              context,
-              Encontro(
-                criatura: _criatura!,
-                condicao: _condicao.text.trim(),
-                raro: _raro,
-                periodo: _periodo,
-                leguaMin: int.tryParse(
-                  _leguaMin.text.trim(),
-                ),
-                leguaMax: int.tryParse(
-                  _leguaMax.text.trim(),
-                ),
-                nivelFixo: int.tryParse(
-                  _nivelFixo.text.trim(),
-                ),
-              ),
-            );
-          },
+          onPressed: _criatura == null
+              ? null
+              : () {
+                  Navigator.pop(
+                    context,
+                    Encontro(
+                      criatura: _criatura!,
+                      condicao: _condicao.text.trim(),
+                      raro: _raro,
+                      periodo: _periodo,
+                      leguaMin: int.tryParse(
+                        _leguaMin.text.trim(),
+                      ),
+                      leguaMax: int.tryParse(
+                        _leguaMax.text.trim(),
+                      ),
+                      nivelFixo: int.tryParse(
+                        _nivelFixo.text.trim(),
+                      ),
+                    ),
+                  );
+                },
           child: const Text('Salvar'),
         ),
       ],
