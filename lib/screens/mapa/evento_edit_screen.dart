@@ -136,7 +136,7 @@ class _EventoEditScreenState extends State<EventoEditScreen> {
         content: SizedBox(
           width: double.maxFinite,
           child: opcoes.isEmpty
-              ? const Text('Nenhum cadastro disponÁƒÂ­vel.')
+              ? const Text('Nenhum cadastro disponível.')
               : ListView(
                   shrinkWrap: true,
                   children: opcoes
@@ -161,10 +161,12 @@ class _EventoEditScreenState extends State<EventoEditScreen> {
     final lista = await _criaturasRepository.carregar();
     if (!mounted) return;
 
-    final escolhida = await _escolher<Criatura>(
-      titulo: 'Adicionar $_nomeCriatura',
-      opcoes: lista,
-      rotulo: (c) => c.nome,
+    final escolhida = await showDialog<Criatura>(
+      context: context,
+      builder: (_) => _SelecionarCriaturaEventoDialog(
+        criaturas: lista,
+        titulo: 'Adicionar $_nomeCriatura',
+      ),
     );
 
     if (escolhida == null || !mounted) return;
@@ -783,8 +785,8 @@ class _SelecionarItemEventoDialogState
     return AlertDialog(
       title: const Text('Adicionar Item'),
       content: SizedBox(
-        width: 520,
-        height: 460,
+        width: 400,
+        height: 400,
         child: Column(
           children: [
             TextField(
@@ -811,6 +813,106 @@ class _SelecionarItemEventoDialogState
                             item.tipo.isEmpty ? 'Sem tipo' : item.tipo,
                           ),
                           onTap: () => Navigator.pop(context, item),
+                        );
+                      },
+                    ),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancelar'),
+        ),
+      ],
+    );
+  }
+}
+
+class _SelecionarCriaturaEventoDialog extends StatefulWidget {
+  final List<Criatura> criaturas;
+  final String titulo;
+
+  const _SelecionarCriaturaEventoDialog({
+    required this.criaturas,
+    required this.titulo,
+  });
+
+  @override
+  State<_SelecionarCriaturaEventoDialog> createState() =>
+      _SelecionarCriaturaEventoDialogState();
+}
+
+class _SelecionarCriaturaEventoDialogState
+    extends State<_SelecionarCriaturaEventoDialog> {
+  final TextEditingController _busca = TextEditingController();
+  late List<Criatura> _filtrados;
+
+  @override
+  void initState() {
+    super.initState();
+    _filtrados = [];
+  }
+
+  @override
+  void dispose() {
+    _busca.dispose();
+    super.dispose();
+  }
+
+  void _filtrar(String valor) {
+    final termo = valor.trim().toLowerCase();
+    setState(() {
+      if (termo.isEmpty) {
+        _filtrados = [];
+      } else {
+        _filtrados = widget.criaturas
+            .where((c) => c.nome.toLowerCase().contains(termo))
+            .toList()
+          ..sort(
+              (a, b) => a.nome.toLowerCase().compareTo(b.nome.toLowerCase()));
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      insetPadding: const EdgeInsets.all(24),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      title: Text(widget.titulo),
+      content: SizedBox(
+        width: 400,
+        height: 136,
+        child: Column(
+          children: [
+            TextField(
+              controller: _busca,
+              onChanged: _filtrar,
+              decoration: const InputDecoration(
+                labelText: 'Buscar criatura',
+                prefixIcon: Icon(Icons.search),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Expanded(
+              child: _filtrados.isEmpty
+                  ? const Center(child: Text('Digite para buscar...'))
+                  : ListView.separated(
+                      itemCount: _filtrados.length,
+                      separatorBuilder: (_, __) => const Divider(height: 1),
+                      itemBuilder: (context, index) {
+                        final c = _filtrados[index];
+                        return ListTile(
+                          leading: const Icon(Icons.pets),
+                          title: Text(c.nome.isEmpty ? 'Sem nome' : c.nome),
+                          subtitle: Text(c.tipos.isNotEmpty
+                              ? c.tipos.join(', ')
+                              : 'Sem tipo'),
+                          onTap: () => Navigator.pop(context, c),
                         );
                       },
                     ),
