@@ -1,6 +1,6 @@
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Border, BorderStyle;
 import 'personalizar_screen.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -809,10 +809,10 @@ class _AdministracaoScreenState extends State<AdministracaoScreen> {
               efeito: _celula(linha, cab, 'Efeito'),
               inicio: _celula(linha, cab, 'Início'),
               duracao: _celula(linha, cab, 'Duração'),
-              aliados: _nulo(_celula(linha, cab, 'NPC')) == null
-                  ? const <String>[]
-                  : [_nulo(_celula(linha, cab, 'NPC'))!],
-              inimigos: const <String>[],
+              aliados: _lista(cab.containsKey(_normalizar('Aliado'))
+                  ? _celula(linha, cab, 'Aliado')
+                  : _celula(linha, cab, 'NPC')),
+              inimigos: _lista(_celula(linha, cab, 'Inimigo')),
               criatura: null,
               nivelCriatura: '',
               itens: [
@@ -849,6 +849,19 @@ class _AdministracaoScreenState extends State<AdministracaoScreen> {
               final npc = npcs[_idInterno('NPC', _nomeSemRestricao(ref))];
               if (npc != null) listaNPC.add(npc);
             }
+            final refsAliados = _lista(cab.containsKey(_normalizar('Aliado'))
+                ? _celula(linha, cab, 'Aliado')
+                : _celula(linha, cab, 'NPC'));
+            final listaAliados = <NPC>[];
+            for (final ref in refsAliados) {
+              final npc = npcs[_idInterno('NPC', _nomeSemRestricao(ref))];
+              if (npc != null) listaAliados.add(npc);
+            }
+            final listaInimigos = <NPC>[];
+            for (final ref in _lista(_celula(linha, cab, 'Inimigo'))) {
+              final npc = npcs[_idInterno('NPC', _nomeSemRestricao(ref))];
+              if (npc != null) listaInimigos.add(npc);
+            }
             final listaCriatura = <Criatura>[];
             for (final ref in _lista(_celula(linha, cab, 'Criatura'))) {
               final c = criaturas[_idInterno('POKE', _nomeSemRestricao(ref))];
@@ -872,8 +885,20 @@ class _AdministracaoScreenState extends State<AdministracaoScreen> {
                 _extrairFaixaNivel(_celula(linha, cab, 'Faixa de Nível'));
             final encontrosCriaturaPonto = _encontrosCriatura(
                 _celula(linha, cab, 'Criatura'), criaturas, null);
-            final encontrosNPCPonto =
-                _encontrosNPC(_celula(linha, cab, 'NPC'), npcs);
+            final textoEncontrosAliados =
+                cab.containsKey(_normalizar('Encontro Aliado'))
+                    ? _celula(linha, cab, 'Encontro Aliado')
+                    : cab.containsKey(_normalizar('Aliado'))
+                        ? _celula(linha, cab, 'Aliado')
+                        : _celula(linha, cab, 'NPC');
+            final textoEncontrosInimigos =
+                cab.containsKey(_normalizar('Encontro Inimigo'))
+                    ? _celula(linha, cab, 'Encontro Inimigo')
+                    : _celula(linha, cab, 'Inimigo');
+            final encontrosAliadosPonto =
+                _encontrosNPC(textoEncontrosAliados, npcs);
+            final encontrosInimigosPonto =
+                _encontrosNPC(textoEncontrosInimigos, npcs);
             final poi = PontoInteresse(
               id: _idInterno('POI', nome),
               nome: nome,
@@ -881,6 +906,8 @@ class _AdministracaoScreenState extends State<AdministracaoScreen> {
               localizacao: _celula(linha, cab, 'Localização'),
               eventos: listaEventos,
               npcs: listaNPC,
+              aliados: listaAliados,
+              inimigos: listaInimigos,
               criaturas: listaCriatura,
               nivelCriatura: '',
               itens: listaItens,
@@ -895,7 +922,12 @@ class _AdministracaoScreenState extends State<AdministracaoScreen> {
                   pesca: const [],
                   surfe: const []),
               encontrosAliados: GrupoNPC(
-                  diurno: encontrosNPCPonto,
+                  diurno: encontrosAliadosPonto,
+                  noturno: const [],
+                  pesca: const [],
+                  surfe: const []),
+              encontrosInimigos: GrupoNPC(
+                  diurno: encontrosInimigosPonto,
                   noturno: const [],
                   pesca: const [],
                   surfe: const []),
@@ -965,37 +997,40 @@ class _AdministracaoScreenState extends State<AdministracaoScreen> {
                     null),
               ),
               treinadores: GrupoNPC(
-                diurno: _encontrosNPC(_celula(linha, cab, 'NPC Diurno'), npcs),
-                noturno:
-                    _encontrosNPC(_celula(linha, cab, 'NPC Noturno'), npcs),
-                pesca: _encontrosNPC(
+                diurno: _encontrosNPC(
                     _celulaAlternativa(
-                        linha, cab, const ['NPC Pesca', 'Pesca NPC']),
+                        linha, cab, const ['Aliado Diurno', 'NPC Diurno']),
+                    npcs),
+                noturno: _encontrosNPC(
+                    _celulaAlternativa(
+                        linha, cab, const ['Aliado Noturno', 'NPC Noturno']),
+                    npcs),
+                pesca: _encontrosNPC(
+                    _celulaAlternativa(linha, cab,
+                        const ['Aliado Pesca', 'NPC Pesca', 'Pesca NPC']),
                     npcs),
                 surfe: _encontrosNPC(
-                    _celulaAlternativa(
-                        linha, cab, const ['NPC Aquático', 'Aquático NPC']),
+                    _celulaAlternativa(linha, cab, const [
+                      'Aliado Aquático',
+                      'NPC Aquático',
+                      'Aquático NPC'
+                    ]),
                     npcs),
               ),
               rockets: GrupoNPC(
-                diurno: _encontrosNPC(_celula(linha, cab, 'NPC Diurno'), npcs,
-                    somenteRocket: true),
-                noturno: _encontrosNPC(_celula(linha, cab, 'NPC Noturno'), npcs,
-                    somenteRocket: true),
-                pesca: _encontrosNPC(
-                    _celulaAlternativa(
-                        linha, cab, const ['NPC Pesca', 'Pesca NPC']),
-                    npcs,
-                    somenteRocket: true),
+                diurno:
+                    _encontrosNPC(_celula(linha, cab, 'Inimigo Diurno'), npcs),
+                noturno:
+                    _encontrosNPC(_celula(linha, cab, 'Inimigo Noturno'), npcs),
+                pesca:
+                    _encontrosNPC(_celula(linha, cab, 'Inimigo Pesca'), npcs),
                 surfe: _encontrosNPC(
-                    _celulaAlternativa(
-                        linha, cab, const ['NPC Aquático', 'Aquático NPC']),
-                    npcs,
-                    somenteRocket: true),
+                    _celula(linha, cab, 'Inimigo Aquático'), npcs),
               ),
               pontosInteresse: pontos,
               eventos: eventos,
               conexoes: _converterConexoes(_celula(linha, cab, 'Conexões')),
+              itens: _itensDoLocal(_celula(linha, cab, 'Item'), itens),
             );
             locais[local.id] = local;
             qtdLocal++;
@@ -1055,7 +1090,53 @@ class _AdministracaoScreenState extends State<AdministracaoScreen> {
 
       final excel = Excel.createExcel();
 
-      // 1. Configuração
+      // ===== ESTILOS =====
+      final estiloCabecalho = CellStyle(
+        backgroundColorHex: ExcelColor.fromHexString('#173E73'),
+        fontColorHex: ExcelColor.fromHexString('#FFFFFF'),
+        bold: true,
+        leftBorder: Border(borderStyle: BorderStyle.Thin),
+        rightBorder: Border(borderStyle: BorderStyle.Thin),
+        topBorder: Border(borderStyle: BorderStyle.Thin),
+        bottomBorder: Border(borderStyle: BorderStyle.Thin),
+      );
+      final estiloLinhaPar = CellStyle(
+        backgroundColorHex: ExcelColor.fromHexString('#F8F9FC'),
+        leftBorder: Border(borderStyle: BorderStyle.Thin),
+        rightBorder: Border(borderStyle: BorderStyle.Thin),
+        topBorder: Border(borderStyle: BorderStyle.Thin),
+        bottomBorder: Border(borderStyle: BorderStyle.Thin),
+      );
+      final estiloLinhaImpar = CellStyle(
+        leftBorder: Border(borderStyle: BorderStyle.Thin),
+        rightBorder: Border(borderStyle: BorderStyle.Thin),
+        topBorder: Border(borderStyle: BorderStyle.Thin),
+        bottomBorder: Border(borderStyle: BorderStyle.Thin),
+      );
+
+      void aplicarEstiloLinha(Sheet sheet, int linhaIndex, CellStyle estilo) {
+        final row = sheet.rows[linhaIndex];
+        for (var i = 0; i < row.length; i++) {
+          if (row[i] != null) {
+            row[i]!.cellStyle = estilo;
+          }
+        }
+      }
+
+      void ajustarLargura(Sheet sheet) {
+        for (var col = 0; col < sheet.maxColumns; col++) {
+          var maior = 10;
+          for (var row = 0; row < sheet.maxRows; row++) {
+            final cell = sheet.cell(
+                CellIndex.indexByColumnRow(columnIndex: col, rowIndex: row));
+            final texto = cell.value?.toString() ?? '';
+            if (texto.length > maior) maior = texto.length;
+          }
+          sheet.setColumnWidth(col, (maior + 4).toDouble());
+        }
+      }
+
+      // 1. CONFIGURAÇÃO
       final configSheet = excel['Configuração'];
       configSheet.appendRow([TextCellValue('Chave'), TextCellValue('Valor')]);
       final configuracoes = <String, String>{
@@ -1075,7 +1156,7 @@ class _AdministracaoScreenState extends State<AdministracaoScreen> {
       configuracoes.forEach((k, v) =>
           configSheet.appendRow([TextCellValue(k), TextCellValue(v)]));
 
-      // 2. Itens
+      // 2. ITENS
       final itensSheet = excel['Itens'];
       itensSheet.appendRow([
         TextCellValue('Nome'),
@@ -1084,7 +1165,7 @@ class _AdministracaoScreenState extends State<AdministracaoScreen> {
         TextCellValue('Efeito'),
         TextCellValue('Preço')
       ]);
-      for (final i in itens)
+      for (final i in itens) {
         itensSheet.appendRow([
           TextCellValue(i.nome),
           TextCellValue(i.tipo),
@@ -1092,8 +1173,9 @@ class _AdministracaoScreenState extends State<AdministracaoScreen> {
           TextCellValue(i.efeito),
           IntCellValue(i.custoEmCreditos)
         ]);
+      }
 
-      // 3. Criatura (Sem PV e PE)
+      // 3. CRIATURA
       final criaturaSheet = excel['Criatura'];
       criaturaSheet.appendRow([
         TextCellValue('Nome'),
@@ -1153,7 +1235,7 @@ class _AdministracaoScreenState extends State<AdministracaoScreen> {
         ]);
       }
 
-      // 4. NPCs (Sem Localização e Faixa de Nível, com Créditos)
+      // 4. NPCs
       final npcSheet = excel['NPCs'];
       npcSheet.appendRow([
         TextCellValue('Nome'),
@@ -1242,7 +1324,7 @@ class _AdministracaoScreenState extends State<AdministracaoScreen> {
         ]);
       }
 
-      // 5. Locais
+      // 5. LOCAIS (com colunas separadas para Aliado e Inimigo)
       final localSheet = excel['Locais'];
       localSheet.appendRow([
         TextCellValue('Nome'),
@@ -1255,12 +1337,21 @@ class _AdministracaoScreenState extends State<AdministracaoScreen> {
         TextCellValue('Faixa de Nível'),
         TextCellValue('Encontro Diurno'),
         TextCellValue('Criatura Diurno'),
-        TextCellValue('NPC Diurno'),
+        TextCellValue('Aliado Diurno'),
+        TextCellValue('Inimigo Diurno'),
         TextCellValue('Encontro Noturno'),
         TextCellValue('Criatura Noturno'),
-        TextCellValue('NPC Noturno'),
+        TextCellValue('Aliado Noturno'),
+        TextCellValue('Inimigo Noturno'),
         TextCellValue('Pesca'),
+        TextCellValue('Criatura Pesca'),
+        TextCellValue('Aliado Pesca'),
+        TextCellValue('Inimigo Pesca'),
         TextCellValue('Aquático'),
+        TextCellValue('Criatura Aquático'),
+        TextCellValue('Aliado Aquático'),
+        TextCellValue('Inimigo Aquático'),
+        TextCellValue('Item'),
         TextCellValue('Conexões')
       ]);
       for (final l in locais) {
@@ -1277,13 +1368,28 @@ class _AdministracaoScreenState extends State<AdministracaoScreen> {
           TextCellValue(
               l.encontros.diurno.map((e) => e.criatura.nome).join(', ')),
           TextCellValue(l.treinadores.diurno.map((e) => e.npc.nome).join(', ')),
+          TextCellValue(l.rockets.diurno.map((e) => e.npc.nome).join(', ')),
           TextCellValue(l.dadoEncontroNoturno),
           TextCellValue(
               l.encontros.noturno.map((e) => e.criatura.nome).join(', ')),
           TextCellValue(
               l.treinadores.noturno.map((e) => e.npc.nome).join(', ')),
+          TextCellValue(l.rockets.noturno.map((e) => e.npc.nome).join(', ')),
           TextCellValue(l.dadoEncontroPesca),
+          TextCellValue(
+              l.encontros.pesca.map((e) => e.criatura.nome).join(', ')),
+          TextCellValue(l.treinadores.pesca.map((e) => e.npc.nome).join(', ')),
+          TextCellValue(l.rockets.pesca.map((e) => e.npc.nome).join(', ')),
           TextCellValue(l.dadoEncontroSurfe),
+          TextCellValue(
+              l.encontros.surfe.map((e) => e.criatura.nome).join(', ')),
+          TextCellValue(l.treinadores.surfe.map((e) => e.npc.nome).join(', ')),
+          TextCellValue(l.rockets.surfe.map((e) => e.npc.nome).join(', ')),
+          TextCellValue(l.itens
+              .map((i) => i.localizacao.isNotEmpty
+                  ? '${i.nome} (Légua ${i.localizacao})'
+                  : i.nome)
+              .join(', ')),
           TextCellValue(l.conexoes
               .map((c) => c is Map
                   ? '${c['localId']} (${c['direcao']}, Légua ${c['leguas']})'
@@ -1292,7 +1398,7 @@ class _AdministracaoScreenState extends State<AdministracaoScreen> {
         ]);
       }
 
-      // 6. Eventos
+      // 6. EVENTOS
       final eventoSheet = excel['Eventos'];
       eventoSheet.appendRow([
         TextCellValue('Nome'),
@@ -1300,7 +1406,8 @@ class _AdministracaoScreenState extends State<AdministracaoScreen> {
         TextCellValue('Efeito'),
         TextCellValue('Início'),
         TextCellValue('Fim'),
-        TextCellValue('NPC'),
+        TextCellValue('Aliado'),
+        TextCellValue('Inimigo'),
         TextCellValue('Criatura'),
         TextCellValue('Faixa de Nível'),
         TextCellValue('Item')
@@ -1313,13 +1420,14 @@ class _AdministracaoScreenState extends State<AdministracaoScreen> {
           TextCellValue(e.inicio),
           TextCellValue(e.duracao),
           TextCellValue(e.aliados.join(', ')),
+          TextCellValue(e.inimigos.join(', ')),
           TextCellValue(e.criatura?.nome ?? ''),
           TextCellValue(e.nivelCriatura),
           TextCellValue(e.itens.map((i) => i.nome).join(', '))
         ]);
       }
 
-      // 7. Pontos de Interesse
+      // 7. PONTOS DE INTERESSE
       final poiSheet = excel['Pontos de Interesse'];
       poiSheet.appendRow([
         TextCellValue('Nome'),
@@ -1329,6 +1437,10 @@ class _AdministracaoScreenState extends State<AdministracaoScreen> {
         TextCellValue('Encontro'),
         TextCellValue('Criatura'),
         TextCellValue('NPC'),
+        TextCellValue('Aliado'),
+        TextCellValue('Inimigo'),
+        TextCellValue('Encontro Aliado'),
+        TextCellValue('Encontro Inimigo'),
         TextCellValue('Item'),
         TextCellValue('Qt'),
         TextCellValue('Localização do Item')
@@ -1346,11 +1458,16 @@ class _AdministracaoScreenState extends State<AdministracaoScreen> {
             ...p.encontrosCriaturas.pesca,
             ...p.encontrosCriaturas.surfe
           ].map((e) => e.criatura.nome).join(', ')),
+          TextCellValue(p.npcs.map((n) => n.nome).join(', ')),
+          TextCellValue(p.aliados.map((n) => n.nome).join(', ')),
+          TextCellValue(p.inimigos.map((n) => n.nome).join(', ')),
           TextCellValue([
             ...p.encontrosAliados.diurno,
             ...p.encontrosAliados.noturno,
             ...p.encontrosAliados.pesca,
-            ...p.encontrosAliados.surfe,
+            ...p.encontrosAliados.surfe
+          ].map((e) => e.npc.nome).join(', ')),
+          TextCellValue([
             ...p.encontrosInimigos.diurno,
             ...p.encontrosInimigos.noturno,
             ...p.encontrosInimigos.pesca,
@@ -1360,6 +1477,26 @@ class _AdministracaoScreenState extends State<AdministracaoScreen> {
           TextCellValue(p.itens.map((i) => i.quantidade.toString()).join(', ')),
           TextCellValue(p.itens.map((i) => i.localizacao).join(', '))
         ]);
+      }
+
+      // ===== APLICAR ESTILOS =====
+      for (final sheet in [
+        configSheet,
+        itensSheet,
+        criaturaSheet,
+        npcSheet,
+        localSheet,
+        eventoSheet,
+        poiSheet
+      ]) {
+        if (sheet.maxRows > 0) {
+          aplicarEstiloLinha(sheet, 0, estiloCabecalho);
+          for (var i = 1; i < sheet.maxRows; i++) {
+            aplicarEstiloLinha(
+                sheet, i, i % 2 == 0 ? estiloLinhaPar : estiloLinhaImpar);
+          }
+          ajustarLargura(sheet);
+        }
       }
 
       // Remove a aba Sheet1 padrão
@@ -1393,6 +1530,31 @@ class _AdministracaoScreenState extends State<AdministracaoScreen> {
           _importando = false;
         });
     }
+  }
+
+  List<Item> _itensDoLocal(String texto, Map<String, Item> itensBase) {
+    final resultado = <Item>[];
+    for (final entrada in _lista(texto)) {
+      final pedaco = entrada.trim();
+      if (pedaco.isEmpty) continue;
+
+      String nome = pedaco;
+      int legua = 0;
+      final matchLegua = RegExp(r'\(L[eé]gua\s*(\d+)\)', caseSensitive: false)
+          .firstMatch(pedaco);
+      if (matchLegua != null) {
+        nome = pedaco.substring(0, matchLegua.start).trim();
+        legua = int.tryParse(matchLegua.group(1)!) ?? 0;
+      }
+
+      final itemBase = itensBase[_normalizar(nome)];
+      if (itemBase == null) continue;
+      resultado.add(itemBase.copyWith(
+        quantidade: 1,
+        localizacao: legua > 0 ? legua.toString() : '',
+      ));
+    }
+    return resultado;
   }
 
   List<Item> _itensDoInventario(String texto, Map<String, Item> itensBase) {
@@ -1461,15 +1623,12 @@ class _AdministracaoScreenState extends State<AdministracaoScreen> {
     return resultado;
   }
 
-  List<EncontroNPC> _encontrosNPC(String texto, Map<String, NPC> npcs,
-      {bool somenteRocket = false}) {
+  List<EncontroNPC> _encontrosNPC(String texto, Map<String, NPC> npcs) {
     final resultado = <EncontroNPC>[];
     for (final referencia in _lista(texto)) {
       final nome = _nomeSemRestricao(referencia);
       final npc = npcs[_idInterno('NPC', nome)];
       if (npc == null) continue;
-      final ehRocket = _normalizar(nome).contains('rocket');
-      if (somenteRocket != ehRocket) continue;
       final restricao = _extrairRestricao(referencia);
       resultado.add(EncontroNPC(
           npc: npc,

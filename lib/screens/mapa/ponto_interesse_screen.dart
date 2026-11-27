@@ -1152,7 +1152,6 @@ class _PontoInteresseScreenState extends State<PontoInteresseScreen> {
                   ),
                 ),
               ),
-            _buildNPCs(),
             _buildItens(),
             _buildEventos(),
             if (!possuiInformacoes)

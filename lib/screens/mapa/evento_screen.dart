@@ -210,13 +210,26 @@ class _EventoRegistrosState extends State<_EventoRegistros> {
   }
 }
 
-class EventoScreen extends ConsumerWidget {
+class EventoScreen extends ConsumerStatefulWidget {
   final Evento evento;
 
   const EventoScreen({
     super.key,
     required this.evento,
   });
+
+  @override
+  ConsumerState<EventoScreen> createState() => _EventoScreenState();
+}
+
+class _EventoScreenState extends ConsumerState<EventoScreen> {
+  late Evento _eventoAtual;
+
+  @override
+  void initState() {
+    super.initState();
+    _eventoAtual = widget.evento;
+  }
 
   static const Color _fundo = Color(0xFFF4F1E8);
   static const Color _card = Colors.white;
@@ -354,11 +367,11 @@ class EventoScreen extends ConsumerWidget {
       final id = valor['id']?.toString();
       final baseId = valor['cadastroBaseId']?.toString();
 
-      return id == evento.id ||
-          (evento.cadastroBaseId != null &&
-              (id == evento.cadastroBaseId ||
-                  baseId == evento.cadastroBaseId)) ||
-          (evento.cadastroBaseId == null && baseId == evento.id);
+      return id == _eventoAtual.id ||
+          (_eventoAtual.cadastroBaseId != null &&
+              (id == _eventoAtual.cadastroBaseId ||
+                  baseId == _eventoAtual.cadastroBaseId)) ||
+          (_eventoAtual.cadastroBaseId == null && baseId == _eventoAtual.id);
     }
 
     Widget link(String texto, VoidCallback aoClicar) {
@@ -468,7 +481,7 @@ class EventoScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return FutureBuilder<List<Object>>(
       future: Future.wait<Object>([
         NPCsRepository().carregar(),
@@ -502,13 +515,13 @@ class EventoScreen extends ConsumerWidget {
             : 'Criatura';
 
         final aliadosVisiveis =
-            personagens.where((p) => evento.aliados.contains(p.id)).toList();
+            personagens.where((p) => _eventoAtual.aliados.contains(p.id)).toList();
         final inimigosVisiveis =
-            personagens.where((p) => evento.inimigos.contains(p.id)).toList();
+            personagens.where((p) => _eventoAtual.inimigos.contains(p.id)).toList();
 
         final temRegistros = aliadosVisiveis.isNotEmpty ||
             inimigosVisiveis.isNotEmpty ||
-            evento.criatura != null;
+            _eventoAtual.criatura != null;
 
         return Theme(
           data: Theme.of(context).copyWith(
@@ -527,7 +540,7 @@ class EventoScreen extends ConsumerWidget {
           child: Scaffold(
             appBar: AppBar(
               title: Text(
-                evento.nome,
+                _eventoAtual.nome,
                 style: const TextStyle(fontWeight: FontWeight.w700),
               ),
               actions: [
@@ -538,11 +551,13 @@ class EventoScreen extends ConsumerWidget {
                     final alterado = await Navigator.push<Evento>(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => EventoEditScreen(evento: evento),
+                        builder: (_) => EventoEditScreen(evento: _eventoAtual),
                       ),
                     );
-                    if (!context.mounted || alterado == null) return;
-                    Navigator.pop(context, alterado);
+                    if (!mounted || alterado == null) return;
+                    setState(() {
+                      _eventoAtual = alterado;
+                    });
                   },
                 ),
               ],
@@ -586,7 +601,7 @@ class EventoScreen extends ConsumerWidget {
                           const SizedBox(width: 14),
                           Expanded(
                             child: Text(
-                              evento.nome,
+                              _eventoAtual.nome,
                               style: const TextStyle(
                                 fontSize: 27,
                                 color: _texto,
@@ -596,7 +611,7 @@ class EventoScreen extends ConsumerWidget {
                           ),
                         ],
                       ),
-                      if (evento.descricao.isNotEmpty) ...[
+                      if (_eventoAtual.descricao.isNotEmpty) ...[
                         const SizedBox(height: 18),
                         Container(
                           padding: const EdgeInsets.only(left: 13),
@@ -606,7 +621,7 @@ class EventoScreen extends ConsumerWidget {
                             ),
                           ),
                           child: Text(
-                            evento.descricao,
+                            _eventoAtual.descricao,
                             style: const TextStyle(
                               fontSize: 15,
                               height: 1.45,
@@ -626,7 +641,7 @@ class EventoScreen extends ConsumerWidget {
                       child: _campo(
                         icone: Icons.schedule,
                         titulo: 'INÍCIO',
-                        valor: evento.inicio,
+                        valor: _eventoAtual.inicio,
                         cor: _azul,
                       ),
                     ),
@@ -635,32 +650,32 @@ class EventoScreen extends ConsumerWidget {
                       child: _campo(
                         icone: Icons.timelapse,
                         titulo: 'DURAÇÁO',
-                        valor: evento.duracao,
+                        valor: _eventoAtual.duracao,
                         cor: _verde,
                       ),
                     ),
                   ],
                 ),
-                if (evento.efeito.isNotEmpty) ...[
+                if (_eventoAtual.efeito.isNotEmpty) ...[
                   _secaoTitulo('Efeito', Icons.auto_awesome),
                   _campo(
                     icone: Icons.auto_awesome,
                     titulo: '',
-                    valor: evento.efeito,
+                    valor: _eventoAtual.efeito,
                     cor: _amarelo,
                   ),
                 ],
                 if (temRegistros) ...[
                   _secaoTitulo('Encontros', Icons.groups_outlined),
                   _EventoRegistros(
-                    evento: evento,
+                    evento: _eventoAtual,
                     aliados: aliadosVisiveis,
                     inimigos: inimigosVisiveis,
                     nomeCriatura: nomeCriatura,
                     nomeAliados: nomeAliados,
                     nomeInimigos: nomeInimigos,
                     aoAbrirCriatura: () {
-                      final criatura = evento.criatura;
+                      final criatura = _eventoAtual.criatura;
                       if (criatura == null) return;
 
                       Navigator.push<void>(
@@ -676,9 +691,9 @@ class EventoScreen extends ConsumerWidget {
                     },
                   ),
                 ],
-                if (evento.itens.isNotEmpty) ...[
+                if (_eventoAtual.itens.isNotEmpty) ...[
                   _secaoTitulo('Itens', Icons.inventory_2_outlined),
-                  ...evento.itens.map(
+                  ..._eventoAtual.itens.map(
                     (item) => Container(
                       margin: const EdgeInsets.only(bottom: 10),
                       padding: const EdgeInsets.all(12),
